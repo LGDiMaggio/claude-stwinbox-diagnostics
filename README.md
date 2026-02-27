@@ -4,6 +4,7 @@
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
+  <a href="https://doi.org/10.5281/zenodo.18808856"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.18808856.svg" alt="DOI"></a>
   <a href="https://modelcontextprotocol.io"><img src="https://img.shields.io/badge/MCP-1.0-green.svg" alt="MCP Protocol"></a>
   <a href="https://docs.anthropic.com"><img src="https://img.shields.io/badge/Claude-Skills-orange.svg" alt="Claude Skills"></a>
   <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.10%2B-3776AB.svg?logo=python&logoColor=white" alt="Python"></a>
