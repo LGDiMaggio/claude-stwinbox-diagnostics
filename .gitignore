@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.venv/
+venv/
+env/
+.env
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Sensor data files (large binary)
+*.dat
+*.bin
+*.csv
+!examples/sample-data/*.csv
+
+# Generated sample data (can be regenerated)
+examples/sample_data/*.json
+
+# uv lockfile is useful, keep it
+# But ignore local tool cache
+.uv/

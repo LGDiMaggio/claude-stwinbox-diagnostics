@@ -1,0 +1,43 @@
+[project]
+name = "stwinbox-sensor-mcp"
+version = "0.1.0"
+description = "MCP Server for STEVAL-STWINBX1 (STWIN.box) sensor data acquisition — connect industrial MEMS sensors to LLMs"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+requires-python = ">=3.10"
+authors = [
+    {name = "LGDiMaggio"},
+]
+keywords = [
+    "mcp", "model-context-protocol", "vibration", "predictive-maintenance",
+    "MEMS", "STWIN", "STM32", "condition-monitoring", "fault-diagnosis",
+    "edge-ai", "industrial-iot", "claude", "llm",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Manufacturing",
+    "Topic :: Scientific/Engineering",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "mcp[cli]>=1.2.0",
+    "pyserial>=3.5",
+    "numpy>=1.24.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/LGDiMaggio/claude-stwinbox-diagnostics"
+Repository = "https://github.com/LGDiMaggio/claude-stwinbox-diagnostics"
+Issues = "https://github.com/LGDiMaggio/claude-stwinbox-diagnostics/issues"
+
+[project.scripts]
+stwinbox_sensor_mcp = "stwinbox_sensor_mcp:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/stwinbox_sensor_mcp"]

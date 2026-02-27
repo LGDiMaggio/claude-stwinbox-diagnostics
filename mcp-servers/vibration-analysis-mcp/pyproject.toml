@@ -1,0 +1,43 @@
+[project]
+name = "vibration-analysis-mcp"
+version = "0.1.0"
+description = "MCP Server for vibration signal analysis and rotating machinery fault detection — FFT, envelope analysis, bearing faults, ISO 10816"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+requires-python = ">=3.10"
+authors = [
+    {name = "LGDiMaggio"},
+]
+keywords = [
+    "mcp", "model-context-protocol", "vibration-analysis", "predictive-maintenance",
+    "fft", "envelope-analysis", "bearing-fault", "iso-10816",
+    "condition-monitoring", "fault-diagnosis", "claude", "llm",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Manufacturing",
+    "Topic :: Scientific/Engineering",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "mcp[cli]>=1.2.0",
+    "numpy>=1.24.0",
+    "scipy>=1.10.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/LGDiMaggio/claude-stwinbox-diagnostics"
+Repository = "https://github.com/LGDiMaggio/claude-stwinbox-diagnostics"
+Issues = "https://github.com/LGDiMaggio/claude-stwinbox-diagnostics/issues"
+
+[project.scripts]
+vibration_analysis_mcp = "vibration_analysis_mcp:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/vibration_analysis_mcp"]

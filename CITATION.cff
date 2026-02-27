@@ -1,0 +1,45 @@
+cff-version: 1.2.0
+title: >-
+  Claude Edge Diagnostics: Bridging Industrial MEMS Sensors
+  and Large Language Models for Predictive Maintenance
+message: >-
+  If you use this software, please cite it using the metadata
+  from this file.
+type: software
+authors:
+  - family-names: Di Maggio
+    given-names: Luigi Gianpio
+    orcid: https://orcid.org/0000-0002-2295-8944
+    alias: LGDiMaggio
+repository-code: https://github.com/LGDiMaggio/claude-stwinbox-diagnostics
+url: https://github.com/LGDiMaggio/claude-stwinbox-diagnostics
+abstract: >-
+  Open-source reference architecture connecting industrial
+  edge sensor hardware (STEVAL-STWINBX1 / STWIN.box) to
+  LLM-based diagnostic assistants (Claude) via the Model
+  Context Protocol (MCP). Includes MCP servers for sensor
+  acquisition and vibration signal processing (FFT, envelope
+  analysis, bearing fault detection, ISO 10816), plus Claude
+  Skills for guided condition monitoring, fault diagnosis,
+  and operator-friendly report generation.
+keywords:
+  - predictive-maintenance
+  - vibration-analysis
+  - condition-monitoring
+  - fault-diagnosis
+  - model-context-protocol
+  - mcp
+  - edge-ai
+  - industrial-iot
+  - MEMS-sensors
+  - STWIN
+  - STM32
+  - claude
+  - large-language-models
+  - bearing-fault-detection
+  - iso-10816
+  - envelope-analysis
+  - fft
+license: Apache-2.0
+version: 0.1.0
+date-released: "2026-02-28"
