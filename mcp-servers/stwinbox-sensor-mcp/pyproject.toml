@@ -27,15 +27,12 @@ dependencies = [
     "numpy>=1.24.0",
 ]
 
-[project.optional-dependencies]
-# STDATALOG-PYSDK packages are NOT on PyPI — install from source:
+# OPTIONAL: STDATALOG-PYSDK for FP-SNS-DATALOG2 live-USB support.
+# These packages are NOT on PyPI — install manually from source:
 #   git clone --recursive https://github.com/STMicroelectronics/stdatalog-pysdk.git
 #   pip install stdatalog-pysdk/stdatalog_pnpl/
 #   pip install stdatalog-pysdk/stdatalog_core/
-datalog2 = [
-    "stdatalog-core>=1.3.0",
-    "stdatalog-pnpl>=1.3.0",
-]
+# The server detects the SDK at runtime and enables datalog2_* tools automatically.
 
 [project.urls]
 Homepage = "https://github.com/LGDiMaggio/claude-stwinbox-diagnostics"
