@@ -29,8 +29,7 @@ from .fault_detection import (
 
 mcp = FastMCP(
     "vibration-analysis",
-    version="0.1.0",
-    description=(
+    instructions=(
         "DSP & diagnostics toolkit for rotating-machinery vibration analysis. "
         "Provides FFT, PSD, envelope analysis, bearing fault-frequency calculation, "
         "and automated fault classification."
