@@ -311,6 +311,7 @@ class DataLog2Manager:
         self,
         name: Optional[str] = None,
         description: Optional[str] = None,
+        duration_s: Optional[float] = None,
     ) -> dict:
         """Start data logging to the SD card.
 
@@ -322,6 +323,12 @@ class DataLog2Manager:
             Human-readable acquisition name (stored in acquisition_info.json).
         description:
             Free-form description.
+        duration_s:
+            If provided, the acquisition runs for exactly this many seconds
+            and then stops automatically (server-side timer).  This avoids
+            round-trip latency from the Claude orchestration layer.  When
+            omitted the acquisition runs until ``stop_acquisition()`` is
+            called manually.
         """
         if not self.is_connected:
             return {"error": "Not connected. Call connect() first."}
@@ -366,6 +373,26 @@ class DataLog2Manager:
                 except Exception as exc:
                     log.warning("Could not start thread for %s: %s", sn, exc)
 
+            # ---- Timed acquisition (server-side timer) --------------------
+            if duration_s is not None and duration_s > 0:
+                t_start = time.monotonic()
+                log.info("Timed acquisition: sleeping %.1f s ...", duration_s)
+                time.sleep(duration_s)
+                elapsed = time.monotonic() - t_start
+
+                # Auto-stop
+                stop_result = self.stop_acquisition()
+
+                return {
+                    "status": "acquisition_completed",
+                    "requested_duration_s": duration_s,
+                    "actual_duration_s": round(elapsed, 2),
+                    "acquisition_folder": acq_folder,
+                    "active_sensors": sensor_names,
+                    "files": stop_result.get("files", []),
+                }
+
+            # ---- Manual stop mode (no duration) --------------------------
             return {
                 "status": "acquisition_started",
                 "acquisition_folder": acq_folder,

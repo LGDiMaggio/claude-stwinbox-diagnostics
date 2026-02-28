@@ -517,6 +517,7 @@ def datalog2_configure_sensor(
 def datalog2_start_acquisition(
     name: Optional[str] = None,
     description: Optional[str] = None,
+    duration_s: Optional[float] = None,
 ) -> str:
     """Start high-speed data logging to the STWIN.box SD card.
 
@@ -524,11 +525,26 @@ def datalog2_start_acquisition(
     inserted.  Sensor data is streamed over USB-HID and saved as .dat
     files in the acquisition folder.
 
+    **Timed mode (recommended):** set ``duration_s`` to acquire for an
+    exact number of seconds.  The server handles the timing internally
+    with zero orchestration latency — the tool blocks until the
+    acquisition is finished and returns the result including output files.
+    No need to call ``datalog2_stop_acquisition`` afterwards.
+
+    **Manual mode:** omit ``duration_s`` and the acquisition runs until
+    ``datalog2_stop_acquisition`` is called explicitly.
+
     Args:
         name: Human-readable acquisition name (saved in acquisition_info.json)
         description: Optional description
+        duration_s: Acquisition duration in seconds.  When provided the
+            acquisition starts, runs for exactly this long (server-side
+            timer), then stops automatically.  Recommended to avoid
+            timing overhead from tool-call round-trips.
     """
-    result = datalog2.start_acquisition(name=name, description=description)
+    result = datalog2.start_acquisition(
+        name=name, description=description, duration_s=duration_s,
+    )
     return json.dumps(result, indent=2)
 
 
