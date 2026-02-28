@@ -101,8 +101,8 @@ The system reads vibration data from the STWIN.box MEMS sensors (IIS3DWB, ISM330
 
 | Server | Purpose | Key Tools |
 |--------|---------|-----------|
-| [stwinbox-sensor-mcp](mcp-servers/stwinbox-sensor-mcp/) | Hardware communication with STWIN.box via USB/Serial | `connect_board`, `configure_sensor`, `acquire_data`, `load_data_from_file`, `datalog2_connect`, `datalog2_start_acquisition`, `datalog2_stop_acquisition` |
-| [vibration-analysis-mcp](mcp-servers/vibration-analysis-mcp/) | Signal processing and fault detection algorithms | `compute_fft_spectrum`, `compute_envelope_spectrum`, `check_bearing_fault_peak`, `check_bearing_faults_direct`, `diagnose_vibration` |
+| [stwinbox-sensor-mcp](mcp-servers/stwinbox-sensor-mcp/) | Hardware communication with STWIN.box via USB-HID (DATALOG2) or USB-Serial | `datalog2_connect`, `datalog2_start_acquisition(duration_s)`, `datalog2_stop_acquisition`, `datalog2_list_sensors`, `datalog2_configure_sensor`, `connect_board`, `acquire_data` |
+| [vibration-analysis-mcp](mcp-servers/vibration-analysis-mcp/) | Signal processing, data loading, and fault detection | `load_signal`, `compute_fft_spectrum`, `compute_envelope_spectrum`, `check_bearing_fault_peak`, `diagnose_vibration`, `assess_vibration_severity` |
 
 ### Claude Skills
 
@@ -145,27 +145,34 @@ cd ../..
 ### 2. (Optional) Install FP-SNS-DATALOG2 SDK
 
 For programmatic acquisition control (start/stop logging via USB, no need to
-press buttons or extract the SD card), install the STDATALOG-PYSDK **into the
-sensor server's virtual environment**:
+press buttons or extract the SD card) and native DATALOG2 `.dat` file loading,
+install the STDATALOG-PYSDK **into both server virtual environments**:
 
 ```bash
 # Clone the SDK (packages are not on PyPI)
 git clone --recursive https://github.com/STMicroelectronics/stdatalog-pysdk.git
 
-# Install into the sensor server venv
+# Install into the sensor server venv (enables datalog2_* tools)
 cd mcp-servers/stwinbox-sensor-mcp
+uv pip install ../../stdatalog-pysdk/stdatalog_pnpl/
+uv pip install ../../stdatalog-pysdk/stdatalog_core/
+cd ../..
+
+# Install into the analysis server venv (enables DATALOG2 folder loading in load_signal)
+cd mcp-servers/vibration-analysis-mcp
 uv pip install ../../stdatalog-pysdk/stdatalog_pnpl/
 uv pip install ../../stdatalog-pysdk/stdatalog_core/
 cd ../..
 ```
 
-This enables the `datalog2_*` tools in the sensor server. Without the SDK
-installed, those tools gracefully report that it is unavailable while all
-other tools continue to work normally.
+This enables the `datalog2_*` tools in the sensor server and native DATALOG2
+folder loading via `load_signal` in the analysis server. Without the SDK
+installed, those features gracefully report that the SDK is unavailable while
+all other tools continue to work normally.
 
-> **Note:** When the SDK is installed, the sensor server must be launched using
-> the venv's Python directly (not `uv run`, which would re-sync and remove
-> the SDK). See the config example below.
+> **Note:** When the SDK is installed, both servers must be launched using the
+> venv's Python directly (not `uv run`, which would re-sync and remove the
+> SDK). See the config example below.
 
 ### 3. Configure Claude Desktop
 
@@ -187,7 +194,7 @@ Add to your `claude_desktop_config.json`:
 }
 ```
 
-**With SDK installed** (USB-HID live acquisition):
+**With SDK installed** (USB-HID live acquisition + DATALOG2 folder loading):
 ```json
 {
   "mcpServers": {
@@ -196,8 +203,8 @@ Add to your `claude_desktop_config.json`:
       "args": ["-m", "stwinbox_sensor_mcp"]
     },
     "vibration-analysis": {
-      "command": "uv",
-      "args": ["--directory", "/ABSOLUTE/PATH/TO/mcp-servers/vibration-analysis-mcp", "run", "vibration_analysis_mcp"]
+      "command": "/ABSOLUTE/PATH/TO/mcp-servers/vibration-analysis-mcp/.venv/Scripts/python.exe",
+      "args": ["-m", "vibration_analysis_mcp"]
     }
   }
 }
@@ -262,6 +269,7 @@ claude-stwinbox-diagnostics/
 │   │   │       ├── __main__.py
 │   │   │       ├── server.py          # FastMCP server definition
 │   │   │       ├── serial_comm.py     # USB/Serial communication
+│   │   │       ├── datalog2_comm.py   # DATALOG2 USB-HID/PnPL communication
 │   │   │       └── sensor_config.py   # Sensor configuration helpers
 │   │   └── tests/
 │   └── vibration-analysis-mcp/        # MCP Server: DSP & fault detection
@@ -271,6 +279,7 @@ claude-stwinbox-diagnostics/
 │       │       ├── __init__.py
 │       │       ├── __main__.py
 │       │       ├── server.py          # FastMCP server definition
+│       │       ├── data_store.py      # Signal storage + DATALOG2 folder loading
 │       │       ├── fft_analysis.py    # FFT, PSD, spectrogram
 │       │       ├── envelope.py        # Envelope analysis for bearings
 │       │       ├── fault_detection.py # Fault classification logic
@@ -299,7 +308,9 @@ claude-stwinbox-diagnostics/
 ├── docs/
 │   └── images/
 ├── examples/
-│   └── sample-data/
+│   ├── README.md
+│   ├── generate_sample_data.py
+│   └── sample_data/
 └── .gitignore
 ```
 
@@ -322,7 +333,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 ## Roadmap
 
 - [ ] Real-time streaming mode (WebSocket transport)
-- [ ] Support for FP-SNS-DATALOG2 `.dat` file format via STDATALOG-PYSDK
+- [x] Support for FP-SNS-DATALOG2 `.dat` file format via STDATALOG-PYSDK
 - [ ] Additional fault types: electrical faults (rotor bar, stator), gear mesh
 - [ ] Trend storage and historical comparison database
 - [ ] Integration with Grafana/InfluxDB for dashboards
