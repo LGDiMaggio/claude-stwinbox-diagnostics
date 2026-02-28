@@ -248,6 +248,8 @@ claude-stwinbox-diagnostics/
 │   │       └── classify_fault.py
 │   └── operator-diagnostic-report/    # Skill 3: Report generation
 │       ├── SKILL.md
+│       ├── references/
+│       │   └── report-guidelines.md
 │       └── assets/
 │           └── report-template.md
 ├── docs/
