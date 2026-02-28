@@ -164,7 +164,7 @@ def check_bearing_peaks(
         if np.any(mask):
             peak_mag = float(np.max(mags[mask]))
             peak_freq = float(freqs[mask][np.argmax(mags[mask])])
-            is_detected = peak_mag > noise_floor
+            is_detected = bool(peak_mag > noise_floor)
             if is_detected:
                 detected_count += 1
             results.append({

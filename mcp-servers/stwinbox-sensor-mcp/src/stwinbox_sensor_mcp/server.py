@@ -259,10 +259,11 @@ def acquire_data(sensor_id: int, num_samples: int = 1024) -> str:
     """Acquire vibration/sensor data samples from a sensor.
     
     NOTE: For high-speed sensors (IIS3DWB @ 26.7 kHz), direct serial streaming
-    may not be reliable. In that case, use FP-SNS-DATALOG2 firmware to log data
-    to SD card, then use load_data_from_file to read it.
+    is not reliable. Use FP-SNS-DATALOG2 firmware to log to SD card, then use
+    load_data_from_file → load_signal (vibration-analysis server) to analyse.
     
-    For lower-rate sensors (temperature, pressure), serial acquisition works.
+    For lower-rate sensors (temperature, pressure), serial acquisition works
+    and returns a compact summary (not raw samples).
     
     Args:
         sensor_id: Sensor ID to acquire from
@@ -273,20 +274,28 @@ def acquire_data(sensor_id: int, num_samples: int = 1024) -> str:
     
     try:
         samples = board.acquire_data_samples(sensor_id, num_samples)
-        return json.dumps({
+        # Return summary, not the full array
+        arr = np.array(samples, dtype=np.float64)
+        summary = {
             "sensor_id": sensor_id,
             "num_samples": len(samples),
-            "data": samples,
-        })
-    except NotImplementedError as e:
+            "mean": round(float(np.mean(arr)), 6),
+            "std": round(float(np.std(arr)), 6),
+            "min": round(float(np.min(arr)), 6),
+            "max": round(float(np.max(arr)), 6),
+            "preview": arr[:5].tolist(),
+        }
+        return json.dumps(summary)
+    except NotImplementedError:
         return (
-            f"Direct serial acquisition not yet supported for this sensor.\n\n"
-            f"Recommended approach for high-speed data:\n"
-            f"1. Flash FP-SNS-DATALOG2 firmware to STWIN.box\n"
-            f"2. Configure sensors via device_config.json on SD card\n"
-            f"3. Press USR button to start/stop acquisition\n"
-            f"4. Read .dat files from SD card using load_data_from_file\n\n"
-            f"See: https://github.com/STMicroelectronics/fp-sns-datalog2"
+            "Direct serial acquisition not supported for this sensor.\n\n"
+            "Recommended approach for high-speed data:\n"
+            "1. Flash FP-SNS-DATALOG2 firmware to STWIN.box\n"
+            "2. Configure sensors via device_config.json on SD card\n"
+            "3. Press USR button to start/stop acquisition\n"
+            "4. Read .dat files from SD card using load_data_from_file\n"
+            "5. Then call load_signal on the vibration-analysis server\n\n"
+            "See: https://github.com/STMicroelectronics/fp-sns-datalog2"
         )
 
 
@@ -301,6 +310,12 @@ def load_data_from_file(
     This reads data files produced by FP-SNS-DATALOG2 high-speed datalogger
     or exported via STDATALOG-PYSDK.
     
+    Returns a compact summary (statistics, preview) and the absolute file path.
+    **Do NOT paste the raw data into the conversation** — instead, pass the
+    file_path to the vibration-analysis server's ``load_signal`` tool,
+    which stores the signal server-side and returns a ``data_id`` for all
+    subsequent analysis.
+    
     Args:
         file_path: Path to the data file (.csv with columns per axis, or raw .dat)
         sensor_name: Name of the sensor that produced the data
@@ -314,12 +329,8 @@ def load_data_from_file(
         if p.suffix == ".csv":
             data = np.loadtxt(str(p), delimiter=",", dtype=np.float64)
         elif p.suffix == ".dat":
-            # Raw binary format from FP-SNS-DATALOG2
-            # int16 samples, interleaved axes
             raw = np.fromfile(str(p), dtype=np.int16)
             data = raw.reshape(-1, axes).astype(np.float64)
-            # Apply default sensitivity for accelerometers
-            # IIS3DWB: 0.0000305 g/LSB at ±2g, 0.000122 g/LSB at ±16g
             if "iis3dwb" in sensor_name.lower() or "ism330dhcx" in sensor_name.lower():
                 sensitivity = 0.000122  # ±16g default
                 data *= sensitivity
@@ -329,33 +340,35 @@ def load_data_from_file(
         num_samples = data.shape[0]
         num_axes = data.shape[1] if data.ndim > 1 else 1
         
-        # Return summary + first few samples for context
         summary = {
             "file": str(p.name),
+            "file_path": str(p.absolute()),
             "sensor": sensor_name,
             "total_samples": num_samples,
             "axes": num_axes,
-            "duration_estimate_s": None,
             "stats": {},
         }
         
         axis_labels = ["X", "Y", "Z"] if num_axes == 3 else [f"CH{i}" for i in range(num_axes)]
         for i in range(min(num_axes, 3)):
             col = data[:, i] if data.ndim > 1 else data
+            rms = float(np.sqrt(np.mean(col**2)))
             summary["stats"][axis_labels[i]] = {
-                "mean": float(np.mean(col)),
-                "std": float(np.std(col)),
-                "rms": float(np.sqrt(np.mean(col**2))),
-                "peak": float(np.max(np.abs(col))),
-                "crest_factor": float(np.max(np.abs(col)) / np.sqrt(np.mean(col**2))) if np.mean(col**2) > 0 else 0,
+                "mean": round(float(np.mean(col)), 6),
+                "std": round(float(np.std(col)), 6),
+                "rms": round(rms, 6),
+                "peak": round(float(np.max(np.abs(col))), 6),
+                "crest_factor": round(float(np.max(np.abs(col)) / rms), 2) if rms > 0 else 0,
             }
         
-        # Serialize first 10 samples as preview
-        preview = data[:10].tolist() if data.ndim > 1 else data[:10].tolist()
-        summary["preview_samples"] = preview
+        # Provide a 5-sample preview (tiny footprint)
+        summary["preview_samples"] = (data[:5].tolist() if data.ndim > 1 else data[:5].tolist())
         
-        # Store full data path for vibration-analysis-mcp to use
-        summary["_data_file"] = str(p.absolute())
+        summary["next_step"] = (
+            "Pass file_path and the correct sample_rate to the "
+            "vibration-analysis server's load_signal tool to store "
+            "the signal server-side and get a data_id for analysis."
+        )
         
         return json.dumps(summary, indent=2)
     

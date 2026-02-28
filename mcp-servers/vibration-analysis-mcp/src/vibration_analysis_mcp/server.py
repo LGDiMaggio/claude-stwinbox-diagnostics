@@ -10,6 +10,9 @@ from the STWIN.box (or loaded from files).
 from __future__ import annotations
 
 import json
+from typing import Optional
+
+import numpy as np
 from mcp.server.fastmcp import FastMCP
 
 from .fft_analysis import compute_fft, compute_psd, compute_spectrogram, find_peaks_in_spectrum
@@ -26,105 +29,259 @@ from .fault_detection import (
     classify_faults,
     generate_diagnosis_summary,
 )
+from .data_store import store
 
 mcp = FastMCP(
     "vibration-analysis",
     instructions=(
         "DSP & diagnostics toolkit for rotating-machinery vibration analysis. "
         "Provides FFT, PSD, envelope analysis, bearing fault-frequency calculation, "
-        "and automated fault classification."
+        "and automated fault classification.\n\n"
+        "SIGNAL HANDLING — Vibration signals are stored server-side to avoid "
+        "flooding the conversation context. Use load_signal to load a .dat/.csv "
+        "file into the store, then pass the returned data_id to any analysis tool. "
+        "Tools also accept a raw signal list for small ad-hoc analyses.\n\n"
+        "All spectral tools return compact summaries (top peaks + statistics), "
+        "not full-length arrays."
     ),
 )
+
+
+# ── Helpers ───────────────────────────────────────────────────────────────
+
+def _resolve_signal(
+    data_id: str | None,
+    signal: list[float] | None,
+    sample_rate: float | None,
+    channel: str = "X",
+) -> tuple[np.ndarray, float]:
+    """Return (1-D numpy signal, sample_rate) from either a data_id or raw list."""
+    if data_id is not None:
+        entry = store.get(data_id)
+        if entry is None:
+            available = store.list_ids()
+            raise ValueError(
+                f"data_id '{data_id}' not found in store. "
+                f"Available: {available or '(empty — use load_signal first)'}."
+            )
+        sig = entry.signal
+        sr = entry.sample_rate
+        if sig.ndim > 1:
+            ch_map = {"X": 0, "Y": 1, "Z": 2}
+            idx = ch_map.get(channel.upper(), int(channel) if channel.isdigit() else 0)
+            idx = min(idx, sig.shape[1] - 1)
+            sig = sig[:, idx]
+        return sig, sr
+    if signal is not None:
+        if sample_rate is None or sample_rate <= 0:
+            raise ValueError("sample_rate is required when passing a raw signal list.")
+        return np.asarray(signal, dtype=np.float64), float(sample_rate)
+    raise ValueError("Provide either data_id (preferred) or signal + sample_rate.")
+
+
+def _compact_spectrum(freqs: np.ndarray, mags: np.ndarray, top_n: int = 20) -> dict:
+    """Summarise a spectrum: top N peaks + global stats. No full arrays."""
+    # Top N peaks by amplitude
+    order = np.argsort(mags)[::-1]
+    n = min(top_n, len(order))
+    top_idx = np.sort(order[:n])  # sort back by frequency
+    peaks = [
+        {"freq_hz": round(float(freqs[i]), 3), "amplitude": round(float(mags[i]), 6)}
+        for i in top_idx
+    ]
+    return {
+        "top_peaks": peaks,
+        "max_amplitude": round(float(np.max(mags)), 6),
+        "max_amplitude_freq_hz": round(float(freqs[np.argmax(mags)]), 3),
+        "rms_spectral": round(float(np.sqrt(np.mean(mags**2))), 6),
+        "total_bins": len(freqs),
+        "freq_range_hz": [round(float(freqs[0]), 3), round(float(freqs[-1]), 3)],
+    }
+
+
+# ── Signal store tools ────────────────────────────────────────────────────
+
+@mcp.tool()
+def load_signal(
+    file_path: str,
+    sample_rate: float,
+    sensor_name: str = "iis3dwb",
+    axes: int = 3,
+    data_id: str | None = None,
+) -> dict:
+    """
+    Load a vibration data file (.csv or .dat) into the server-side store.
+    Returns a data_id and compact summary — the raw signal never enters the
+    conversation context.
+
+    Args:
+        file_path: Absolute path to the data file.
+        sample_rate: Sampling frequency in Hz (e.g., 26667 for IIS3DWB).
+        sensor_name: Sensor that produced the data ('iis3dwb', 'ism330dhcx', …).
+        axes: Number of axes in the data (3 for accelerometer, 1 for mic).
+        data_id: Optional human-readable ID. Auto-generated if omitted.
+    """
+    try:
+        did, summary = store.load_from_file(
+            file_path, sample_rate, sensor_name, axes, data_id,
+        )
+        return {"data_id": did, **summary}
+    except Exception as e:
+        return {"error": str(e)}
+
+
+@mcp.tool()
+def list_stored_signals() -> dict:
+    """
+    List all signals currently held in the server-side store, with their
+    statistics (RMS, peak, crest factor, kurtosis, duration, etc.).
+    """
+    entries = store.list_entries()
+    return {"count": len(entries), "signals": entries}
 
 
 # ── FFT & spectral tools ─────────────────────────────────────────────────
 
 @mcp.tool()
 def compute_fft_spectrum(
-    signal: list[float],
-    sample_rate: float,
+    data_id: str | None = None,
+    signal: list[float] | None = None,
+    sample_rate: float | None = None,
+    channel: str = "X",
     window: str = "hann",
     n_fft: int | None = None,
+    top_n: int = 20,
 ) -> dict:
     """
     Compute the single-sided FFT amplitude spectrum of a vibration signal.
-    
+    Returns a compact summary (top N peaks + statistics), not the full array.
+
+    Provide **data_id** (preferred) to reference a signal in the store,
+    or **signal** + **sample_rate** for a small ad-hoc list.
+
     Args:
-        signal: Time-domain vibration samples (acceleration, velocity, etc.).
-        sample_rate: Sampling frequency in Hz.
-        window: Window function name ('hann', 'hamming', 'blackman', 'rectangular').
+        data_id: Reference to a stored signal (from load_signal).
+        signal: Time-domain vibration samples (use data_id instead for large signals).
+        sample_rate: Sampling frequency in Hz (required if signal is given).
+        channel: Axis to analyse when the stored signal is multi-axis ('X','Y','Z').
+        window: Window function ('hann', 'hamming', 'blackman', 'rectangular').
         n_fft: FFT length. Defaults to signal length.
+        top_n: Number of highest peaks to include in the summary.
     """
-    import numpy as np
-    result = compute_fft(np.array(signal), sample_rate, window=window, n_fft=n_fft)
-    return {
-        "frequencies_hz": result["frequencies"],
-        "amplitudes": result["magnitudes"],
-        "n_samples": len(signal),
-        "sample_rate_hz": sample_rate,
+    try:
+        sig, sr = _resolve_signal(data_id, signal, sample_rate, channel)
+    except ValueError as e:
+        return {"error": str(e)}
+    result = compute_fft(sig, sr, window=window, n_fft=n_fft)
+    freqs = np.asarray(result["frequencies"])
+    mags = np.asarray(result["magnitude"])
+    summary = _compact_spectrum(freqs, mags, top_n=top_n)
+    summary.update({
+        "n_samples": len(sig),
+        "sample_rate_hz": sr,
         "window": window,
-        "frequency_resolution_hz": result["frequencies"][1] if len(result["frequencies"]) > 1 else 0,
-    }
+        "frequency_resolution_hz": round(float(freqs[1]), 4) if len(freqs) > 1 else 0,
+    })
+    if data_id:
+        summary["data_id"] = data_id
+        summary["channel"] = channel
+    return summary
 
 
 @mcp.tool()
 def compute_power_spectral_density(
-    signal: list[float],
-    sample_rate: float,
+    data_id: str | None = None,
+    signal: list[float] | None = None,
+    sample_rate: float | None = None,
+    channel: str = "X",
     segment_length: int | None = None,
     overlap_pct: float = 50.0,
+    top_n: int = 20,
 ) -> dict:
     """
     Compute the Power Spectral Density (Welch method).
-    
+    Returns a compact summary (top N peaks + stats), not the full array.
+
     Args:
-        signal: Time-domain vibration samples.
-        sample_rate: Sampling frequency in Hz.
+        data_id: Reference to a stored signal (from load_signal).
+        signal: Time-domain vibration samples (use data_id for large signals).
+        sample_rate: Sampling frequency in Hz (required if signal is given).
+        channel: Axis to analyse ('X','Y','Z').
         segment_length: Welch segment length in samples (default: len/8).
         overlap_pct: Overlap percentage between segments.
+        top_n: Number of highest peaks to include.
     """
-    import numpy as np
-    result = compute_psd(
-        np.array(signal), sample_rate,
-        nperseg=segment_length,
-        overlap_pct=overlap_pct,
-    )
-    return {
-        "frequencies_hz": result["frequencies"],
-        "psd_values": result["psd"],
+    try:
+        sig, sr = _resolve_signal(data_id, signal, sample_rate, channel)
+    except ValueError as e:
+        return {"error": str(e)}
+    nperseg = segment_length or max(256, len(sig) // 8)
+    noverlap = int(nperseg * overlap_pct / 100.0)
+    result = compute_psd(sig, sr, nperseg=nperseg, noverlap=noverlap)
+    freqs = np.asarray(result["frequencies"])
+    psd = np.asarray(result["psd"])
+    summary = _compact_spectrum(freqs, psd, top_n=top_n)
+    summary.update({
         "units": "signal_unit²/Hz",
-        "n_samples": len(signal),
-    }
+        "n_samples": len(sig),
+        "sample_rate_hz": sr,
+    })
+    if data_id:
+        summary["data_id"] = data_id
+        summary["channel"] = channel
+    return summary
 
 
 @mcp.tool()
 def compute_spectrogram_stft(
-    signal: list[float],
-    sample_rate: float,
+    data_id: str | None = None,
+    signal: list[float] | None = None,
+    sample_rate: float | None = None,
+    channel: str = "X",
     segment_length: int = 256,
     overlap_pct: float = 75.0,
 ) -> dict:
     """
     Compute a Short-Time Fourier Transform spectrogram.
-    Useful for analysing non-stationary signals (run-up/coast-down).
-    
+    Useful for analysing non-stationary signals (run-up / coast-down).
+
+    Returns a compact summary (dominant frequency per time segment),
+    not the full 2-D array.
+
     Args:
-        signal: Time-domain vibration samples.
-        sample_rate: Sampling frequency in Hz.
+        data_id: Reference to a stored signal (from load_signal).
+        signal: Time-domain vibration samples (use data_id for large signals).
+        sample_rate: Sampling frequency in Hz (required if signal is given).
+        channel: Axis to analyse ('X','Y','Z').
         segment_length: Window length in samples.
         overlap_pct: Overlap percentage.
     """
-    import numpy as np
-    result = compute_spectrogram(
-        np.array(signal), sample_rate,
-        nperseg=segment_length,
-        overlap_pct=overlap_pct,
-    )
+    try:
+        sig, sr = _resolve_signal(data_id, signal, sample_rate, channel)
+    except ValueError as e:
+        return {"error": str(e)}
+    noverlap = int(segment_length * overlap_pct / 100.0)
+    result = compute_spectrogram(sig, sr, nperseg=segment_length, noverlap=noverlap)
+    spec_db = np.asarray(result["spectrogram_db"])
+    freqs = np.asarray(result["frequencies"])
+    times = np.asarray(result["times"])
+    # Dominant frequency per time slice
+    dom_idx = np.argmax(spec_db, axis=0)
+    slices = []
+    step = max(1, len(times) // 20)  # up to 20 representative slices
+    for i in range(0, len(times), step):
+        slices.append({
+            "time_s": round(float(times[i]), 4),
+            "dominant_freq_hz": round(float(freqs[dom_idx[i]]), 2),
+            "peak_power_db": round(float(spec_db[dom_idx[i], i]), 2),
+        })
     return {
-        "frequencies_hz": result["frequencies"],
-        "time_s": result["times"],
-        "spectrogram_db": result["spectrogram_db"],
-        "sample_rate_hz": sample_rate,
+        "time_range_s": [round(float(times[0]), 4), round(float(times[-1]), 4)],
+        "freq_range_hz": [round(float(freqs[0]), 2), round(float(freqs[-1]), 2)],
+        "n_time_segments": len(times),
+        "n_freq_bins": len(freqs),
+        "representative_slices": slices,
+        "sample_rate_hz": sr,
     }
 
 
@@ -164,57 +321,98 @@ def find_spectral_peaks(
 
 @mcp.tool()
 def compute_envelope_spectrum(
-    signal: list[float],
-    sample_rate: float,
+    data_id: str | None = None,
+    signal: list[float] | None = None,
+    sample_rate: float | None = None,
+    channel: str = "X",
     band_low_hz: float | None = None,
     band_high_hz: float | None = None,
+    top_n: int = 20,
 ) -> dict:
     """
     Compute the envelope spectrum for bearing fault detection.
     The signal is band-pass filtered, the Hilbert-transform envelope is
     extracted, and its FFT is computed to reveal bearing fault frequencies.
-    
+
+    Returns a compact summary (top N peaks + stats), not the full array.
+
     Args:
-        signal: Raw vibration time-domain samples.
-        sample_rate: Sampling frequency in Hz.
+        data_id: Reference to a stored signal (from load_signal).
+        signal: Raw vibration time-domain samples (use data_id for large signals).
+        sample_rate: Sampling frequency in Hz (required if signal is given).
+        channel: Axis to analyse ('X','Y','Z').
         band_low_hz: Band-pass lower cutoff. Auto if None.
         band_high_hz: Band-pass upper cutoff. Auto if None.
+        top_n: Number of highest peaks to include.
     """
-    result = envelope_spectrum(
-        __import__("numpy").array(signal),
-        sample_rate,
-        band_low=band_low_hz,
-        band_high=band_high_hz,
-    )
-    return {
-        "frequencies_hz": result["frequencies"],
-        "envelope_amplitudes": result["envelope_spectrum"],
+    try:
+        sig, sr = _resolve_signal(data_id, signal, sample_rate, channel)
+    except ValueError as e:
+        return {"error": str(e)}
+    result = envelope_spectrum(sig, sr, band_low=band_low_hz, band_high=band_high_hz)
+    freqs = np.asarray(result["frequencies"])
+    env_mags = np.asarray(result["envelope_spectrum"])
+    summary = _compact_spectrum(freqs, env_mags, top_n=top_n)
+    summary.update({
         "filter_band_hz": list(result["filter_band"]),
         "n_samples": result["n_samples"],
-    }
+        "sample_rate_hz": sr,
+    })
+    if data_id:
+        summary["data_id"] = data_id
+        summary["channel"] = channel
+    return summary
 
 
 @mcp.tool()
 def check_bearing_fault_peak(
-    frequencies: list[float],
-    amplitudes: list[float],
     target_frequency_hz: float,
+    data_id: str | None = None,
+    channel: str = "X",
+    frequencies: list[float] | None = None,
+    amplitudes: list[float] | None = None,
+    sample_rate: float | None = None,
     n_harmonics: int = 3,
     tolerance_pct: float = 3.0,
+    band_low_hz: float | None = None,
+    band_high_hz: float | None = None,
 ) -> dict:
     """
-    Check whether a bearing fault frequency (and harmonics) is present
-    in an envelope spectrum.
-    
+    Check whether a bearing fault frequency (and harmonics) is present.
+
+    Two modes:
+    - **data_id** (preferred): provide a stored raw signal; envelope spectrum
+      is computed internally.
+    - **frequencies + amplitudes**: provide a pre-computed envelope spectrum.
+
     Args:
-        frequencies: Envelope spectrum frequency axis (Hz).
-        amplitudes: Envelope spectrum magnitudes.
         target_frequency_hz: Expected fault frequency (BPFO, BPFI, etc.) in Hz.
+        data_id: Reference to a stored raw signal.
+        channel: Axis to analyse when using data_id ('X','Y','Z').
+        frequencies: Pre-computed envelope spectrum frequency axis (Hz).
+        amplitudes: Pre-computed envelope spectrum magnitudes.
+        sample_rate: Required only when passing frequencies/amplitudes directly.
         n_harmonics: Number of harmonics to check (1× through N×).
         tolerance_pct: Frequency matching tolerance in percent.
+        band_low_hz: Envelope band-pass lower cutoff (only with data_id).
+        band_high_hz: Envelope band-pass upper cutoff (only with data_id).
     """
+    if data_id is not None:
+        try:
+            sig, sr = _resolve_signal(data_id, None, None, channel)
+        except ValueError as e:
+            return {"error": str(e)}
+        env = envelope_spectrum(sig, sr, band_low=band_low_hz, band_high=band_high_hz)
+        freqs_arr = np.asarray(env["frequencies"])
+        amps_arr = np.asarray(env["envelope_spectrum"])
+    elif frequencies is not None and amplitudes is not None:
+        freqs_arr = np.asarray(frequencies)
+        amps_arr = np.asarray(amplitudes)
+    else:
+        return {"error": "Provide data_id or (frequencies + amplitudes)."}
+
     return check_bearing_peaks(
-        frequencies, amplitudes,
+        freqs_arr, amps_arr,
         target_freq=target_frequency_hz,
         n_harmonics=n_harmonics,
         tolerance_pct=tolerance_pct,
@@ -288,8 +486,10 @@ def list_known_bearings() -> dict:
 
 @mcp.tool()
 def check_bearing_faults_direct(
-    frequencies: list[float],
-    amplitudes: list[float],
+    data_id: str | None = None,
+    channel: str = "X",
+    frequencies: list[float] | None = None,
+    amplitudes: list[float] | None = None,
     rpm: float | None = None,
     bpfo_hz: float | None = None,
     bpfi_hz: float | None = None,
@@ -301,24 +501,27 @@ def check_bearing_faults_direct(
     ftf_order: float | None = None,
     n_harmonics: int = 3,
     tolerance_pct: float = 3.0,
+    band_low_hz: float | None = None,
+    band_high_hz: float | None = None,
 ) -> dict:
     """
     Check for bearing faults using known fault frequencies provided directly
     by the user — no geometry or database lookup needed.
 
-    Frequencies can be supplied in two formats:
-    - **Absolute (Hz)**: bpfo_hz, bpfi_hz, bsf_hz, ftf_hz
-      Use when you already have frequencies in Hz for a specific RPM.
-    - **Orders (multiples of shaft speed)**: bpfo_order, bpfi_order, bsf_order, ftf_order
-      Use when you have the values from the manufacturer catalog (e.g., SKF,
-      Schaeffler/FAG, NSK, NTN). These are RPM-independent ratios that get
-      multiplied by shaft_freq = rpm / 60 to produce Hz. Requires `rpm`.
+    Two modes for the spectrum input:
+    - **data_id** (preferred): stored raw signal → envelope computed internally.
+    - **frequencies + amplitudes**: pre-computed envelope spectrum.
 
-    If both _hz and _order are given for the same frequency, _hz takes priority.
+    Fault frequencies can be supplied as:
+    - **Absolute (Hz)**: bpfo_hz, bpfi_hz, bsf_hz, ftf_hz
+    - **Orders (× shaft speed)**: bpfo_order … ftf_order (requires `rpm`).
+      Hz takes priority when both are given.
 
     Args:
-        frequencies: Envelope spectrum frequency axis (Hz).
-        amplitudes: Envelope spectrum magnitudes.
+        data_id: Reference to a stored raw signal.
+        channel: Axis to analyse when using data_id ('X','Y','Z').
+        frequencies: Pre-computed envelope spectrum frequency axis (Hz).
+        amplitudes: Pre-computed envelope spectrum magnitudes.
         rpm: Shaft speed in RPM (required when using _order parameters).
         bpfo_hz: Ball Pass Frequency Outer race in Hz.
         bpfi_hz: Ball Pass Frequency Inner race in Hz.
@@ -330,8 +533,25 @@ def check_bearing_faults_direct(
         ftf_order: FTF as a multiple of shaft speed (e.g., 0.40×).
         n_harmonics: Number of harmonics to check (1× through N×).
         tolerance_pct: Frequency matching tolerance in percent.
+        band_low_hz: Envelope band-pass lower cutoff (only with data_id).
+        band_high_hz: Envelope band-pass upper cutoff (only with data_id).
     """
-    # Resolve orders -> Hz if rpm is provided
+    # Resolve envelope spectrum
+    if data_id is not None:
+        try:
+            sig, sr = _resolve_signal(data_id, None, None, channel)
+        except ValueError as e:
+            return {"error": str(e)}
+        env = envelope_spectrum(sig, sr, band_low=band_low_hz, band_high=band_high_hz)
+        env_freqs = np.asarray(env["frequencies"])
+        env_amps = np.asarray(env["envelope_spectrum"])
+    elif frequencies is not None and amplitudes is not None:
+        env_freqs = np.asarray(frequencies)
+        env_amps = np.asarray(amplitudes)
+    else:
+        return {"error": "Provide data_id (raw signal) or (frequencies + amplitudes) of an envelope spectrum."}
+
+    # Resolve orders -> Hz
     shaft_freq = (rpm / 60.0) if rpm and rpm > 0 else None
     resolved: dict[str, float] = {}
     for key, hz_val, order_val in [
@@ -353,7 +573,7 @@ def check_bearing_faults_direct(
     results: dict = {}
     for key, freq_val in resolved.items():
         results[key] = check_bearing_peaks(
-            frequencies, amplitudes,
+            env_freqs, env_amps,
             target_freq=freq_val,
             n_harmonics=n_harmonics,
             tolerance_pct=tolerance_pct,
@@ -392,9 +612,11 @@ def assess_vibration_severity(
 
 @mcp.tool()
 def diagnose_vibration(
-    signal: list[float],
-    sample_rate: float,
     rpm: float,
+    data_id: str | None = None,
+    channel: str = "X",
+    signal: list[float] | None = None,
+    sample_rate: float | None = None,
     bearing_designation: str | None = None,
     bearing_n_balls: int | None = None,
     bearing_ball_dia_mm: float | None = None,
@@ -413,35 +635,37 @@ def diagnose_vibration(
 ) -> dict:
     """
     Full automated vibration diagnosis pipeline.
-    
+
     1. Compute FFT and extract shaft-frequency features
     2. Optionally perform envelope analysis for bearing faults
     3. Classify faults (unbalance, misalignment, looseness, bearing)
     4. Assess ISO 10816 severity
     5. Generate human-readable report
-    
+
+    Signal input: provide **data_id** (preferred) to reference a signal in the
+    store, or **signal** + **sample_rate** for a small ad-hoc list.
+
     Bearing information can be provided in four ways (in priority order):
     a) Direct fault frequencies in Hz: bpfo_hz, bpfi_hz, bsf_hz, ftf_hz
-    b) Fault frequency orders (multiples of shaft speed): bpfo_order, bpfi_order,
-       bsf_order, ftf_order — typical format from SKF/Schaeffler/NSK/NTN catalogs.
-       These are multiplied by shaft_freq = rpm/60 to get Hz.
-    c) Custom geometry: bearing_n_balls, bearing_ball_dia_mm, bearing_pitch_dia_mm,
-       bearing_contact_angle_deg (frequencies computed automatically)
-    d) Database lookup: bearing_designation (e.g., '6205', 'NU206', '7205')
-    
+    b) Fault frequency orders (× shaft speed): bpfo_order … ftf_order
+    c) Custom geometry: bearing_n_balls, bearing_ball_dia_mm, bearing_pitch_dia_mm
+    d) Database lookup: bearing_designation (e.g., '6205', 'NU206')
+
     Args:
-        signal: Vibration time-domain signal (acceleration in g or m/s²).
-        sample_rate: Sampling frequency in Hz.
         rpm: Shaft speed in RPM.
-        bearing_designation: Bearing code from built-in database (e.g., '6205').
-        bearing_n_balls: Number of rolling elements (for custom geometry).
-        bearing_ball_dia_mm: Ball/roller diameter in mm (for custom geometry).
-        bearing_pitch_dia_mm: Pitch diameter in mm (for custom geometry).
+        data_id: Reference to a stored signal (from load_signal).
+        channel: Axis to analyse when using data_id ('X','Y','Z').
+        signal: Vibration samples (use data_id for large signals).
+        sample_rate: Sampling frequency in Hz (required if signal is given).
+        bearing_designation: Bearing code from built-in database.
+        bearing_n_balls: Number of rolling elements (custom geometry).
+        bearing_ball_dia_mm: Ball diameter in mm (custom geometry).
+        bearing_pitch_dia_mm: Pitch diameter in mm (custom geometry).
         bearing_contact_angle_deg: Contact angle in degrees (default 0).
-        bpfo_hz: Known BPFO in Hz (absolute frequency).
-        bpfi_hz: Known BPFI in Hz (absolute frequency).
-        bsf_hz: Known BSF in Hz (absolute frequency).
-        ftf_hz: Known FTF in Hz (absolute frequency).
+        bpfo_hz: Known BPFO in Hz.
+        bpfi_hz: Known BPFI in Hz.
+        bsf_hz: Known BSF in Hz.
+        ftf_hz: Known FTF in Hz.
         bpfo_order: BPFO as multiple of shaft speed (e.g., 3.56×).
         bpfi_order: BPFI as multiple of shaft speed (e.g., 5.44×).
         bsf_order: BSF as multiple of shaft speed (e.g., 2.32×).
@@ -449,15 +673,17 @@ def diagnose_vibration(
         machine_group: ISO 10816 group ('group1'..'group4').
         machine_description: Free text describing the machine for the report.
     """
-    import numpy as np
-    
-    sig = np.array(signal)
+    try:
+        sig, sr = _resolve_signal(data_id, signal, sample_rate, channel)
+    except ValueError as e:
+        return {"error": str(e)}
+
     shaft_freq = rpm / 60.0
     
     # Step 1: FFT
-    fft_result = compute_fft(sig, sample_rate)
+    fft_result = compute_fft(sig, sr)
     freqs = np.array(fft_result["frequencies"])
-    mags = np.array(fft_result["magnitudes"])
+    mags = np.array(fft_result["magnitude"])
     
     # Step 2: Shaft features
     features = extract_shaft_features(freqs, mags, shaft_freq, time_signal=sig)
@@ -505,7 +731,7 @@ def diagnose_vibration(
     # Envelope analysis if any fault frequencies are available
     bearing_results = None
     if fault_freqs:
-        env = envelope_spectrum(sig, sample_rate)
+        env = envelope_spectrum(sig, sr)
         env_freqs = np.array(env["frequencies"])
         env_mags = np.array(env["envelope_spectrum"])
         bearing_results = {}
@@ -552,6 +778,11 @@ def diagnose_vibration(
 def analysis_capabilities() -> str:
     """List all analysis capabilities of this server."""
     return json.dumps({
+        "signal_store": [
+            "Server-side signal storage (load_signal → data_id)",
+            "Compact summaries only — raw arrays never enter the conversation",
+            "list_stored_signals to inspect what is loaded",
+        ],
         "spectral_analysis": [
             "FFT (amplitude spectrum)",
             "Power Spectral Density (Welch)",
