@@ -291,46 +291,80 @@ def list_known_bearings() -> dict:
 def check_bearing_faults_direct(
     frequencies: list[float],
     amplitudes: list[float],
+    rpm: float | None = None,
     bpfo_hz: float | None = None,
     bpfi_hz: float | None = None,
     bsf_hz: float | None = None,
     ftf_hz: float | None = None,
+    bpfo_order: float | None = None,
+    bpfi_order: float | None = None,
+    bsf_order: float | None = None,
+    ftf_order: float | None = None,
     n_harmonics: int = 3,
     tolerance_pct: float = 3.0,
 ) -> dict:
     """
-    Check for bearing faults using known fault frequencies (BPFO, BPFI, BSF, FTF)
-    provided directly by the user — no geometry or database lookup needed.
+    Check for bearing faults using known fault frequencies provided directly
+    by the user — no geometry or database lookup needed.
 
-    Use this when the user already knows the characteristic frequencies from
-    the bearing manufacturer's catalog (e.g., SKF, Schaeffler/FAG, NSK, NTN).
-    Provide the envelope spectrum and whichever frequencies are known.
+    Frequencies can be supplied in two formats:
+    - **Absolute (Hz)**: bpfo_hz, bpfi_hz, bsf_hz, ftf_hz
+      Use when you already have frequencies in Hz for a specific RPM.
+    - **Orders (multiples of shaft speed)**: bpfo_order, bpfi_order, bsf_order, ftf_order
+      Use when you have the values from the manufacturer catalog (e.g., SKF,
+      Schaeffler/FAG, NSK, NTN). These are RPM-independent ratios that get
+      multiplied by shaft_freq = rpm / 60 to produce Hz. Requires `rpm`.
+
+    If both _hz and _order are given for the same frequency, _hz takes priority.
 
     Args:
         frequencies: Envelope spectrum frequency axis (Hz).
         amplitudes: Envelope spectrum magnitudes.
-        bpfo_hz: Ball Pass Frequency Outer race in Hz (if known).
-        bpfi_hz: Ball Pass Frequency Inner race in Hz (if known).
-        bsf_hz: Ball Spin Frequency in Hz (if known).
-        ftf_hz: Fundamental Train (cage) Frequency in Hz (if known).
+        rpm: Shaft speed in RPM (required when using _order parameters).
+        bpfo_hz: Ball Pass Frequency Outer race in Hz.
+        bpfi_hz: Ball Pass Frequency Inner race in Hz.
+        bsf_hz: Ball Spin Frequency in Hz.
+        ftf_hz: Fundamental Train (cage) Frequency in Hz.
+        bpfo_order: BPFO as a multiple of shaft speed (e.g., 3.56×).
+        bpfi_order: BPFI as a multiple of shaft speed (e.g., 5.44×).
+        bsf_order: BSF as a multiple of shaft speed (e.g., 2.32×).
+        ftf_order: FTF as a multiple of shaft speed (e.g., 0.40×).
         n_harmonics: Number of harmonics to check (1× through N×).
         tolerance_pct: Frequency matching tolerance in percent.
     """
-    results = {}
-    for key, freq_val in [
-        ("bpfo", bpfo_hz), ("bpfi", bpfi_hz),
-        ("bsf", bsf_hz), ("ftf", ftf_hz),
+    # Resolve orders -> Hz if rpm is provided
+    shaft_freq = (rpm / 60.0) if rpm and rpm > 0 else None
+    resolved: dict[str, float] = {}
+    for key, hz_val, order_val in [
+        ("bpfo", bpfo_hz, bpfo_order),
+        ("bpfi", bpfi_hz, bpfi_order),
+        ("bsf", bsf_hz, bsf_order),
+        ("ftf", ftf_hz, ftf_order),
     ]:
-        if freq_val is not None and freq_val > 0:
-            results[key] = check_bearing_peaks(
-                frequencies, amplitudes,
-                target_freq=freq_val,
-                n_harmonics=n_harmonics,
-                tolerance_pct=tolerance_pct,
-            )
-            results[key]["target_frequency_hz"] = freq_val
-    if not results:
-        return {"error": "No fault frequencies provided. Supply at least one of bpfo_hz, bpfi_hz, bsf_hz, ftf_hz."}
+        if hz_val is not None and hz_val > 0:
+            resolved[key] = hz_val
+        elif order_val is not None and order_val > 0:
+            if shaft_freq is None:
+                return {"error": f"{key}_order was provided but rpm is missing. Supply rpm to convert orders to Hz."}
+            resolved[key] = order_val * shaft_freq
+
+    if not resolved:
+        return {"error": "No fault frequencies provided. Supply at least one of bpfo_hz/bpfo_order, bpfi_hz/bpfi_order, bsf_hz/bsf_order, ftf_hz/ftf_order."}
+
+    results: dict = {}
+    for key, freq_val in resolved.items():
+        results[key] = check_bearing_peaks(
+            frequencies, amplitudes,
+            target_freq=freq_val,
+            n_harmonics=n_harmonics,
+            tolerance_pct=tolerance_pct,
+        )
+        results[key]["target_frequency_hz"] = round(freq_val, 3)
+    if shaft_freq:
+        results["shaft_frequency_hz"] = round(shaft_freq, 3)
+        results["input_mode"] = "orders converted to Hz" if any(
+            o is not None and o > 0 for o in [bpfo_order, bpfi_order, bsf_order, ftf_order]
+        ) else "direct Hz"
     return results
 
 
@@ -371,6 +405,10 @@ def diagnose_vibration(
     bpfi_hz: float | None = None,
     bsf_hz: float | None = None,
     ftf_hz: float | None = None,
+    bpfo_order: float | None = None,
+    bpfi_order: float | None = None,
+    bsf_order: float | None = None,
+    ftf_order: float | None = None,
     machine_group: str = "group2",
     machine_description: str = "",
 ) -> dict:
@@ -383,12 +421,14 @@ def diagnose_vibration(
     4. Assess ISO 10816 severity
     5. Generate human-readable report
     
-    Bearing information can be provided in three ways (in priority order):
-    a) Direct fault frequencies: bpfo_hz, bpfi_hz, bsf_hz, ftf_hz
-       (from manufacturer catalog — SKF, Schaeffler, NSK, NTN, etc.)
-    b) Custom geometry: bearing_n_balls, bearing_ball_dia_mm, bearing_pitch_dia_mm,
+    Bearing information can be provided in four ways (in priority order):
+    a) Direct fault frequencies in Hz: bpfo_hz, bpfi_hz, bsf_hz, ftf_hz
+    b) Fault frequency orders (multiples of shaft speed): bpfo_order, bpfi_order,
+       bsf_order, ftf_order — typical format from SKF/Schaeffler/NSK/NTN catalogs.
+       These are multiplied by shaft_freq = rpm/60 to get Hz.
+    c) Custom geometry: bearing_n_balls, bearing_ball_dia_mm, bearing_pitch_dia_mm,
        bearing_contact_angle_deg (frequencies computed automatically)
-    c) Database lookup: bearing_designation (e.g., '6205', 'NU206', '7205')
+    d) Database lookup: bearing_designation (e.g., '6205', 'NU206', '7205')
     
     Args:
         signal: Vibration time-domain signal (acceleration in g or m/s²).
@@ -399,10 +439,14 @@ def diagnose_vibration(
         bearing_ball_dia_mm: Ball/roller diameter in mm (for custom geometry).
         bearing_pitch_dia_mm: Pitch diameter in mm (for custom geometry).
         bearing_contact_angle_deg: Contact angle in degrees (default 0).
-        bpfo_hz: Known Ball Pass Frequency Outer race in Hz.
-        bpfi_hz: Known Ball Pass Frequency Inner race in Hz.
-        bsf_hz: Known Ball Spin Frequency in Hz.
-        ftf_hz: Known Fundamental Train (cage) Frequency in Hz.
+        bpfo_hz: Known BPFO in Hz (absolute frequency).
+        bpfi_hz: Known BPFI in Hz (absolute frequency).
+        bsf_hz: Known BSF in Hz (absolute frequency).
+        ftf_hz: Known FTF in Hz (absolute frequency).
+        bpfo_order: BPFO as multiple of shaft speed (e.g., 3.56×).
+        bpfi_order: BPFI as multiple of shaft speed (e.g., 5.44×).
+        bsf_order: BSF as multiple of shaft speed (e.g., 2.32×).
+        ftf_order: FTF as multiple of shaft speed (e.g., 0.40×).
         machine_group: ISO 10816 group ('group1'..'group4').
         machine_description: Free text describing the machine for the report.
     """
@@ -423,14 +467,23 @@ def diagnose_vibration(
     fault_freqs: dict[str, float] = {}
     bearing_info_source = None
     
-    # Method A: Direct fault frequencies from user
-    direct_any = any(v is not None and v > 0 for v in [bpfo_hz, bpfi_hz, bsf_hz, ftf_hz])
-    if direct_any:
-        bearing_info_source = "user-provided frequencies"
-        if bpfo_hz and bpfo_hz > 0: fault_freqs["bpfo"] = bpfo_hz
-        if bpfi_hz and bpfi_hz > 0: fault_freqs["bpfi"] = bpfi_hz
-        if bsf_hz and bsf_hz > 0: fault_freqs["bsf"] = bsf_hz
-        if ftf_hz and ftf_hz > 0: fault_freqs["ftf"] = ftf_hz
+    # Method A: Direct fault frequencies in Hz
+    direct_hz = any(v is not None and v > 0 for v in [bpfo_hz, bpfi_hz, bsf_hz, ftf_hz])
+    # Method A2: Fault frequency orders (multiples of shaft speed)
+    direct_orders = any(v is not None and v > 0 for v in [bpfo_order, bpfi_order, bsf_order, ftf_order])
+
+    if direct_hz or direct_orders:
+        bearing_info_source = "user-provided frequencies" if direct_hz else "user-provided orders"
+        for key, hz_val, order_val in [
+            ("bpfo", bpfo_hz, bpfo_order),
+            ("bpfi", bpfi_hz, bpfi_order),
+            ("bsf", bsf_hz, bsf_order),
+            ("ftf", ftf_hz, ftf_order),
+        ]:
+            if hz_val is not None and hz_val > 0:
+                fault_freqs[key] = hz_val
+            elif order_val is not None and order_val > 0:
+                fault_freqs[key] = order_val * shaft_freq
     # Method B: Custom geometry
     elif bearing_n_balls and bearing_ball_dia_mm and bearing_pitch_dia_mm:
         bearing_info_source = "custom geometry"
