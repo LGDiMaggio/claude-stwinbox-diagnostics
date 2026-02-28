@@ -304,12 +304,14 @@ def find_spectral_peaks(
         top_n: Return only the N highest peaks.
     """
     import numpy as np
+    kwargs = {"min_distance_hz": min_distance_hz, "num_peaks": top_n}
+    if min_height is not None:
+        # Convert linear min_height to dB for the internal threshold
+        kwargs["threshold_db"] = float(20 * np.log10(max(min_height, 1e-12)))
     peaks = find_peaks_in_spectrum(
         np.array(frequencies),
         np.array(amplitudes),
-        min_height=min_height,
-        min_distance_hz=min_distance_hz,
-        top_n=top_n,
+        **kwargs,
     )
     return {
         "peaks": peaks,
