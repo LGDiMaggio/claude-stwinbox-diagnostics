@@ -287,6 +287,53 @@ def list_known_bearings() -> dict:
     return {"bearings": list_bearings()}
 
 
+@mcp.tool()
+def check_bearing_faults_direct(
+    frequencies: list[float],
+    amplitudes: list[float],
+    bpfo_hz: float | None = None,
+    bpfi_hz: float | None = None,
+    bsf_hz: float | None = None,
+    ftf_hz: float | None = None,
+    n_harmonics: int = 3,
+    tolerance_pct: float = 3.0,
+) -> dict:
+    """
+    Check for bearing faults using known fault frequencies (BPFO, BPFI, BSF, FTF)
+    provided directly by the user — no geometry or database lookup needed.
+
+    Use this when the user already knows the characteristic frequencies from
+    the bearing manufacturer's catalog (e.g., SKF, Schaeffler/FAG, NSK, NTN).
+    Provide the envelope spectrum and whichever frequencies are known.
+
+    Args:
+        frequencies: Envelope spectrum frequency axis (Hz).
+        amplitudes: Envelope spectrum magnitudes.
+        bpfo_hz: Ball Pass Frequency Outer race in Hz (if known).
+        bpfi_hz: Ball Pass Frequency Inner race in Hz (if known).
+        bsf_hz: Ball Spin Frequency in Hz (if known).
+        ftf_hz: Fundamental Train (cage) Frequency in Hz (if known).
+        n_harmonics: Number of harmonics to check (1× through N×).
+        tolerance_pct: Frequency matching tolerance in percent.
+    """
+    results = {}
+    for key, freq_val in [
+        ("bpfo", bpfo_hz), ("bpfi", bpfi_hz),
+        ("bsf", bsf_hz), ("ftf", ftf_hz),
+    ]:
+        if freq_val is not None and freq_val > 0:
+            results[key] = check_bearing_peaks(
+                frequencies, amplitudes,
+                target_freq=freq_val,
+                n_harmonics=n_harmonics,
+                tolerance_pct=tolerance_pct,
+            )
+            results[key]["target_frequency_hz"] = freq_val
+    if not results:
+        return {"error": "No fault frequencies provided. Supply at least one of bpfo_hz, bpfi_hz, bsf_hz, ftf_hz."}
+    return results
+
+
 # ── Fault detection & diagnosis tools ────────────────────────────────────
 
 @mcp.tool()
@@ -316,6 +363,14 @@ def diagnose_vibration(
     sample_rate: float,
     rpm: float,
     bearing_designation: str | None = None,
+    bearing_n_balls: int | None = None,
+    bearing_ball_dia_mm: float | None = None,
+    bearing_pitch_dia_mm: float | None = None,
+    bearing_contact_angle_deg: float = 0.0,
+    bpfo_hz: float | None = None,
+    bpfi_hz: float | None = None,
+    bsf_hz: float | None = None,
+    ftf_hz: float | None = None,
     machine_group: str = "group2",
     machine_description: str = "",
 ) -> dict:
@@ -328,11 +383,26 @@ def diagnose_vibration(
     4. Assess ISO 10816 severity
     5. Generate human-readable report
     
+    Bearing information can be provided in three ways (in priority order):
+    a) Direct fault frequencies: bpfo_hz, bpfi_hz, bsf_hz, ftf_hz
+       (from manufacturer catalog — SKF, Schaeffler, NSK, NTN, etc.)
+    b) Custom geometry: bearing_n_balls, bearing_ball_dia_mm, bearing_pitch_dia_mm,
+       bearing_contact_angle_deg (frequencies computed automatically)
+    c) Database lookup: bearing_designation (e.g., '6205', 'NU206', '7205')
+    
     Args:
         signal: Vibration time-domain signal (acceleration in g or m/s²).
         sample_rate: Sampling frequency in Hz.
         rpm: Shaft speed in RPM.
-        bearing_designation: Optional bearing code (e.g., '6205') for envelope analysis.
+        bearing_designation: Bearing code from built-in database (e.g., '6205').
+        bearing_n_balls: Number of rolling elements (for custom geometry).
+        bearing_ball_dia_mm: Ball/roller diameter in mm (for custom geometry).
+        bearing_pitch_dia_mm: Pitch diameter in mm (for custom geometry).
+        bearing_contact_angle_deg: Contact angle in degrees (default 0).
+        bpfo_hz: Known Ball Pass Frequency Outer race in Hz.
+        bpfi_hz: Known Ball Pass Frequency Inner race in Hz.
+        bsf_hz: Known Ball Spin Frequency in Hz.
+        ftf_hz: Known Fundamental Train (cage) Frequency in Hz.
         machine_group: ISO 10816 group ('group1'..'group4').
         machine_description: Free text describing the machine for the report.
     """
@@ -349,26 +419,48 @@ def diagnose_vibration(
     # Step 2: Shaft features
     features = extract_shaft_features(freqs, mags, shaft_freq, time_signal=sig)
     
-    # Step 3: Envelope analysis for bearings (if bearing info provided)
-    bearing_results = None
-    if bearing_designation:
+    # Step 3: Resolve bearing fault frequencies (3 methods, priority order)
+    fault_freqs: dict[str, float] = {}
+    bearing_info_source = None
+    
+    # Method A: Direct fault frequencies from user
+    direct_any = any(v is not None and v > 0 for v in [bpfo_hz, bpfi_hz, bsf_hz, ftf_hz])
+    if direct_any:
+        bearing_info_source = "user-provided frequencies"
+        if bpfo_hz and bpfo_hz > 0: fault_freqs["bpfo"] = bpfo_hz
+        if bpfi_hz and bpfi_hz > 0: fault_freqs["bpfi"] = bpfi_hz
+        if bsf_hz and bsf_hz > 0: fault_freqs["bsf"] = bsf_hz
+        if ftf_hz and ftf_hz > 0: fault_freqs["ftf"] = ftf_hz
+    # Method B: Custom geometry
+    elif bearing_n_balls and bearing_ball_dia_mm and bearing_pitch_dia_mm:
+        bearing_info_source = "custom geometry"
+        bf = compute_bearing_frequencies(
+            rpm, bearing_n_balls, bearing_ball_dia_mm,
+            bearing_pitch_dia_mm, bearing_contact_angle_deg, "custom",
+        )
+        fault_freqs = {"bpfo": bf.bpfo, "bpfi": bf.bpfi, "bsf": bf.bsf, "ftf": bf.ftf}
+    # Method C: Database lookup
+    elif bearing_designation:
         bearing = get_bearing(bearing_designation)
         if bearing:
+            bearing_info_source = f"database ({bearing.name})"
             bf = compute_bearing_frequencies(
                 rpm, bearing.n_balls, bearing.ball_dia, bearing.pitch_dia,
                 bearing.contact_angle, bearing.name,
             )
-            env = envelope_spectrum(sig, sample_rate)
-            env_freqs = np.array(env["frequencies"])
-            env_mags = np.array(env["envelope_spectrum"])
-            bearing_results = {}
-            for key, freq_val in [
-                ("bpfo", bf.bpfo), ("bpfi", bf.bpfi),
-                ("bsf", bf.bsf), ("ftf", bf.ftf),
-            ]:
-                bearing_results[key] = check_bearing_peaks(
-                    env_freqs, env_mags, freq_val
-                )
+            fault_freqs = {"bpfo": bf.bpfo, "bpfi": bf.bpfi, "bsf": bf.bsf, "ftf": bf.ftf}
+    
+    # Envelope analysis if any fault frequencies are available
+    bearing_results = None
+    if fault_freqs:
+        env = envelope_spectrum(sig, sample_rate)
+        env_freqs = np.array(env["frequencies"])
+        env_mags = np.array(env["envelope_spectrum"])
+        bearing_results = {}
+        for key, freq_val in fault_freqs.items():
+            bearing_results[key] = check_bearing_peaks(
+                env_freqs, env_mags, freq_val
+            )
     
     # Step 4: Classify
     diagnoses = classify_faults(features, bearing_results)
@@ -397,6 +489,7 @@ def diagnose_vibration(
         "bearing_analysis": (
             {k: v for k, v in bearing_results.items()} if bearing_results else None
         ),
+        "bearing_info_source": bearing_info_source,
         "report_markdown": report,
     }
 
@@ -425,6 +518,8 @@ def analysis_capabilities() -> str:
             "BSF (Ball Spin Frequency)",
             "FTF (Fundamental Train / Cage Frequency)",
             "Built-in database of common bearings",
+            "Custom geometry input (n_balls, ball_dia, pitch_dia, contact_angle)",
+            "Direct fault-frequency input (BPFO/BPFI/BSF/FTF in Hz from manufacturer catalogs)",
         ],
         "fault_detection": [
             "Unbalance (1× dominant)",

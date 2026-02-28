@@ -23,7 +23,7 @@
 
 - **Plug & Analyze** — Connect the STWIN.box via USB, ask Claude to check your machine
 - **Full DSP Pipeline** — FFT, PSD, spectrogram (STFT), envelope analysis (Hilbert transform)
-- **Bearing Fault Detection** — BPFO / BPFI / BSF / FTF with built-in bearing database
+- **Bearing Fault Detection** — BPFO / BPFI / BSF / FTF with built-in bearing database, custom geometry, or direct frequency input from manufacturer catalogs (SKF, Schaeffler, NSK, NTN)
 - **Automated Classification** — Unbalance, misalignment, looseness, bearing defects
 - **ISO 10816 Severity** — Standards-based vibration severity assessment
 - **Operator-Friendly Reports** — Generates clear maintenance reports for non-experts
@@ -100,7 +100,7 @@ The system reads vibration data from the STWIN.box MEMS sensors (IIS3DWB, ISM330
 | Server | Purpose | Key Tools |
 |--------|---------|-----------|
 | [stwinbox-sensor-mcp](mcp-servers/stwinbox-sensor-mcp/) | Hardware communication with STWIN.box via USB/Serial | `connect_board`, `configure_sensor`, `acquire_data`, `load_data_from_file` |
-| [vibration-analysis-mcp](mcp-servers/vibration-analysis-mcp/) | Signal processing and fault detection algorithms | `compute_fft_spectrum`, `compute_envelope_spectrum`, `check_bearing_fault_peak`, `diagnose_vibration` |
+| [vibration-analysis-mcp](mcp-servers/vibration-analysis-mcp/) | Signal processing and fault detection algorithms | `compute_fft_spectrum`, `compute_envelope_spectrum`, `check_bearing_fault_peak`, `check_bearing_faults_direct`, `diagnose_vibration` |
 
 ### Claude Skills
 
