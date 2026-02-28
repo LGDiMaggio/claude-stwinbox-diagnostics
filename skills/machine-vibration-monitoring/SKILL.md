@@ -4,18 +4,14 @@ description: |
   WHAT: Connects to the STEVAL-STWINBX1 sensor board to acquire vibration data,
   configure MEMS sensors, and establish baseline vibration profiles for rotating machinery.
   WHEN: Use when the user wants to start monitoring a machine, acquire vibration data from
-  the STWIN.box, configure sensor parameters, or compare current vibration levels against
-  a stored baseline.
-dependencies:
-  mcpServers:
-    - stwinbox-sensor-mcp
-    - vibration-analysis-mcp
-tags:
-  - vibration
-  - condition-monitoring
-  - STWIN.box
-  - MEMS-sensors
-  - industrial
+  the STWIN.box, configure sensor parameters, set up data logging, or compare current
+  vibration levels against a stored baseline. Also use for "connect to sensor",
+  "acquire vibration", "set up monitoring", or "configure STWIN".
+metadata:
+  author: LGDiMaggio
+  version: 2.0.0
+  servers: stwinbox-sensor-mcp, vibration-analysis-mcp
+  tags: vibration, condition-monitoring, STWIN.box, MEMS-sensors, industrial
 ---
 
 # Machine Vibration Monitoring
@@ -31,38 +27,59 @@ The STWIN.box is an industrial-grade sensor node with these relevant sensors:
 - **IIS2ICLX**: High-accuracy 2-axis inclinometer
 - **STTS22H**: Temperature sensor (±0.5 °C accuracy)
 
-The board communicates over USB serial. Two MCP servers handle acquisition and analysis.
+The board runs **FP-SNS-DATALOG2** firmware and communicates over **USB-HID**.
+Two MCP servers handle acquisition and analysis.
+
+## Available MCP Tools
+
+### Sensor Server (stwinbox-sensor-mcp)
+- `datalog2_connect` — Connect via USB-HID
+- `datalog2_start_acquisition(name, description, duration_s)` — Start logging; `duration_s` auto-stops
+- `datalog2_stop_acquisition` — Stop manual-mode acquisition
+- `datalog2_get_device_info` — Device/firmware info
+- `datalog2_list_sensors` — Active sensors with ODR/FS
+- `datalog2_configure_sensor` — Enable/disable, set ODR/FS
+- `datalog2_tag_acquisition` — Add event tags during acquisition
+
+### Analysis Server (vibration-analysis-mcp)
+- `load_signal` — Load data from file or DATALOG2 acquisition folder
+- `compute_fft_spectrum` — FFT magnitude spectrum
+- `find_spectral_peaks` — Detect dominant frequency peaks
+- `assess_vibration_severity` — ISO 10816 severity classification
+- `diagnose_vibration` — Full automated diagnosis pipeline
 
 ## Workflow: First-Time Setup
 
 When a user wants to monitor a new machine, follow these steps:
 
 1. **Connect to the board**
-   - Use `list_serial_ports` to find available COM ports
-   - Use `connect_board` with the correct port and baud rate (default 115200)
-   - Use `get_board_info` to confirm firmware and board identity
+   - `datalog2_connect` — auto-discovers the STWIN.box over USB-HID
+   - `datalog2_get_device_info` — confirm firmware version and board identity
 
 2. **Configure sensors for the application**
-   - Ask the user about the machine type and expected shaft speed (RPM)
-   - Use `recommend_sensor_config` with the shaft RPM to get optimal settings
-   - Or use `list_sensor_presets` and `apply_preset` for quick setup
-   - Common presets:
-     - `wideband_vibration` — IIS3DWB at 26667 Hz, best for bearing analysis
-     - `medium_vibration` — ISM330DHCX at 6667 Hz, good general purpose
-     - `low_speed_vibration` — ISM330DHCX at 833 Hz, for slow machines <120 RPM
+   - `datalog2_list_sensors` — see current sensor configuration (ODR, FS, enabled)
+   - Ask the user about machine type and expected shaft speed (RPM)
+   - `datalog2_configure_sensor` — enable/disable sensors, adjust ODR and full-scale
+   - Typical configurations:
+     - **Wideband vibration**: IIS3DWB at 26667 Hz ODR — best for bearing analysis
+     - **General purpose**: ISM330DHCX at 6667 Hz — good for unbalance/misalignment
 
 3. **Acquire baseline data**
-   - Use `acquire_data` with appropriate duration (recommend ≥2 seconds for good frequency resolution)
-   - Compute the FFT using `compute_fft_spectrum` from the vibration-analysis server
-   - Assess severity with `assess_vibration_severity` (ISO 10816)
-   - Store / present this as the baseline vibration signature
+   - `datalog2_start_acquisition(name="baseline", description="...", duration_s=5)`
+     - The `duration_s` parameter auto-stops the acquisition server-side (no round-trip delay)
+     - Returns the acquisition folder path
+   - `load_signal(file_path="<acquisition_folder>", sensor_name="iis3dwb_acc")`
+     - Sample rate is auto-detected from device config
+   - `compute_fft_spectrum(data_id="...", channel="X")` — compute the FFT
+   - `assess_vibration_severity(data_id="...", machine_group="group1")` — ISO 10816
+   - Present this as the baseline vibration signature
 
 ## Workflow: Routine Monitoring
 
-1. Connect and acquire data (same sensor config as baseline)
-2. Compute FFT and compare spectral peaks against baseline
+1. `datalog2_connect` → `datalog2_start_acquisition(duration_s=5)` → `load_signal`
+2. `compute_fft_spectrum` and `find_spectral_peaks` — compare against baseline
 3. Flag any new peaks or amplitude increases >6 dB (factor of 2)
-4. Report ISO 10816 severity zone
+4. `assess_vibration_severity` — report ISO 10816 severity zone
 
 ## Key Guidance
 
@@ -84,8 +101,10 @@ and recommended ODR (Output Data Rate) settings for different use cases.
 
 **Response approach**:
 1. Ask about the pump type, RPM, and bearing information if known
-2. Connect to the STWIN.box
-3. Apply the recommended sensor preset
-4. Acquire a baseline measurement
-5. Present the FFT spectrum and ISO 10816 assessment
-6. Suggest a monitoring interval
+2. `datalog2_connect` to the STWIN.box
+3. `datalog2_list_sensors` to check current config; adjust if needed
+4. `datalog2_start_acquisition(name="pump_baseline", duration_s=5)`
+5. `load_signal(file_path="<folder>", sensor_name="iis3dwb_acc")`
+6. `compute_fft_spectrum` + `assess_vibration_severity`
+7. Present the FFT spectrum and ISO 10816 assessment
+8. Suggest a monitoring interval (e.g., weekly for Zone A/B, daily for Zone C)

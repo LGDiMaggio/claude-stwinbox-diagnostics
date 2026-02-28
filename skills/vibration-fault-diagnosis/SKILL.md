@@ -6,23 +6,41 @@ description: |
   FFT, envelope analysis, and bearing fault-frequency calculations.
   WHEN: Use when the user has vibration data (live from STWIN.box or from a file) and
   wants to identify the root cause of abnormal vibration, interpret a spectrum, or
-  detect bearing degradation.
-dependencies:
-  mcpServers:
-    - vibration-analysis-mcp
-    - stwinbox-sensor-mcp
-tags:
-  - fault-diagnosis
-  - vibration-analysis
-  - bearing-faults
-  - FFT
-  - envelope-analysis
+  detect bearing degradation. Also use when asked to "diagnose vibration", "find
+  fault", "analyze spectrum", or "check bearing health".
+metadata:
+  author: LGDiMaggio
+  version: 2.0.0
+  servers: vibration-analysis-mcp, stwinbox-sensor-mcp
+  tags: fault-diagnosis, vibration-analysis, bearing-faults, FFT, envelope-analysis
 ---
 
 # Vibration Fault Diagnosis
 
 You are a vibration analysis expert helping the user diagnose faults in rotating
 machinery based on vibration data from the STWIN.box or loaded from files.
+
+## Available MCP Tools
+
+### Sensor Server (stwinbox-sensor-mcp)
+- `datalog2_connect` — Connect to STWIN.box via USB-HID
+- `datalog2_start_acquisition(duration_s=N)` — Acquire for exactly N seconds (server-side timer)
+- `datalog2_stop_acquisition` — Stop manual-mode acquisition
+- `datalog2_get_device_info` — Device and firmware info
+- `datalog2_list_sensors` — List active sensors with ODR/FS
+- `datalog2_configure_sensor` — Enable/disable sensors, set ODR/FS
+
+### Analysis Server (vibration-analysis-mcp)
+- `load_signal` — Load data from CSV/DAT file **or** DATALOG2 acquisition folder
+- `compute_fft_spectrum` — FFT magnitude spectrum
+- `find_spectral_peaks` — Detect dominant frequency peaks
+- `compute_power_spectral_density` — PSD via Welch method
+- `compute_envelope_spectrum` — Hilbert envelope for bearing analysis
+- `check_bearing_fault_peak` — Check for a specific bearing fault frequency in spectrum
+- `calculate_bearing_frequencies` — Compute BPFO/BPFI/BSF/FTF from bearing geometry
+- `lookup_bearing_and_compute` — Lookup bearing by designation + compute frequencies
+- `assess_vibration_severity` — ISO 10816 severity classification
+- `diagnose_vibration` — Full automated diagnosis pipeline (**RPM is optional**)
 
 ## Diagnostic Methodology
 
@@ -31,15 +49,24 @@ Always follow this structured diagnostic workflow:
 ### Step 1 — Gather Context
 Ask or determine:
 - **Machine type** (pump, motor, fan, compressor, etc.)
-- **Shaft speed** in RPM (critical for frequency identification)
+- **Shaft speed** in RPM — **ask the operator; NEVER guess or invent a value**
 - **Bearing type** if known (designation like 6205, 6306, etc.)
 - **Symptom description** (noise, temperature, vibration increase)
 - **Machine group** for ISO 10816 (group1–group4)
 
 ### Step 2 — Acquire or Load Data
-- If live: use `acquire_data` from the stwinbox-sensor-mcp
-- If file: use `load_data_from_file` or accept data pasted by user
-- Ensure sample rate and duration are known
+
+**Option A — Live acquisition from STWIN.box (preferred):**
+1. `datalog2_connect` to the board
+2. `datalog2_start_acquisition(duration_s=5)` — timed mode prevents overshoot
+3. `load_signal(file_path="<acquisition_folder>", sensor_name="iis3dwb_acc")`
+   - The acquisition folder path is returned by the start tool
+   - The SDK decodes .dat binary format automatically
+   - Sample rate is auto-detected from device config
+
+**Option B — Load from file:**
+- `load_signal(file_path="path/to/data.csv", sample_rate=26667)`
+- For DATALOG2 folders: `load_signal(file_path="path/to/acquisition_folder")`
 
 ### Step 3 — Spectral Analysis
 1. **Compute FFT** with `compute_fft_spectrum`
@@ -64,7 +91,7 @@ Use the fault-signature reference table below:
 1. **Calculate bearing frequencies**: use `calculate_bearing_frequencies` or `lookup_bearing_and_compute`
 2. **Envelope analysis**: use `compute_envelope_spectrum`
    - Band-pass around a resonance (typically 2–5 kHz for small bearings)
-3. **Check for BPFO/BPFI/BSF/FTF**: use `check_bearing_fault_peak`
+3. **Check for BPFO/BPFI/BSF/FTF**: use `check_bearing_fault_peak` for each frequency
 4. **Interpret**:
    - **BPFO** (outer race) — most common, modulation at cage frequency
    - **BPFI** (inner race) — modulated at shaft frequency
@@ -87,9 +114,12 @@ Present findings with:
 
 ## Quick Diagnosis Tool
 
-For a fully automated diagnosis, use the `diagnose_vibration` tool which
-runs the complete pipeline in one call. Use the multi-step approach above
-when more control or explanation is needed.
+For a fully automated diagnosis, use `diagnose_vibration`:
+- **With RPM**: full shaft-frequency features + bearing analysis + ISO classification
+- **Without RPM**: basic statistics only (RMS, kurtosis, crest factor) + ISO severity
+  — do NOT invent an RPM value; ask the user if it matters
+
+Use the multi-step approach above when more control or explanation is needed.
 
 ## Important Caveats
 
@@ -100,6 +130,7 @@ when more control or explanation is needed.
 - Electrical faults (2× line frequency, rotor bar pass) can mimic mechanical faults
 - Always recommend **verification** through complementary methods (temperature,
   acoustic, visual inspection) before major maintenance decisions
+- **NEVER hallucinate RPM** — if the user hasn't provided it, ask or omit it
 
 ## Fault Classification Script
 

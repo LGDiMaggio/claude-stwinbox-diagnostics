@@ -4,16 +4,15 @@ description: |
   WHAT: Generates structured diagnostic reports for machine operators and maintenance
   technicians, summarizing vibration analysis results with severity levels, fault
   findings, and actionable maintenance recommendations in clear, non-technical language.
-  WHEN: Use when the user asks to create a report, generate a maintenance summary, produce
-  documentation of a vibration measurement, or communicate findings to plant personnel.
-dependencies:
-  mcpServers:
-    - vibration-analysis-mcp
-tags:
-  - report-generation
-  - maintenance
-  - documentation
-  - operator-friendly
+  WHEN: Use when the user asks to create a report, generate a maintenance summary,
+  produce documentation of a vibration measurement, or communicate findings to plant
+  personnel. Also use for "write report", "summarize results", "generate PDF",
+  or "create maintenance document".
+metadata:
+  author: LGDiMaggio
+  version: 2.0.0
+  servers: vibration-analysis-mcp
+  tags: report-generation, maintenance, documentation, operator-friendly
 ---
 
 # Operator Diagnostic Report
@@ -21,6 +20,15 @@ tags:
 You are generating diagnostic reports for maintenance teams and machine operators.
 Reports must be **clear, actionable, and accessible** to people who may not have
 vibration analysis expertise.
+
+## Tools Used for Report Data
+
+The report is generated from the output of these analysis tools:
+- `diagnose_vibration` — Run the full automated diagnosis first (RPM is optional;
+  if unknown, the report will note that shaft-frequency analysis was not performed)
+- `assess_vibration_severity` — ISO 10816 zone classification for the severity section
+- `compute_fft_spectrum` / `find_spectral_peaks` — For spectral evidence in findings
+- `load_signal` — To reference the measurement data source
 
 ## Report Structure
 
@@ -38,9 +46,10 @@ Always follow this template structure:
 - Urgency level
 
 ### 3. Measurement Details
-- Sensor used and mounting position
-- Sample rate and duration
-- Machine operating conditions (RPM, load)
+- Sensor used and mounting position (e.g., IIS3DWB accelerometer, magnetic mount)
+- Sample rate and duration (auto-detected from DATALOG2 device config)
+- Machine operating conditions (RPM if known, load state)
+- Data source: DATALOG2 acquisition folder or imported file
 
 ### 4. Overall Vibration Severity
 - ISO 10816 zone (A/B/C/D) with color indicator
