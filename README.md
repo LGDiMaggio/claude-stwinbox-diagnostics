@@ -145,31 +145,55 @@ cd ../..
 ### 2. (Optional) Install FP-SNS-DATALOG2 SDK
 
 For programmatic acquisition control (start/stop logging via USB, no need to
-press buttons or extract the SD card), install the STDATALOG-PYSDK:
+press buttons or extract the SD card), install the STDATALOG-PYSDK **into the
+sensor server's virtual environment**:
 
 ```bash
 # Clone the SDK (packages are not on PyPI)
 git clone --recursive https://github.com/STMicroelectronics/stdatalog-pysdk.git
 
-# Install the PnPL protocol layer + core SDK
-pip install stdatalog-pysdk/stdatalog_pnpl/
-pip install stdatalog-pysdk/stdatalog_core/
+# Install into the sensor server venv
+cd mcp-servers/stwinbox-sensor-mcp
+uv pip install ../../stdatalog-pysdk/stdatalog_pnpl/
+uv pip install ../../stdatalog-pysdk/stdatalog_core/
+cd ../..
 ```
 
 This enables the `datalog2_*` tools in the sensor server. Without the SDK
 installed, those tools gracefully report that it is unavailable while all
 other tools continue to work normally.
 
+> **Note:** When the SDK is installed, the sensor server must be launched using
+> the venv's Python directly (not `uv run`, which would re-sync and remove
+> the SDK). See the config example below.
+
 ### 3. Configure Claude Desktop
 
 Add to your `claude_desktop_config.json`:
 
+**Without SDK** (SD card workflow only):
 ```json
 {
   "mcpServers": {
     "stwinbox-sensor": {
       "command": "uv",
       "args": ["--directory", "/ABSOLUTE/PATH/TO/mcp-servers/stwinbox-sensor-mcp", "run", "stwinbox_sensor_mcp"]
+    },
+    "vibration-analysis": {
+      "command": "uv",
+      "args": ["--directory", "/ABSOLUTE/PATH/TO/mcp-servers/vibration-analysis-mcp", "run", "vibration_analysis_mcp"]
+    }
+  }
+}
+```
+
+**With SDK installed** (USB-HID live acquisition):
+```json
+{
+  "mcpServers": {
+    "stwinbox-sensor": {
+      "command": "/ABSOLUTE/PATH/TO/mcp-servers/stwinbox-sensor-mcp/.venv/Scripts/python.exe",
+      "args": ["-m", "stwinbox_sensor_mcp"]
     },
     "vibration-analysis": {
       "command": "uv",

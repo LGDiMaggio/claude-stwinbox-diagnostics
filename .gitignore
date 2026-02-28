@@ -37,3 +37,9 @@ examples/sample_data/*.json
 # uv lockfile is useful, keep it
 # But ignore local tool cache
 .uv/
+
+# STDATALOG-PYSDK clone (external dependency, not part of this repo)
+stdatalog-pysdk/
+
+# Test scripts (verification only, not shipped)
+test_all_tools.py
