@@ -266,9 +266,23 @@ class DataStore:
         data = df.to_numpy(dtype=np.float64)
 
         # Read ODR from device config for sample rate
-        comp_status = component if isinstance(component, dict) else {}
-        odr = comp_status.get("measodr") or comp_status.get("odr", 0)
-        sample_rate = float(odr) if odr > 0 else 26667.0  # IIS3DWB default
+        # component is dict like {"iis3dwb_acc": {status_dict}}
+        sample_rate = 0.0
+        try:
+            odr = HSDatalog.get_sensor_measodr(hsd, component)
+            if odr and float(odr) > 0:
+                sample_rate = float(odr)
+        except Exception:
+            pass
+        if sample_rate <= 0:
+            try:
+                odr = HSDatalog.get_sensor_odr(hsd, component)
+                if odr and float(odr) > 0:
+                    sample_rate = float(odr)
+            except Exception:
+                pass
+        if sample_rate <= 0:
+            sample_rate = 26667.0  # IIS3DWB default fallback
 
         meta = {
             "source_folder": acq_path.name,
