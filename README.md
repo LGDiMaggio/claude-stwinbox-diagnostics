@@ -22,12 +22,16 @@
 ## Key Features
 
 - **Plug & Analyze** — Connect the STWIN.box via USB, ask Claude to check your machine
-- **Full DSP Pipeline** — FFT, PSD, spectrogram, envelope (Hilbert), order tracking
+- **Full DSP Pipeline** — FFT, PSD, spectrogram (STFT), envelope analysis (Hilbert transform)
 - **Bearing Fault Detection** — BPFO / BPFI / BSF / FTF with built-in bearing database
 - **Automated Classification** — Unbalance, misalignment, looseness, bearing defects
 - **ISO 10816 Severity** — Standards-based vibration severity assessment
 - **Operator-Friendly Reports** — Generates clear maintenance reports for non-experts
 - **Extensible Architecture** — Add sensors, fault types, or analysis methods easily
+
+<p align="center">
+  <img src="docs/images/claude-stwinbox-diagnostics.png" alt="Claude STWIN.box Diagnostics — System Overview" width="800">
+</p>
 
 ## Use Cases
 
@@ -46,7 +50,7 @@ This project connects the **STEVAL-STWINBX1** (SensorTile Wireless Industrial No
 - **2 MCP Servers** for hardware communication and signal analysis
 - **3 Claude Skills** for intelligent diagnostics workflow
 
-The system reads vibration data from the STWIN.box MEMS sensors (IIS3DWB, ISM330DHCX), performs frequency-domain analysis (FFT, envelope analysis, order tracking), detects common rotating machinery faults (bearing defects, unbalance, misalignment, mechanical looseness), and enables conversational diagnostics with the operator.
+The system reads vibration data from the STWIN.box MEMS sensors (IIS3DWB, ISM330DHCX), performs frequency-domain analysis (FFT, PSD, envelope analysis), detects common rotating machinery faults (bearing defects, unbalance, misalignment, mechanical looseness), and enables conversational diagnostics with the operator.
 
 ## Architecture
 
@@ -73,7 +77,7 @@ The system reads vibration data from the STWIN.box MEMS sensors (IIS3DWB, ISM330
    │                 │              │                 │
    │  • USB/Serial   │              │  • FFT          │
    │  • Sensor cfg   │              │  • Envelope     │
-   │  • Data acquire │              │  • Order track  │
+   │  • Data acquire │              │  • ISO 10816   │
    │  • Stream ctrl  │              │  • Fault detect │
    └────────┬────────┘              └─────────────────┘
             │
@@ -95,8 +99,8 @@ The system reads vibration data from the STWIN.box MEMS sensors (IIS3DWB, ISM330
 
 | Server | Purpose | Key Tools |
 |--------|---------|-----------|
-| [stwinbox-sensor-mcp](mcp-servers/stwinbox-sensor-mcp/) | Hardware communication with STWIN.box via USB/Serial | `connect_board`, `configure_sensor`, `acquire_data`, `stream_start/stop` |
-| [vibration-analysis-mcp](mcp-servers/vibration-analysis-mcp/) | Signal processing and fault detection algorithms | `compute_fft`, `envelope_analysis`, `detect_bearing_fault`, `compute_order_spectrum` |
+| [stwinbox-sensor-mcp](mcp-servers/stwinbox-sensor-mcp/) | Hardware communication with STWIN.box via USB/Serial | `connect_board`, `configure_sensor`, `acquire_data`, `load_data_from_file` |
+| [vibration-analysis-mcp](mcp-servers/vibration-analysis-mcp/) | Signal processing and fault detection algorithms | `compute_fft_spectrum`, `compute_envelope_spectrum`, `check_bearing_fault_peak`, `diagnose_vibration` |
 
 ### Claude Skills
 
@@ -188,7 +192,6 @@ Claude: [Uses operator-diagnostic-report skill]
 | **Unbalance** | FFT | 1× RPM dominant |
 | **Misalignment** | FFT | 1×, 2× RPM |
 | **Mechanical Looseness** | FFT | Multiple harmonics of RPM |
-| **Gear Mesh** | FFT | GMF ± sidebands |
 
 ## STWIN.box Sensors Used
 
@@ -245,8 +248,6 @@ claude-stwinbox-diagnostics/
 │   │       └── classify_fault.py
 │   └── operator-diagnostic-report/    # Skill 3: Report generation
 │       ├── SKILL.md
-│       ├── references/
-│       │   └── report-guidelines.md
 │       └── assets/
 │           └── report-template.md
 ├── docs/
