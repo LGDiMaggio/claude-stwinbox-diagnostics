@@ -147,6 +147,11 @@ class DataStore:
         """
         Load a .csv or .dat file directly into the store.
         Returns (data_id, summary_dict).
+
+        For DATALOG2 .dat files: pass the **acquisition folder** (the
+        directory containing device_config.json and the .dat files) to
+        load_from_datalog2_folder() instead — it uses the SDK to decode
+        the complex binary format correctly.
         """
         from pathlib import Path
         p = Path(file_path)
@@ -168,6 +173,111 @@ class DataStore:
         }
         if data_id is None:
             data_id = p.stem.replace(" ", "_")
+
+        self.put(data_id, data, sample_rate, meta)
+        entry = self._entries[data_id]
+        return data_id, entry.summary()
+
+    def load_from_datalog2_folder(
+        self,
+        acquisition_folder: str,
+        sensor_name: str = "iis3dwb_acc",
+        start_time: float = 0,
+        end_time: float = -1,
+        data_id: str | None = None,
+    ) -> tuple[str, dict]:
+        """
+        Load data from a DATALOG2 acquisition folder using the STDATALOG SDK.
+
+        The acquisition folder is the directory created by FP-SNS-DATALOG2
+        (e.g., ``20260228_23_52_30/``) and must contain ``device_config.json``
+        plus the ``.dat`` sensor files.
+
+        This method properly decodes the interleaved binary format (with
+        timestamps and protocol headers) — unlike the naive int16
+        approach in ``load_from_file``.
+
+        Args:
+            acquisition_folder: Path to the DATALOG2 acquisition directory.
+            sensor_name: Component name (e.g., 'iis3dwb_acc', 'ism330dhcx_acc').
+            start_time: Start time in seconds (default: 0 = beginning).
+            end_time: End time in seconds (default: -1 = entire file).
+            data_id: Optional human-readable ID; auto-generated if omitted.
+
+        Returns:
+            (data_id, summary_dict)
+        """
+        from pathlib import Path
+        acq_path = Path(acquisition_folder)
+
+        # Verify the folder looks like a DATALOG2 acquisition
+        config_file = acq_path / "device_config.json"
+        if not config_file.exists():
+            raise ValueError(
+                f"Not a valid DATALOG2 acquisition folder: "
+                f"'{acquisition_folder}' (missing device_config.json)."
+            )
+
+        try:
+            from stdatalog_core.HSD.HSDatalog import HSDatalog
+        except ImportError:
+            raise ImportError(
+                "STDATALOG-PYSDK is required to read DATALOG2 .dat files. "
+                "Install it from https://github.com/STMicroelectronics/stdatalog-pysdk"
+            )
+
+        # Create HSD instance
+        hsd_factory = HSDatalog()
+        hsd = hsd_factory.create_hsd(str(acq_path))
+        hsd.enable_timestamp_recovery(True)
+
+        # Find the component
+        component = HSDatalog.get_component(hsd, sensor_name)
+        if component is None:
+            # List available components to help the user
+            all_comps = HSDatalog.get_all_components(hsd, only_active=True)
+            available = [c.get("name", str(c)) if isinstance(c, dict) else str(c)
+                         for c in (all_comps or [])]
+            raise ValueError(
+                f"Sensor '{sensor_name}' not found in acquisition. "
+                f"Available components: {available}"
+            )
+
+        # Extract data as DataFrame(s)
+        df_list = HSDatalog.get_dataframe(
+            hsd, component,
+            start_time=start_time, end_time=end_time,
+        )
+        if not df_list:
+            raise ValueError(
+                f"No data returned for sensor '{sensor_name}' in "
+                f"'{acquisition_folder}'."
+            )
+
+        # Concatenate all chunks (for large files)
+        import pandas as pd
+        df = pd.concat(df_list, ignore_index=True)
+
+        # Drop timestamp column if present (usually first column named 'Time')
+        time_cols = [c for c in df.columns if "time" in c.lower() or "timestamp" in c.lower()]
+        if time_cols:
+            df = df.drop(columns=time_cols)
+
+        data = df.to_numpy(dtype=np.float64)
+
+        # Read ODR from device config for sample rate
+        comp_status = component if isinstance(component, dict) else {}
+        odr = comp_status.get("measodr") or comp_status.get("odr", 0)
+        sample_rate = float(odr) if odr > 0 else 26667.0  # IIS3DWB default
+
+        meta = {
+            "source_folder": acq_path.name,
+            "sensor": sensor_name,
+            "datalog2": True,
+            "odr_hz": sample_rate,
+        }
+        if data_id is None:
+            data_id = f"{acq_path.name}_{sensor_name}".replace(" ", "_")
 
         self.put(data_id, data, sample_rate, meta)
         entry = self._entries[data_id]

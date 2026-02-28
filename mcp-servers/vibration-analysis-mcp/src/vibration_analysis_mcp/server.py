@@ -104,24 +104,58 @@ def _compact_spectrum(freqs: np.ndarray, mags: np.ndarray, top_n: int = 20) -> d
 @mcp.tool()
 def load_signal(
     file_path: str,
-    sample_rate: float,
-    sensor_name: str = "iis3dwb",
+    sample_rate: float = 0,
+    sensor_name: str = "iis3dwb_acc",
     axes: int = 3,
     data_id: str | None = None,
 ) -> dict:
     """
-    Load a vibration data file (.csv or .dat) into the server-side store.
+    Load a vibration signal into the server-side store.
     Returns a data_id and compact summary — the raw signal never enters the
     conversation context.
 
+    Supports two modes:
+
+    **Mode 1 — DATALOG2 acquisition folder** (recommended after datalog2
+    acquisition):
+      Pass the acquisition folder path (e.g.,
+      ``C:/Users/…/STWIN_acquisitions/20260228_23_52_30``). The folder must
+      contain ``device_config.json``. The SDK decodes the .dat binary format
+      automatically. ``sample_rate`` is read from the device config and can
+      be omitted (set to 0).
+
+    **Mode 2 — Single file** (.csv or .dat):
+      Pass the file path directly. ``sample_rate`` is required.
+
     Args:
-        file_path: Absolute path to the data file.
-        sample_rate: Sampling frequency in Hz (e.g., 26667 for IIS3DWB).
-        sensor_name: Sensor that produced the data ('iis3dwb', 'ism330dhcx', …).
-        axes: Number of axes in the data (3 for accelerometer, 1 for mic).
+        file_path: Path to a .csv/.dat file OR a DATALOG2 acquisition folder.
+        sample_rate: Sampling frequency in Hz. Required for single files;
+            auto-detected (can be 0) for DATALOG2 folders.
+        sensor_name: Sensor/component name (e.g., 'iis3dwb_acc', 'ism330dhcx_acc').
+        axes: Number of axes (3 for accelerometer, 1 for mic). Ignored for
+            DATALOG2 folders (auto-detected).
         data_id: Optional human-readable ID. Auto-generated if omitted.
     """
+    from pathlib import Path
+    p = Path(file_path)
+
     try:
+        # Detect DATALOG2 acquisition folder
+        if p.is_dir() and (p / "device_config.json").exists():
+            did, summary = store.load_from_datalog2_folder(
+                str(p), sensor_name=sensor_name, data_id=data_id,
+            )
+            return {"data_id": did, **summary}
+
+        # Single file mode — sample_rate is required
+        if sample_rate <= 0:
+            return {
+                "error": (
+                    f"sample_rate is required for single-file loading "
+                    f"(got {sample_rate}). For DATALOG2 acquisitions, pass the "
+                    f"acquisition folder path instead of a .dat file."
+                )
+            }
         did, summary = store.load_from_file(
             file_path, sample_rate, sensor_name, axes, data_id,
         )
@@ -614,7 +648,7 @@ def assess_vibration_severity(
 
 @mcp.tool()
 def diagnose_vibration(
-    rpm: float,
+    rpm: float | None = None,
     data_id: str | None = None,
     channel: str = "X",
     signal: list[float] | None = None,
@@ -638,11 +672,16 @@ def diagnose_vibration(
     """
     Full automated vibration diagnosis pipeline.
 
-    1. Compute FFT and extract shaft-frequency features
+    1. Compute FFT and extract shaft-frequency features (requires rpm)
     2. Optionally perform envelope analysis for bearing faults
     3. Classify faults (unbalance, misalignment, looseness, bearing)
     4. Assess ISO 10816 severity
     5. Generate human-readable report
+
+    **IMPORTANT**: rpm is optional but strongly recommended. Without rpm the
+    tool cannot perform shaft-frequency analysis (1×, 2×, etc.) and will
+    only report basic signal statistics (RMS, kurtosis, crest factor).
+    Do NOT guess or invent an RPM value — ask the operator.
 
     Signal input: provide **data_id** (preferred) to reference a signal in the
     store, or **signal** + **sample_rate** for a small ad-hoc list.
@@ -654,7 +693,7 @@ def diagnose_vibration(
     d) Database lookup: bearing_designation (e.g., '6205', 'NU206')
 
     Args:
-        rpm: Shaft speed in RPM.
+        rpm: Shaft speed in RPM. Optional — omit if unknown (see note above).
         data_id: Reference to a stored signal (from load_signal).
         channel: Axis to analyse when using data_id ('X','Y','Z').
         signal: Vibration samples (use data_id for large signals).
@@ -680,13 +719,60 @@ def diagnose_vibration(
     except ValueError as e:
         return {"error": str(e)}
 
-    shaft_freq = rpm / 60.0
-    
     # Step 1: FFT
     fft_result = compute_fft(sig, sr)
     freqs = np.array(fft_result["frequencies"])
     mags = np.array(fft_result["magnitude"])
-    
+
+    # Basic time-domain statistics (always available)
+    ts_rms = float(np.sqrt(np.mean(sig**2)))
+    ts_peak = float(np.max(np.abs(sig)))
+    ts_crest = ts_peak / ts_rms if ts_rms > 0 else 0.0
+    ts_mean = float(np.mean(sig))
+    ts_std = float(np.std(sig))
+    if ts_std > 0:
+        ts_kurtosis = float(np.mean(((sig - ts_mean) / ts_std) ** 4))
+    else:
+        ts_kurtosis = 0.0
+
+    # If RPM is not provided, skip shaft-frequency analysis
+    if rpm is None or rpm <= 0:
+        return {
+            "warning": (
+                "RPM not provided — shaft-frequency analysis (1×, 2×, etc.) "
+                "was skipped. Only basic signal statistics are reported. "
+                "To enable full diagnosis, ask the operator for the shaft RPM."
+            ),
+            "signal_statistics": {
+                "rms_g": round(ts_rms, 6),
+                "peak_g": round(ts_peak, 6),
+                "crest_factor": round(ts_crest, 2),
+                "kurtosis": round(ts_kurtosis, 2),
+                "duration_s": round(len(sig) / sr, 4),
+                "sample_rate_hz": sr,
+            },
+            "fft_summary": _compact_spectrum(freqs, mags, top_n=20),
+            "iso_10816": assess_iso10816(ts_rms, machine_group),
+            "diagnoses": [],
+            "shaft_features": None,
+            "bearing_analysis": None,
+            "bearing_info_source": None,
+            "report_markdown": (
+                "## Vibration Analysis (RPM unknown)\n\n"
+                f"| Metric | Value |\n|---|---|\n"
+                f"| RMS | {ts_rms:.4f} g |\n"
+                f"| Peak | {ts_peak:.4f} g |\n"
+                f"| Crest Factor | {ts_crest:.1f} |\n"
+                f"| Kurtosis | {ts_kurtosis:.1f} |\n\n"
+                "**Note:** Shaft speed (RPM) was not provided. "
+                "Fault classification (unbalance, misalignment, looseness) "
+                "requires knowledge of the shaft frequency. "
+                "Please provide the RPM for a complete diagnosis."
+            ),
+        }
+
+    shaft_freq = rpm / 60.0
+
     # Step 2: Shaft features
     features = extract_shaft_features(freqs, mags, shaft_freq, time_signal=sig)
     
