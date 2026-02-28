@@ -27,6 +27,16 @@ dependencies = [
     "numpy>=1.24.0",
 ]
 
+[project.optional-dependencies]
+# STDATALOG-PYSDK packages are NOT on PyPI — install from source:
+#   git clone --recursive https://github.com/STMicroelectronics/stdatalog-pysdk.git
+#   pip install stdatalog-pysdk/stdatalog_pnpl/
+#   pip install stdatalog-pysdk/stdatalog_core/
+datalog2 = [
+    "stdatalog-core>=1.3.0",
+    "stdatalog-pnpl>=1.3.0",
+]
+
 [project.urls]
 Homepage = "https://github.com/LGDiMaggio/claude-stwinbox-diagnostics"
 Repository = "https://github.com/LGDiMaggio/claude-stwinbox-diagnostics"

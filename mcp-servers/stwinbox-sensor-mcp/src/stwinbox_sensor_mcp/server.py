@@ -17,6 +17,17 @@ Tools:
 - recommend_sensor_config: Get config recommendations for a fault type
 - acquire_data: Acquire samples (placeholder for real firmware integration)
 - load_data_from_file: Load previously acquired data from .dat/.csv files
+
+FP-SNS-DATALOG2 tools (require stdatalog_core + stdatalog_pnpl):
+- datalog2_status: Check SDK installation and connection status
+- datalog2_connect: Connect via USB-HID / PnPL protocol
+- datalog2_disconnect: Disconnect from board
+- datalog2_get_device_info: Firmware version, device identity
+- datalog2_list_sensors: List PnPL sensor components
+- datalog2_configure_sensor: Enable/disable, set ODR/FS via PnPL
+- datalog2_start_acquisition: Start high-speed logging to SD card
+- datalog2_stop_acquisition: Stop logging, save config files
+- datalog2_set_tag: Label time segments during acquisition
 """
 
 from __future__ import annotations
@@ -32,6 +43,7 @@ from mcp.server.fastmcp import FastMCP
 
 from .serial_comm import board, list_available_ports, KNOWN_SENSORS
 from .sensor_config import get_preset, list_presets, recommend_config
+from .datalog2_comm import datalog2, sdk_available, sdk_error_message
 
 # Configure logging to stderr (required for STDIO MCP servers)
 logging.basicConfig(
@@ -384,3 +396,169 @@ def load_data_from_file(
 def sensor_catalog() -> str:
     """Complete catalog of STEVAL-STWINBX1 onboard sensors."""
     return json.dumps(KNOWN_SENSORS, indent=2)
+
+
+# ===========================================================================
+# FP-SNS-DATALOG2 Tools  (via STDATALOG-PYSDK / HSDLink_v2)
+# ===========================================================================
+# These tools give Claude *programmatic* control of the STWIN.box high-speed
+# datalogger through USB-HID, removing the need to manually press the USR
+# button or physically extract the SD card.  They require the optional
+# stdatalog_core and stdatalog_pnpl packages (see datalog2_comm.py).
+# ===========================================================================
+
+@mcp.tool()
+def datalog2_status() -> str:
+    """Check whether the STDATALOG-PYSDK is installed and a board is connected.
+
+    Use this first to verify that the FP-SNS-DATALOG2 tooling is available
+    before trying to start an acquisition.
+    """
+    info: dict = {
+        "sdk_installed": sdk_available(),
+    }
+    if not sdk_available():
+        info["sdk_error"] = sdk_error_message()
+        info["install_instructions"] = (
+            "git clone --recursive https://github.com/STMicroelectronics/stdatalog-pysdk.git && "
+            "pip install stdatalog-pysdk/stdatalog_pnpl/ && "
+            "pip install stdatalog-pysdk/stdatalog_core/"
+        )
+    info["board_connected"] = datalog2.is_connected
+    if datalog2.is_connected:
+        info["logging_active"] = datalog2._logging_active
+    return json.dumps(info, indent=2)
+
+
+@mcp.tool()
+def datalog2_connect(
+    acquisition_folder: Optional[str] = None,
+    com_type: str = "st_hsd",
+) -> str:
+    """Connect to the STWIN.box via USB-HID using the FP-SNS-DATALOG2 protocol.
+
+    This uses the PnPL (Plug-and-Play Language) protocol over USB-HID,
+    which is faster and more reliable than plain serial for high-speed
+    sensor data acquisition.
+
+    Args:
+        acquisition_folder: Where to save acquisitions (default: ~/STWIN_acquisitions)
+        com_type: Communication type — 'st_hsd' (USB-HID, default) or
+                  'st_serial_datalog' (serial/UART fallback)
+    """
+    result = datalog2.connect(
+        acquisition_folder=acquisition_folder,
+        dev_com_type=com_type,
+    )
+    return json.dumps(result, indent=2)
+
+
+@mcp.tool()
+def datalog2_disconnect() -> str:
+    """Disconnect from the STWIN.box (stops any running acquisition first)."""
+    result = datalog2.disconnect()
+    return json.dumps(result, indent=2)
+
+
+@mcp.tool()
+def datalog2_get_device_info() -> str:
+    """Get firmware version, device identity, and acquisition status.
+
+    Returns firmware name/version, device info, current acquisition
+    folder, and whether logging is active.
+    """
+    result = datalog2.get_device_info()
+    return json.dumps(result, indent=2)
+
+
+@mcp.tool()
+def datalog2_list_sensors(only_active: bool = False) -> str:
+    """List all sensor components reported by the FP-SNS-DATALOG2 firmware.
+
+    Each sensor has a PnPL component name (e.g. 'iis3dwb_acc',
+    'ism330dhcx_acc', 'imp23absu_mic') together with its enabled state,
+    ODR index, and full-scale index.
+
+    Args:
+        only_active: If True, list only sensors that are currently enabled
+    """
+    result = datalog2.get_sensors(only_active=only_active)
+    return json.dumps(result, indent=2)
+
+
+@mcp.tool()
+def datalog2_configure_sensor(
+    sensor_name: str,
+    enable: Optional[bool] = None,
+    odr: Optional[int] = None,
+    fs: Optional[int] = None,
+) -> str:
+    """Configure a sensor component via PnPL.
+
+    Use datalog2_list_sensors first to see available component names
+    and their current settings.
+
+    Args:
+        sensor_name: PnPL component name (e.g. 'iis3dwb_acc')
+        enable: True to enable, False to disable
+        odr: ODR enum index (device-specific — see DTDL model)
+        fs: Full-scale enum index
+    """
+    result = datalog2.configure_sensor(
+        sensor_name=sensor_name,
+        enable=enable,
+        odr=odr,
+        fs=fs,
+    )
+    return json.dumps(result, indent=2)
+
+
+@mcp.tool()
+def datalog2_start_acquisition(
+    name: Optional[str] = None,
+    description: Optional[str] = None,
+) -> str:
+    """Start high-speed data logging to the STWIN.box SD card.
+
+    The board must be connected (datalog2_connect) and an SD card must be
+    inserted.  Sensor data is streamed over USB-HID and saved as .dat
+    files in the acquisition folder.
+
+    Args:
+        name: Human-readable acquisition name (saved in acquisition_info.json)
+        description: Optional description
+    """
+    result = datalog2.start_acquisition(name=name, description=description)
+    return json.dumps(result, indent=2)
+
+
+@mcp.tool()
+def datalog2_stop_acquisition() -> str:
+    """Stop the running acquisition and save configuration files.
+
+    Stops all sensor streaming threads, flushes data files, and writes
+    device_config.json and acquisition_info.json.  Returns the list of
+    generated files.
+
+    After stopping, use load_data_from_file with the .dat path to load
+    the data, then pass the file_path to the vibration-analysis server's
+    load_signal tool.
+    """
+    result = datalog2.stop_acquisition()
+    return json.dumps(result, indent=2)
+
+
+@mcp.tool()
+def datalog2_set_tag(tag_id: int, on: bool) -> str:
+    """Set or unset a software tag during acquisition.
+
+    Tags label time segments in the recorded data (e.g. "normal",
+    "abnormal").  Configure tag labels before starting acquisition
+    using the tag_info component.
+
+    Args:
+        tag_id: Tag class index (0-4 typically)
+        on: True to start the tag, False to end it
+    """
+    result = datalog2.set_sw_tag(tag_id=tag_id, on=on)
+    return json.dumps(result, indent=2)

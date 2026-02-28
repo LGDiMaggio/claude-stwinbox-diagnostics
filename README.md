@@ -79,11 +79,13 @@ The system reads vibration data from the STWIN.box MEMS sensors (IIS3DWB, ISM330
    │  • Sensor cfg   │              │  • Envelope     │
    │  • Data acquire │              │  • ISO 10816   │
    │  • Stream ctrl  │              │  • Fault detect │
+   │  • DATALOG2 ctl │              │                 │
    └────────┬────────┘              └─────────────────┘
             │
    ┌────────▼────────┐
    │  STEVAL-        │
    │  STWINBX1       │
+   │  (USB-HID/PnPL) │
    │                 │
    │  IIS3DWB (vib)  │
    │  ISM330DHCX     │
@@ -99,7 +101,7 @@ The system reads vibration data from the STWIN.box MEMS sensors (IIS3DWB, ISM330
 
 | Server | Purpose | Key Tools |
 |--------|---------|-----------|
-| [stwinbox-sensor-mcp](mcp-servers/stwinbox-sensor-mcp/) | Hardware communication with STWIN.box via USB/Serial | `connect_board`, `configure_sensor`, `acquire_data`, `load_data_from_file` |
+| [stwinbox-sensor-mcp](mcp-servers/stwinbox-sensor-mcp/) | Hardware communication with STWIN.box via USB/Serial | `connect_board`, `configure_sensor`, `acquire_data`, `load_data_from_file`, `datalog2_connect`, `datalog2_start_acquisition`, `datalog2_stop_acquisition` |
 | [vibration-analysis-mcp](mcp-servers/vibration-analysis-mcp/) | Signal processing and fault detection algorithms | `compute_fft_spectrum`, `compute_envelope_spectrum`, `check_bearing_fault_peak`, `check_bearing_faults_direct`, `diagnose_vibration` |
 
 ### Claude Skills
@@ -140,7 +142,25 @@ uv pip install -e .
 cd ../..
 ```
 
-### 2. Configure Claude Desktop
+### 2. (Optional) Install FP-SNS-DATALOG2 SDK
+
+For programmatic acquisition control (start/stop logging via USB, no need to
+press buttons or extract the SD card), install the STDATALOG-PYSDK:
+
+```bash
+# Clone the SDK (packages are not on PyPI)
+git clone --recursive https://github.com/STMicroelectronics/stdatalog-pysdk.git
+
+# Install the PnPL protocol layer + core SDK
+pip install stdatalog-pysdk/stdatalog_pnpl/
+pip install stdatalog-pysdk/stdatalog_core/
+```
+
+This enables the `datalog2_*` tools in the sensor server. Without the SDK
+installed, those tools gracefully report that it is unavailable while all
+other tools continue to work normally.
+
+### 3. Configure Claude Desktop
 
 Add to your `claude_desktop_config.json`:
 
@@ -159,7 +179,7 @@ Add to your `claude_desktop_config.json`:
 }
 ```
 
-### 3. Install Skills
+### 4. Install Skills
 
 **Claude.ai:**
 1. Zip each skill folder (e.g., `skills/machine-vibration-monitoring/`)
@@ -169,7 +189,7 @@ Add to your `claude_desktop_config.json`:
 **Claude Code:**
 Place skill folders in your Claude Code skills directory.
 
-### 4. Test
+### 5. Test
 
 ```
 You: "Connect to my STWIN.box and check vibration levels on the IIS3DWB sensor"
