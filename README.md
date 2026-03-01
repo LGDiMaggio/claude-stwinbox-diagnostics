@@ -118,6 +118,16 @@ The system reads vibration data from the STWIN.box MEMS sensors (IIS3DWB, ISM330
 
 To keep diagnostics physically grounded, formally coherent, and evidence-first, follow the project governance checklist in [`docs/consistency-governance.md`](docs/consistency-governance.md).
 
+## Skill ZIP Packaging
+
+To regenerate distributable skill archives without introducing binary deltas in normal PRs:
+
+```bash
+python scripts/build_skill_zips.py
+```
+
+This writes ZIPs to `dist/skills-zips/` by default. Use `--output skills-zips` only for intentional release artifact updates.
+
 ## Quick Start
 
 ### Prerequisites
