@@ -61,7 +61,7 @@
     .delay-500 { animation-delay: .5s; }
 
     /* Glass morphism */
-    .glass { background: rgba(255,255,255,.06); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,.1); }
+    .glass { background: rgba(255,255,255,.08); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,.15); }
 
     /* Gradient text */
     .gradient-text { background: linear-gradient(135deg, #36a5fa, #3CB4A4, #facc15); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
@@ -93,7 +93,7 @@
   </style>
 </head>
 
-<body class="bg-brand-dark text-gray-100 font-sans antialiased overflow-x-hidden">
+<body class="bg-brand-dark text-white font-sans antialiased overflow-x-hidden">
 
   <!-- ============================================ -->
   <!-- NAVBAR -->
@@ -105,10 +105,10 @@
         <span class="hidden sm:inline">Claude Edge Predictive Maintenance</span>
       </a>
       <div class="flex items-center gap-6 text-sm font-medium">
-        <a href="#features" class="text-gray-300 hover:text-white transition-colors">Features</a>
-        <a href="#architecture" class="text-gray-300 hover:text-white transition-colors">Architecture</a>
-        <a href="#demo" class="text-gray-300 hover:text-white transition-colors">Demo</a>
-        <a href="#quickstart" class="text-gray-300 hover:text-white transition-colors">Quick Start</a>
+        <a href="#features" class="text-gray-100 hover:text-white transition-colors">Features</a>
+        <a href="#architecture" class="text-gray-100 hover:text-white transition-colors">Architecture</a>
+        <a href="#demo" class="text-gray-100 hover:text-white transition-colors">Demo</a>
+        <a href="#quickstart" class="text-gray-100 hover:text-white transition-colors">Quick Start</a>
         <a href="https://github.com/LGDiMaggio/claude-stwinbox-diagnostics" target="_blank" class="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors">
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
           GitHub
@@ -143,22 +143,21 @@
       </div>
 
       <h1 class="text-5xl sm:text-7xl font-black tracking-tight mb-6 animate-slide-up">
-        <span class="gradient-text">Claude Edge</span><br>
-        <span class="text-white">Predictive Maintenance</span>
+        <span class="gradient-text">Claude Edge<br>Predictive Maintenance</span>
       </h1>
 
-      <p class="text-2xl sm:text-3xl text-gray-300 max-w-3xl mx-auto mb-4 animate-slide-up delay-100">
+      <p class="text-2xl sm:text-3xl text-gray-100 max-w-3xl mx-auto mb-4 animate-slide-up delay-100">
         Bridging Industrial IoT Sensors and Large Language Models<br class="hidden sm:block"> for Predictive Maintenance
       </p>
 
-      <p class="text-lg text-gray-400 max-w-2xl mx-auto mb-10 animate-slide-up delay-200">
+      <p class="text-lg text-gray-200 max-w-2xl mx-auto mb-10 animate-slide-up delay-200">
         An open-source reference architecture connecting the STEVAL-STWINBX1 sensor node to Claude via the Model Context Protocol. Ask your machine how it's feeling, in natural language.
       </p>
 
       <div class="flex flex-wrap justify-center gap-4 animate-slide-up delay-300">
-        <a href="https://github.com/LGDiMaggio/claude-stwinbox-diagnostics" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-semibold text-lg transition-all hover:scale-105 shadow-lg shadow-brand-500/25">
+        <a href="https://github.com/LGDiMaggio/claude-stwinbox-diagnostics" class="inline-flex items-center gap-2 px-10 py-4 rounded-xl bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 text-white font-bold text-lg transition-all hover:scale-105 shadow-xl shadow-brand-500/30 ring-1 ring-brand-400/30">
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-          View on GitHub
+          Get Started on GitHub →
         </a>
         <a href="#demo" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 text-white font-semibold text-lg border border-white/10 transition-all hover:scale-105">
           ▶ Watch Demo
@@ -192,7 +191,7 @@
         <div class="reveal glass rounded-2xl p-8 hover:border-brand-500/30 transition-all group">
           <div class="w-14 h-14 rounded-xl bg-brand-500/10 flex items-center justify-center text-3xl mb-5 group-hover:scale-110 transition-transform">📡</div>
           <h3 class="text-2xl font-bold text-white mb-3">Acquire</h3>
-          <p class="text-base text-gray-300 leading-relaxed">Connect the STWIN.box via USB. Claude controls the IIS3DWB wideband accelerometer at 26.7 kHz and acquires vibration data with a single chat message.</p>
+          <p class="text-base text-gray-100 leading-relaxed">Connect the STWIN.box via USB. Claude controls the IIS3DWB wideband accelerometer at 26.7 kHz and acquires vibration data with a single chat message.</p>
           <div class="mt-4 font-mono text-sm text-brand-400 code-block px-4 py-2">
             datalog2_start_acquisition(duration_s=5)
           </div>
@@ -201,7 +200,7 @@
         <div class="reveal delay-200 glass rounded-2xl p-8 hover:border-st-teal/30 transition-all group">
           <div class="w-14 h-14 rounded-xl bg-st-teal/10 flex items-center justify-center text-3xl mb-5 group-hover:scale-110 transition-transform">📊</div>
           <h3 class="text-2xl font-bold text-white mb-3">Analyze</h3>
-          <p class="text-base text-gray-300 leading-relaxed">Full DSP pipeline including FFT, PSD, envelope analysis via Hilbert transform, bearing fault detection (BPFO, BPFI, BSF, FTF) and ISO 10816 severity.</p>
+          <p class="text-base text-gray-100 leading-relaxed">Full DSP pipeline including FFT, PSD, envelope analysis via Hilbert transform, bearing fault detection (BPFO, BPFI, BSF, FTF) and ISO 10816 severity.</p>
           <div class="mt-4 font-mono text-sm text-st-teal code-block px-4 py-2">
             diagnose_vibration(rpm=1470, bearing="6205")
           </div>
@@ -210,7 +209,7 @@
         <div class="reveal delay-400 glass rounded-2xl p-8 hover:border-accent-400/30 transition-all group">
           <div class="w-14 h-14 rounded-xl bg-accent-400/10 flex items-center justify-center text-3xl mb-5 group-hover:scale-110 transition-transform">📋</div>
           <h3 class="text-2xl font-bold text-white mb-3">Report</h3>
-          <p class="text-base text-gray-300 leading-relaxed">Claude generates operator-friendly reports with traffic-light severity, fault evidence, confidence levels and actionable maintenance recommendations.</p>
+          <p class="text-base text-gray-100 leading-relaxed">Claude generates operator-friendly reports with traffic-light severity, fault evidence, confidence levels and actionable maintenance recommendations.</p>
           <div class="mt-4 font-mono text-sm text-accent-400 code-block px-4 py-2">
             🟢 Good &nbsp; 🟡 Monitor &nbsp; 🟠 Alarm &nbsp; 🔴 Danger
           </div>
@@ -228,45 +227,45 @@
       <div class="text-center mb-16 reveal">
         <p class="text-st-teal font-semibold text-base uppercase tracking-wider mb-3">What you get</p>
         <h2 class="text-4xl sm:text-5xl font-bold text-white">A Complete Diagnostic Toolkit</h2>
-        <p class="text-lg text-gray-300 mt-4 max-w-2xl mx-auto">Everything you need to go from raw sensor data to actionable maintenance insights, powered by 36 purpose-built MCP tools.</p>
+        <p class="text-lg text-gray-100 mt-4 max-w-2xl mx-auto">Everything you need to go from raw sensor data to actionable maintenance insights, powered by 36 purpose-built MCP tools.</p>
       </div>
 
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
           <span class="text-3xl shrink-0">🔬</span>
-          <div><h4 class="text-lg font-semibold text-white mb-2">Spectral Intelligence</h4><p class="text-base text-gray-300">Instantly identify frequency signatures with FFT and Power Spectral Density, using Hann, Hamming or Blackman windowing and automatic peak detection.</p></div>
+          <div><h4 class="text-lg font-semibold text-white mb-2">Spectral Intelligence</h4><p class="text-base text-gray-100">Instantly identify frequency signatures with FFT and Power Spectral Density, using Hann, Hamming or Blackman windowing and automatic peak detection.</p></div>
         </div>
         <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
           <span class="text-3xl shrink-0">🎯</span>
-          <div><h4 class="text-lg font-semibold text-white mb-2">Envelope Analysis</h4><p class="text-base text-gray-300">Detect early-stage rolling element defects before they become critical, using Hilbert-transform envelope spectra to reveal hidden fault patterns.</p></div>
+          <div><h4 class="text-lg font-semibold text-white mb-2">Envelope Analysis</h4><p class="text-base text-gray-100">Detect early-stage rolling element defects before they become critical, using Hilbert-transform envelope spectra to reveal hidden fault patterns.</p></div>
         </div>
         <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
           <span class="text-3xl shrink-0">⚙️</span>
-          <div><h4 class="text-lg font-semibold text-white mb-2">Bearing Database</h4><p class="text-base text-gray-300">Built-in catalog of common bearing models, plus support for custom geometry and direct frequency input from manufacturer datasheets.</p></div>
+          <div><h4 class="text-lg font-semibold text-white mb-2">Bearing Database</h4><p class="text-base text-gray-100">Built-in catalog of common bearing models, plus support for custom geometry and direct frequency input from manufacturer datasheets.</p></div>
         </div>
         <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
           <span class="text-3xl shrink-0">🩺</span>
-          <div><h4 class="text-lg font-semibold text-white mb-2">Intelligent Fault Classification</h4><p class="text-base text-gray-300">Automatically identify unbalance, misalignment, looseness and bearing defects with confidence levels, so you know exactly what to fix first.</p></div>
+          <div><h4 class="text-lg font-semibold text-white mb-2">Intelligent Fault Classification</h4><p class="text-base text-gray-100">Automatically identify unbalance, misalignment, looseness and bearing defects with confidence levels, so you know exactly what to fix first.</p></div>
         </div>
         <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
           <span class="text-3xl shrink-0">📏</span>
-          <div><h4 class="text-lg font-semibold text-white mb-2">ISO 10816 Compliance</h4><p class="text-base text-gray-300">Industry-standard vibration severity classification across Zones A through D and 4 machine groups. Speak the same language as your maintenance team.</p></div>
+          <div><h4 class="text-lg font-semibold text-white mb-2">ISO 10816 Compliance</h4><p class="text-base text-gray-100">Industry-standard vibration severity classification across Zones A through D and 4 machine groups. Speak the same language as your maintenance team.</p></div>
         </div>
         <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
           <span class="text-3xl shrink-0">🧠</span>
-          <div><h4 class="text-lg font-semibold text-white mb-2">Domain Expert Skills</h4><p class="text-base text-gray-300">Three pre-built Claude Skills encode real-world diagnostic expertise: monitoring, diagnosis and reporting. Claude thinks like an experienced vibration analyst.</p></div>
+          <div><h4 class="text-lg font-semibold text-white mb-2">Domain Expert Skills</h4><p class="text-base text-gray-100">Three pre-built Claude Skills encode real-world diagnostic expertise: monitoring, diagnosis and reporting. Claude thinks like an experienced vibration analyst.</p></div>
         </div>
         <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
           <span class="text-3xl shrink-0">💾</span>
-          <div><h4 class="text-lg font-semibold text-white mb-2">Smart Data Handling</h4><p class="text-base text-gray-300">Over 378,000 samples per acquisition are stored server-side. The AI receives only compact summaries, keeping conversations fast and context-efficient.</p></div>
+          <div><h4 class="text-lg font-semibold text-white mb-2">Smart Data Handling</h4><p class="text-base text-gray-100">Over 378,000 samples per acquisition are stored server-side. The AI receives only compact summaries, keeping conversations fast and context-efficient.</p></div>
         </div>
         <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
           <span class="text-3xl shrink-0">⏱️</span>
-          <div><h4 class="text-lg font-semibold text-white mb-2">Precise Acquisition Control</h4><p class="text-base text-gray-300">Server-side timers eliminate orchestration latency. Request exactly the duration you need, from milliseconds to minutes, with guaranteed precision.</p></div>
+          <div><h4 class="text-lg font-semibold text-white mb-2">Precise Acquisition Control</h4><p class="text-base text-gray-100">Server-side timers eliminate orchestration latency. Request exactly the duration you need, from milliseconds to minutes, with guaranteed precision.</p></div>
         </div>
         <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
           <span class="text-3xl shrink-0">🔌</span>
-          <div><h4 class="text-lg font-semibold text-white mb-2">36 MCP Tools</h4><p class="text-base text-gray-300">22 sensor control tools and 14 analysis tools give Claude full programmatic control of the hardware through standard USB connectivity.</p></div>
+          <div><h4 class="text-lg font-semibold text-white mb-2">36 MCP Tools</h4><p class="text-base text-gray-100">22 sensor control tools and 14 analysis tools give Claude full programmatic control of the hardware through standard USB connectivity.</p></div>
         </div>
       </div>
     </div>
@@ -312,8 +311,8 @@
             <div class="w-20 h-20 rounded-full bg-white/10 flex items-center justify-center mb-6 hover:bg-white/20 transition-colors cursor-pointer">
               <svg class="w-10 h-10 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
             </div>
-            <p class="text-gray-300 text-xl font-medium">Demo video coming soon</p>
-            <p class="text-gray-400 text-base mt-2">Live acquisition from STWIN.box with AI diagnosis in real-time</p>
+            <p class="text-gray-100 text-xl font-medium">Demo video coming soon</p>
+            <p class="text-gray-200 text-base mt-2">Live acquisition from STWIN.box with AI diagnosis in real-time</p>
           </div>
           <!-- Actual iframe (hidden until video ID is set) -->
           <iframe id="video-iframe" class="absolute inset-0 w-full h-full hidden" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -330,7 +329,7 @@
       <div class="text-center mb-16 reveal">
         <p class="text-st-teal font-semibold text-base uppercase tracking-wider mb-3">Natural Language Interface</p>
         <h2 class="text-4xl sm:text-5xl font-bold text-white">Talk to Your Machine</h2>
-        <p class="text-lg text-gray-300 mt-4 max-w-2xl mx-auto">No scripting, no dashboards. Just describe what you need and Claude handles the rest.</p>
+        <p class="text-lg text-gray-100 mt-4 max-w-2xl mx-auto">No scripting, no dashboards. Just describe what you need and Claude handles the rest.</p>
       </div>
 
       <!-- Example cards -->
@@ -351,11 +350,11 @@
             <div class="flex justify-start">
               <div class="bg-white/5 border border-white/10 rounded-2xl rounded-bl-sm px-4 py-3 text-base max-w-sm">
                 <p class="text-gray-200">Connected to STEVAL-STWINBX1 ✓</p>
-                <p class="text-gray-300 mt-1">Acquiring 5 s from IIS3DWB at 26,667 Hz...</p>
+                <p class="text-gray-200 mt-1">Acquiring 5 s from IIS3DWB at 26,667 Hz...</p>
                 <p class="text-gray-200 mt-1">Loaded 133,335 samples ✓</p>
                 <div class="mt-3 p-3 rounded-lg bg-green-500/10 border border-green-500/20">
                   <p class="text-green-400 font-semibold text-base">🟢 ISO 10816: Zone A</p>
-                  <p class="text-gray-300 text-sm mt-1">RMS velocity: 0.71 mm/s · No faults detected</p>
+                  <p class="text-gray-200 text-sm mt-1">RMS velocity: 0.71 mm/s · No faults detected</p>
                 </div>
               </div>
             </div>
@@ -380,7 +379,7 @@
                 <p class="text-gray-200 mt-1">Checking BPFO, BPFI, BSF, FTF frequencies...</p>
                 <div class="mt-3 p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
                   <p class="text-yellow-400 font-semibold text-base">🟡 Outer race defect suspected</p>
-                  <p class="text-gray-300 text-sm mt-1">BPFO peak at 89.4 Hz (expected 89.8 Hz) · Confidence: 72%</p>
+                  <p class="text-gray-200 text-sm mt-1">BPFO peak at 89.4 Hz (expected 89.8 Hz) · Confidence: 72%</p>
                 </div>
               </div>
             </div>
@@ -402,7 +401,7 @@
             <div class="flex justify-start">
               <div class="bg-white/5 border border-white/10 rounded-2xl rounded-bl-sm px-4 py-3 text-base max-w-sm">
                 <p class="text-gray-200">📋 Diagnostic report ready:</p>
-                <ul class="text-gray-300 mt-2 space-y-1.5 ml-4 list-disc text-sm">
+                <ul class="text-gray-200 mt-2 space-y-1.5 ml-4 list-disc text-sm">
                   <li>Executive summary with severity level</li>
                   <li>Sensor configuration and measurement details</li>
                   <li>Findings with evidence and confidence</li>
@@ -428,10 +427,10 @@
             <div class="flex justify-start">
               <div class="bg-white/5 border border-white/10 rounded-2xl rounded-bl-sm px-4 py-3 text-base max-w-sm">
                 <p class="text-gray-200">FFT computed (133,335 points, Hann window)</p>
-                <p class="text-gray-300 mt-1">Dominant peaks identified:</p>
-                <p class="text-gray-300 text-sm mt-2">· 24.5 Hz (1×RPM, 0.042 g)</p>
-                <p class="text-gray-300 text-sm">· 49.0 Hz (2×RPM, 0.018 g)</p>
-                <p class="text-gray-300 text-sm">· 89.4 Hz (BPFO, 0.011 g)</p>
+                <p class="text-gray-200 mt-1">Dominant peaks identified:</p>
+                <p class="text-gray-200 text-sm mt-2">· 24.5 Hz (1×RPM, 0.042 g)</p>
+                <p class="text-gray-200 text-sm">· 49.0 Hz (2×RPM, 0.018 g)</p>
+                <p class="text-gray-200 text-sm">· 89.4 Hz (BPFO, 0.011 g)</p>
               </div>
             </div>
           </div>
@@ -498,7 +497,7 @@ cd mcp-servers/vibration-analysis-mcp && uv venv && uv pip install -e . && cd ..
             <span class="w-10 h-10 rounded-full bg-brand-500/20 text-brand-400 font-bold text-lg flex items-center justify-center">3</span>
             <h3 class="text-xl font-semibold text-white">Install Skills and Go</h3>
           </div>
-          <p class="text-gray-300 text-base">
+          <p class="text-gray-100 text-base">
             Upload the 3 skill <code class="text-brand-400">.zip</code> files from <code class="text-brand-400">skills-zips/</code> in Claude Desktop settings under Capabilities, then Skills. Restart Claude Desktop and start chatting!
           </p>
         </div>
@@ -512,7 +511,7 @@ cd mcp-servers/vibration-analysis-mcp && uv venv && uv pip install -e . && cd ..
   <section class="py-24 px-4">
     <div class="max-w-6xl mx-auto">
       <div class="text-center mb-12 reveal">
-        <p class="text-gray-400 font-semibold text-base uppercase tracking-wider mb-3">Built with</p>
+        <p class="text-gray-200 font-semibold text-base uppercase tracking-wider mb-3">Built with</p>
         <h2 class="text-4xl sm:text-5xl font-bold text-white">Technology Stack</h2>
       </div>
 
@@ -554,20 +553,20 @@ cd mcp-servers/vibration-analysis-mcp && uv venv && uv pip install -e . && cd ..
       </div>
 
       <div class="flex flex-wrap justify-center gap-4 mb-8">
-        <a href="https://github.com/LGDiMaggio/claude-stwinbox-diagnostics" class="text-gray-400 hover:text-white transition-colors text-base">GitHub</a>
-        <span class="text-gray-600">·</span>
-        <a href="https://doi.org/10.5281/zenodo.18808856" class="text-gray-400 hover:text-white transition-colors text-base">Zenodo</a>
-        <span class="text-gray-600">·</span>
-        <a href="https://github.com/LGDiMaggio/claude-stwinbox-diagnostics/releases" class="text-gray-400 hover:text-white transition-colors text-base">Releases</a>
-        <span class="text-gray-600">·</span>
-        <a href="https://github.com/LGDiMaggio/claude-stwinbox-diagnostics/blob/main/LICENSE" class="text-gray-400 hover:text-white transition-colors text-base">Apache 2.0</a>
+        <a href="https://github.com/LGDiMaggio/claude-stwinbox-diagnostics" class="text-gray-200 hover:text-white transition-colors text-base">GitHub</a>
+        <span class="text-gray-500">·</span>
+        <a href="https://doi.org/10.5281/zenodo.18808856" class="text-gray-200 hover:text-white transition-colors text-base">Zenodo</a>
+        <span class="text-gray-500">·</span>
+        <a href="https://github.com/LGDiMaggio/claude-stwinbox-diagnostics/releases" class="text-gray-200 hover:text-white transition-colors text-base">Releases</a>
+        <span class="text-gray-500">·</span>
+        <a href="https://github.com/LGDiMaggio/claude-stwinbox-diagnostics/blob/main/LICENSE" class="text-gray-200 hover:text-white transition-colors text-base">Apache 2.0</a>
       </div>
 
-      <p class="text-gray-400 text-base">
+      <p class="text-gray-200 text-base">
         Built with ❤️ for condition monitoring professionals<br>
         Connecting the physical world to AI, one vibration at a time.
       </p>
-      <p class="text-gray-500 text-sm mt-4">
+      <p class="text-gray-400 text-sm mt-4">
         © 2026 Luigi Gianpio Di Maggio
       </p>
     </div>
