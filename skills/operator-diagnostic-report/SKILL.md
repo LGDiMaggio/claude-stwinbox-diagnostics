@@ -165,3 +165,13 @@ Sensor: STEVAL-STWINBX1 | Firmware: FP-SNS-DATALOG2 | Analysis: vibration-analys
 ```
 
 Do NOT use the old wording "STWIN.box + Claude vibration diagnostics system".
+
+## Evidence & Assumptions Protocol
+
+When presenting results, always separate:
+1. **Measured evidence** (tool outputs, frequencies, amplitudes, ISO zone, statistics)
+2. **Inference** (diagnostic interpretation with confidence)
+3. **Assumptions / prior knowledge** (catalog values, typical fault heuristics, missing machine metadata)
+
+If assumptions are used because required inputs are missing, declare this explicitly and ask for the missing data when practical.
+
