@@ -113,6 +113,11 @@ The system reads vibration data from the STWIN.box MEMS sensors (IIS3DWB, ISM330
 | [vibration-fault-diagnosis](skills/vibration-fault-diagnosis/) | Workflow Automation | Multi-step fault diagnosis with frequency analysis |
 | [operator-diagnostic-report](skills/operator-diagnostic-report/) | Document & Asset Creation | Generates human-readable diagnostic reports |
 
+
+## Consistency & Governance
+
+To keep diagnostics physically grounded, formally coherent, and evidence-first, follow the project governance checklist in [`docs/consistency-governance.md`](docs/consistency-governance.md).
+
 ## Quick Start
 
 ### Prerequisites
