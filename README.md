@@ -316,7 +316,7 @@ claude-stwinbox-diagnostics/
 
 ## Project Status & Disclaimer
 
-> **⚠️ Early-stage project.** This initial release (v0.1.0) was developed as a proof-of-concept with intensive assistance from Claude and has **not yet been validated extensively on real industrial machinery**. The analysis algorithms implement well-established signal processing techniques (FFT, envelope analysis, ISO 10816), but their integration with the STWIN.box hardware and the MCP protocol should be considered experimental. Real-world testing, calibration, and refinement will follow in subsequent versions. **Do not use this as the sole basis for critical maintenance decisions without independent verification.**
+> **⚠️ Early-stage project.** This release (v0.2.0) was developed as a proof-of-concept with intensive assistance from Claude and has **not yet been validated extensively on real industrial machinery**. The analysis algorithms implement well-established signal processing techniques (FFT, envelope analysis, ISO 10816), but their integration with the STWIN.box hardware and the MCP protocol should be considered experimental. Real-world testing, calibration, and refinement will follow in subsequent versions. **Do not use this as the sole basis for critical maintenance decisions without independent verification.**
 
 ## Contributing
 

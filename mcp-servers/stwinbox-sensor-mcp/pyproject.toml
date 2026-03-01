@@ -1,6 +1,6 @@
 [project]
 name = "stwinbox-sensor-mcp"
-version = "0.1.0"
+version = "0.2.0"
 description = "MCP Server for STEVAL-STWINBX1 (STWIN.box) sensor data acquisition — connect industrial MEMS sensors to LLMs"
 readme = "README.md"
 license = {text = "Apache-2.0"}

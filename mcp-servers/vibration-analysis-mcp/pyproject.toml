@@ -1,6 +1,6 @@
 [project]
 name = "vibration-analysis-mcp"
-version = "0.1.0"
+version = "0.2.0"
 description = "MCP Server for vibration signal analysis and rotating machinery fault detection — FFT, envelope analysis, bearing faults, ISO 10816"
 readme = "README.md"
 license = {text = "Apache-2.0"}
