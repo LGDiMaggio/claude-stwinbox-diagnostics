@@ -108,6 +108,18 @@
     .text-white\/80 { color: rgba(241, 245, 249, .9) !important; }
 
     h1, h2, h3, h4 { text-shadow: 0 1px 0 rgba(2, 6, 23, .4); }
+
+    .hero-title {
+      text-shadow: 0 1px 8px rgba(12, 138, 235, .18), 0 1px 0 rgba(2, 6, 23, .55);
+      letter-spacing: -.02em;
+    }
+
+    .chat-window { border: 1px solid rgba(148, 163, 184, .35); border-radius: 1rem; background: rgba(2, 6, 23, .45); padding: .9rem; }
+    .chat-window-head { display: flex; gap: .35rem; margin-bottom: .85rem; }
+    .chat-window-head span { width: .55rem; height: .55rem; border-radius: 9999px; display: inline-block; }
+    .bubble-user { background: linear-gradient(135deg, rgba(12, 138, 235, .95), rgba(0, 109, 201, .95)); border: 1px solid rgba(125, 211, 252, .28); }
+    .bubble-ai { background: rgba(15, 23, 42, .9); border: 1px solid rgba(148, 163, 184, .3); }
+
   </style>
 </head>
 
@@ -138,12 +150,12 @@
   <!-- ============================================ -->
   <!-- HERO -->
   <!-- ============================================ -->
-  <section class="relative min-h-screen flex items-center justify-center grid-bg pt-16">
+  <section class="relative min-h-screen flex items-center justify-center grid-bg pt-20 sm:pt-24">
     <!-- Ambient glow -->
     <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-500/10 rounded-full blur-[128px]"></div>
     <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-st-teal/10 rounded-full blur-[128px]"></div>
 
-    <div class="relative max-w-5xl mx-auto px-4 text-center">
+    <div class="relative max-w-6xl mx-auto px-4 text-center">
       <!-- Badges -->
       <div class="flex flex-wrap justify-center gap-3 mb-8 animate-fade-in">
         <a href="https://doi.org/10.5281/zenodo.18808856" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium bg-brand-600/20 text-brand-300 border border-brand-500/20 hover:bg-brand-600/30 transition-colors">
@@ -160,32 +172,29 @@
         </span>
       </div>
 
-      <h1 class="text-6xl sm:text-8xl font-black tracking-tight mb-6 animate-slide-up">
+      <h1 class="hero-title text-6xl sm:text-8xl font-black tracking-tight mb-6 animate-slide-up">
         <span class="gradient-text">Claude Edge<br>Predictive Maintenance</span>
       </h1>
 
-      <p class="text-2xl sm:text-4xl font-medium text-white max-w-3xl mx-auto mb-4 animate-slide-up delay-100">
+      <p class="text-2xl sm:text-4xl font-medium text-white max-w-5xl mx-auto mb-4 animate-slide-up delay-100">
         Bridging Industrial IoT Sensors and Large Language Models<br class="hidden sm:block"> for Predictive Maintenance
       </p>
 
-      <p class="text-xl text-white/90 max-w-2xl mx-auto mb-10 animate-slide-up delay-200">
-        An open-source reference architecture connecting the STEVAL-STWINBX1 sensor node to Claude via the Model Context Protocol. Ask your machine how it's feeling, in natural language.
+      <p class="text-xl text-white/90 max-w-4xl mx-auto mt-6 mb-10 animate-slide-up delay-200">
+        An open-source reference architecture connecting the IoT sensor node to Claude via the Model Context Protocol. Ask your machine how it's feeling, in natural language.
       </p>
 
       <div class="flex flex-wrap justify-center gap-4 animate-slide-up delay-300">
         <a href="https://github.com/LGDiMaggio/claude-stwinbox-diagnostics" class="inline-flex items-center gap-2 px-10 py-4 rounded-xl bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 text-white font-bold text-lg transition-all hover:scale-105 shadow-xl shadow-brand-500/30 ring-1 ring-brand-400/30">
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-          Get Started on GitHub →
+          Get Started on GitHub
         </a>
         <a href="#demo" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 text-white font-semibold text-lg border border-white/10 transition-all hover:scale-105">
           ▶ Watch Demo
         </a>
       </div>
 
-      <!-- Scroll indicator -->
-      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-float">
-        <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
-      </div>
+
     </div>
   </section>
 
@@ -196,7 +205,7 @@
     <div class="max-w-6xl mx-auto">
       <div class="text-center mb-16 reveal">
         <p class="text-brand-400 font-bold text-lg uppercase tracking-wider mb-3">How it works</p>
-        <h2 class="text-5xl sm:text-6xl font-bold text-white">Sensor &rarr; AI &rarr; Action</h2>
+        <h2 class="text-5xl sm:text-6xl font-bold text-white">Talk to Your Machine: Sensor &rarr; AI &rarr; Action</h2>
       </div>
 
       <!-- System overview image -->
@@ -210,7 +219,7 @@
           <div class="w-14 h-14 rounded-xl bg-brand-500/10 flex items-center justify-center text-3xl mb-5 group-hover:scale-110 transition-transform">📡</div>
           <h3 class="text-2xl font-bold text-white mb-3">Acquire</h3>
           <p class="text-lg text-white/90 leading-relaxed">Connect the STWIN.box via USB. Claude controls the IIS3DWB wideband accelerometer at 26.7 kHz and acquires vibration data with a single chat message.</p>
-          <div class="mt-4 font-mono text-sm text-brand-400 code-block px-4 py-2">
+          <div class="mt-4 font-mono text-sm text-brand-400 code-block px-4 py-2 overflow-x-auto whitespace-nowrap">
             datalog2_start_acquisition(duration_s=5)
           </div>
         </div>
@@ -219,7 +228,7 @@
           <div class="w-14 h-14 rounded-xl bg-st-teal/10 flex items-center justify-center text-3xl mb-5 group-hover:scale-110 transition-transform">📊</div>
           <h3 class="text-2xl font-bold text-white mb-3">Analyze</h3>
           <p class="text-lg text-white/90 leading-relaxed">Full DSP pipeline including FFT, PSD, envelope analysis via Hilbert transform, bearing fault detection (BPFO, BPFI, BSF, FTF) and ISO 10816 severity.</p>
-          <div class="mt-4 font-mono text-sm text-st-teal code-block px-4 py-2">
+          <div class="mt-4 font-mono text-sm text-st-teal code-block px-4 py-2 overflow-x-auto whitespace-nowrap">
             diagnose_vibration(rpm=1470, bearing="6205")
           </div>
         </div>
@@ -243,8 +252,8 @@
     <div class="absolute inset-0 bg-gradient-to-b from-transparent via-brand-800/20 to-transparent"></div>
     <div class="relative max-w-6xl mx-auto">
       <div class="text-center mb-16 reveal">
-        <p class="text-st-teal font-bold text-lg uppercase tracking-wider mb-3">What you get</p>
-        <h2 class="text-5xl sm:text-6xl font-bold text-white">A Complete Diagnostic Toolkit</h2>
+        <p class="text-st-teal font-bold text-lg uppercase tracking-wider mb-3">Toolkit highlights</p>
+        <h2 class="text-5xl sm:text-6xl font-bold text-white">Diagnostic Capabilities at a Glance</h2>
         <p class="text-xl text-white/90 mt-4 max-w-2xl mx-auto">Everything you need to go from raw sensor data to actionable maintenance insights, powered by 36 purpose-built MCP tools.</p>
       </div>
 
@@ -359,20 +368,25 @@
             <span class="text-xl">💬</span>
             <h4 class="text-xl font-bold text-white">Quick Health Check</h4>
           </div>
-          <div class="space-y-3">
-            <div class="flex justify-end">
-              <div class="bg-brand-600 rounded-2xl rounded-br-sm px-4 py-2.5 text-white text-lg max-w-xs font-medium">
-                Connect to my STWIN.box and check the vibration on the pump
-              </div>
+          <div class="chat-window">
+            <div class="chat-window-head" aria-hidden="true">
+              <span class="bg-red-400/90"></span><span class="bg-yellow-400/90"></span><span class="bg-green-400/90"></span>
             </div>
-            <div class="flex justify-start">
-              <div class="bg-white/10 border border-white/15 rounded-2xl rounded-bl-sm px-4 py-3 text-lg max-w-sm">
-                <p class="text-white">Connected to STEVAL-STWINBX1 ✓</p>
-                <p class="text-white/90 mt-1">Acquiring 5 s from IIS3DWB at 26,667 Hz...</p>
-                <p class="text-white mt-1">Loaded 133,335 samples ✓</p>
-                <div class="mt-3 p-3 rounded-lg bg-green-500/10 border border-green-500/20">
-                  <p class="text-green-400 font-bold text-lg">🟢 ISO 10816: Zone A</p>
-                  <p class="text-white/90 text-base mt-1">RMS velocity: 0.71 mm/s · No faults detected</p>
+            <div class="space-y-3">
+              <div class="flex justify-end">
+                <div class="bubble-user rounded-2xl rounded-br-sm px-4 py-2.5 text-white text-lg max-w-sm font-medium">
+                  Connect to my STWIN.box and check the vibration on the pump
+                </div>
+              </div>
+              <div class="flex justify-start">
+                <div class="bubble-ai rounded-2xl rounded-bl-sm px-4 py-3 text-lg max-w-md">
+                  <p class="text-white">Connected to STEVAL-STWINBX1 ✓</p>
+                  <p class="text-white/90 mt-1">Acquiring 5 s from IIS3DWB at 26,667 Hz...</p>
+                  <p class="text-white mt-1">Loaded 133,335 samples ✓</p>
+                  <div class="mt-3 p-3 rounded-lg bg-green-500/10 border border-green-500/20">
+                    <p class="text-green-400 font-bold text-lg">🟢 ISO 10816: Zone A</p>
+                    <p class="text-white/90 text-base mt-1">RMS velocity: 0.71 mm/s · No faults detected</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -385,19 +399,24 @@
             <span class="text-xl">🔍</span>
             <h4 class="text-xl font-bold text-white">Bearing Diagnosis</h4>
           </div>
-          <div class="space-y-3">
-            <div class="flex justify-end">
-              <div class="bg-brand-600 rounded-2xl rounded-br-sm px-4 py-2.5 text-white text-lg max-w-xs font-medium">
-                Run a full bearing diagnosis. The motor runs at 1470 RPM with 6205 bearings.
-              </div>
+          <div class="chat-window">
+            <div class="chat-window-head" aria-hidden="true">
+              <span class="bg-red-400/90"></span><span class="bg-yellow-400/90"></span><span class="bg-green-400/90"></span>
             </div>
-            <div class="flex justify-start">
-              <div class="bg-white/10 border border-white/15 rounded-2xl rounded-bl-sm px-4 py-3 text-lg max-w-sm">
-                <p class="text-white">Running envelope analysis with Hilbert transform...</p>
-                <p class="text-white/90 mt-1">Checking BPFO, BPFI, BSF, FTF frequencies...</p>
-                <div class="mt-3 p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
-                  <p class="text-yellow-400 font-bold text-lg">🟡 Outer race defect suspected</p>
-                  <p class="text-white/90 text-base mt-1">BPFO peak at 89.4 Hz (expected 89.8 Hz) · Confidence: 72%</p>
+            <div class="space-y-3">
+              <div class="flex justify-end">
+                <div class="bubble-user rounded-2xl rounded-br-sm px-4 py-2.5 text-white text-lg max-w-sm font-medium">
+                  Run a full bearing diagnosis. The motor runs at 1470 RPM with 6205 bearings.
+                </div>
+              </div>
+              <div class="flex justify-start">
+                <div class="bubble-ai rounded-2xl rounded-bl-sm px-4 py-3 text-lg max-w-md">
+                  <p class="text-white">Running envelope analysis with Hilbert transform...</p>
+                  <p class="text-white/90 mt-1">Checking BPFO, BPFI, BSF, FTF frequencies...</p>
+                  <div class="mt-3 p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
+                    <p class="text-yellow-400 font-bold text-lg">🟡 Outer race defect suspected</p>
+                    <p class="text-white/90 text-base mt-1">BPFO peak at 89.4 Hz (expected 89.8 Hz) · Confidence: 72%</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -410,21 +429,26 @@
             <span class="text-xl">📋</span>
             <h4 class="text-xl font-bold text-white">Maintenance Report</h4>
           </div>
-          <div class="space-y-3">
-            <div class="flex justify-end">
-              <div class="bg-brand-600 rounded-2xl rounded-br-sm px-4 py-2.5 text-white text-lg max-w-xs font-medium">
-                Generate a maintenance report for the operations team
-              </div>
+          <div class="chat-window">
+            <div class="chat-window-head" aria-hidden="true">
+              <span class="bg-red-400/90"></span><span class="bg-yellow-400/90"></span><span class="bg-green-400/90"></span>
             </div>
-            <div class="flex justify-start">
-              <div class="bg-white/10 border border-white/15 rounded-2xl rounded-bl-sm px-4 py-3 text-lg max-w-sm">
-                <p class="text-white">📋 Diagnostic report ready:</p>
-                <ul class="text-white/90 mt-2 space-y-1.5 ml-4 list-disc text-base">
-                  <li>Executive summary with severity level</li>
-                  <li>Sensor configuration and measurement details</li>
-                  <li>Findings with evidence and confidence</li>
-                  <li>Recommended actions and timeline</li>
-                </ul>
+            <div class="space-y-3">
+              <div class="flex justify-end">
+                <div class="bubble-user rounded-2xl rounded-br-sm px-4 py-2.5 text-white text-lg max-w-sm font-medium">
+                  Generate a maintenance report for the operations team
+                </div>
+              </div>
+              <div class="flex justify-start">
+                <div class="bubble-ai rounded-2xl rounded-bl-sm px-4 py-3 text-lg max-w-md">
+                  <p class="text-white">📋 Diagnostic report ready:</p>
+                  <ul class="text-white/90 mt-2 space-y-1.5 ml-4 list-disc text-base">
+                    <li>Executive summary with severity level</li>
+                    <li>Sensor configuration and measurement details</li>
+                    <li>Findings with evidence and confidence</li>
+                    <li>Recommended actions and timeline</li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
@@ -436,19 +460,24 @@
             <span class="text-xl">📊</span>
             <h4 class="text-xl font-bold text-white">Signal Exploration</h4>
           </div>
-          <div class="space-y-3">
-            <div class="flex justify-end">
-              <div class="bg-brand-600 rounded-2xl rounded-br-sm px-4 py-2.5 text-white text-lg max-w-xs font-medium">
-                Show me the FFT spectrum of the last acquisition, focused on 0 to 1000 Hz
-              </div>
+          <div class="chat-window">
+            <div class="chat-window-head" aria-hidden="true">
+              <span class="bg-red-400/90"></span><span class="bg-yellow-400/90"></span><span class="bg-green-400/90"></span>
             </div>
-            <div class="flex justify-start">
-              <div class="bg-white/10 border border-white/15 rounded-2xl rounded-bl-sm px-4 py-3 text-lg max-w-sm">
-                <p class="text-white">FFT computed (133,335 points, Hann window)</p>
-                <p class="text-white/90 mt-1">Dominant peaks identified:</p>
-                <p class="text-white/90 text-base mt-2">· 24.5 Hz (1×RPM, 0.042 g)</p>
-                <p class="text-white/90 text-base">· 49.0 Hz (2×RPM, 0.018 g)</p>
-                <p class="text-white/90 text-base">· 89.4 Hz (BPFO, 0.011 g)</p>
+            <div class="space-y-3">
+              <div class="flex justify-end">
+                <div class="bubble-user rounded-2xl rounded-br-sm px-4 py-2.5 text-white text-lg max-w-sm font-medium">
+                  Show me the FFT spectrum of the last acquisition, focused on 0 to 1000 Hz
+                </div>
+              </div>
+              <div class="flex justify-start">
+                <div class="bubble-ai rounded-2xl rounded-bl-sm px-4 py-3 text-lg max-w-md">
+                  <p class="text-white">FFT computed (133,335 points, Hann window)</p>
+                  <p class="text-white/90 mt-1">Dominant peaks identified:</p>
+                  <p class="text-white/90 text-base mt-2">· 24.5 Hz (1×RPM, 0.042 g)</p>
+                  <p class="text-white/90 text-base">· 49.0 Hz (2×RPM, 0.018 g)</p>
+                  <p class="text-white/90 text-base">· 89.4 Hz (BPFO, 0.011 g)</p>
+                </div>
               </div>
             </div>
           </div>
