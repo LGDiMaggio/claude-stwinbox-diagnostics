@@ -108,3 +108,60 @@ that should be used to format the report output.
 - Keep total report length reasonable (1–3 pages when printed)
 - If multiple measurement points exist, show a summary table first,
   then detailed sections for each point with issues
+
+## PDF Generation with ReportLab
+
+When the user asks for a PDF report, generate a Python script using `reportlab`.
+Follow these **mandatory** rules to avoid layout issues:
+
+### Table Layout — Preventing Text Overflow
+
+**CRITICAL**: Long text in table cells **must** wrap. Never use a plain string
+in a cell if it might exceed the column width — it will overlap adjacent cells.
+
+```python
+from reportlab.platypus import Table, TableStyle, Paragraph
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib import colors
+from reportlab.lib.units import inch
+
+styles = getSampleStyleSheet()
+cell_style = styles["BodyText"]  # word-wraps automatically
+
+# ALWAYS wrap cell text in Paragraph() if it might be long
+data = [
+    ["#", "Finding", "Severity", "Action"],
+    [
+        "1",
+        Paragraph("Impulsive axial vibration detected on Z-axis with elevated kurtosis", cell_style),
+        "Monitor",
+        Paragraph("Schedule bearing inspection within 30 days", cell_style),
+    ],
+]
+
+# ALWAYS set explicit colWidths so text wraps within each column
+col_widths = [0.3*inch, 2.5*inch, 0.8*inch, 2.5*inch]
+table = Table(data, colWidths=col_widths)
+table.setStyle(TableStyle([
+    ("VALIGN", (0, 0), (-1, -1), "TOP"),
+    ("WORDWRAP", (0, 0), (-1, -1), True),
+]))
+```
+
+### Rules summary
+1. **Always set `colWidths`** — never let ReportLab auto-size columns
+2. **Wrap long text in `Paragraph(text, style)`** — plain strings don't wrap
+3. **Use `VALIGN=TOP`** so multi-line cells align properly
+4. Use the page width (letter = 7.5 inch usable) to calculate proportional widths
+5. For the findings table: col widths ≈ [0.3, 2.5, 0.8, 0.8, 2.5] inches
+
+### Report Footer
+
+Always end the PDF with this footer text:
+
+```
+Report generated automatically by Claude Edge Predictive Maintenance
+Sensor: STEVAL-STWINBX1 | Firmware: FP-SNS-DATALOG2 | Analysis: vibration-analysis-mcp
+```
+
+Do NOT use the old wording "STWIN.box + Claude vibration diagnostics system".

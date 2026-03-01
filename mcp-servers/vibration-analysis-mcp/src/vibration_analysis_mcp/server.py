@@ -124,6 +124,13 @@ def load_signal(
       automatically. ``sample_rate`` is read from the device config and can
       be omitted (set to 0).
 
+      NOTE: The returned sample_rate may differ slightly from the nominal ODR
+      (e.g., 26,584 Hz vs 26,667 Hz nominal). This is normal — the SDK reads
+      the **measured** ODR from the hardware, which accounts for crystal
+      oscillator tolerance (~0.3%). The measured value gives more accurate
+      frequency resolution in FFT analysis. Both values are included in the
+      metadata (odr_hz and nominal_odr_hz).
+
     **Mode 2 — Single file** (.csv or .dat):
       Pass the file path directly. ``sample_rate`` is required.
 

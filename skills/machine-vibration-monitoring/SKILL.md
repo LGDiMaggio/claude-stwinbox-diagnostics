@@ -90,6 +90,24 @@ When a user wants to monitor a new machine, follow these steps:
 - The ISM330DHCX is suitable for general unbalance/misalignment detection
 - Temperature from STTS22H can help correlate vibration changes with thermal effects
 
+## ODR: Nominal vs Measured
+
+When reporting sample rate after `load_signal`, you may see a slightly different
+value than the configured ODR (e.g., 26,584 Hz instead of 26,667 Hz). This is
+normal hardware behavior:
+
+- **Nominal ODR** = configured value (26,667 Hz for IIS3DWB at ODR index 0)
+- **Measured ODR** = actual rate from the crystal oscillator (~0.3% tolerance)
+
+The measured ODR is used for analysis (more accurate FFT frequency bins). When
+presenting results to the user, say:
+
+> "Sample rate: 26,584 Hz (measured; nominal 26,667 Hz)"
+
+Similarly, the acquisition duration may be slightly shorter in samples than the
+wall-clock `duration_s` because the actual ODR is slightly lower. For example,
+10 seconds at 26,584 Hz = 265,840 samples (~9.97 s at nominal). This is expected.
+
 ## Sensor Configuration Reference
 
 See [sensor-specs.md](references/sensor-specs.md) for detailed sensor specifications

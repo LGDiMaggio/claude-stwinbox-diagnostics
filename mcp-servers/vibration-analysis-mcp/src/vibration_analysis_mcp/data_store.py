@@ -266,29 +266,44 @@ class DataStore:
         data = df.to_numpy(dtype=np.float64)
 
         # Read ODR from device config for sample rate
-        # component is dict like {"iis3dwb_acc": {status_dict}}
+        # The SDK provides two ODR values:
+        #   - get_sensor_measodr(): the *measured* (actual) ODR from the hardware
+        #     (e.g., 26584 Hz) — more accurate, accounts for crystal tolerance
+        #   - get_sensor_odr(): the *nominal* (configured) ODR (e.g., 26667 Hz)
+        # We prefer measodr because it gives correct frequency resolution in FFT.
+        # The small difference (~0.3%) is normal hardware behavior.
         sample_rate = 0.0
+        nominal_odr = 0.0
         try:
             odr = HSDatalog.get_sensor_measodr(hsd, component)
             if odr and float(odr) > 0:
                 sample_rate = float(odr)
         except Exception:
             pass
+        # Also grab nominal ODR for reference
+        try:
+            nom = HSDatalog.get_sensor_odr(hsd, component)
+            if nom and float(nom) > 0:
+                nominal_odr = float(nom)
+        except Exception:
+            pass
         if sample_rate <= 0:
-            try:
-                odr = HSDatalog.get_sensor_odr(hsd, component)
-                if odr and float(odr) > 0:
-                    sample_rate = float(odr)
-            except Exception:
-                pass
-        if sample_rate <= 0:
-            sample_rate = 26667.0  # IIS3DWB default fallback
+            if nominal_odr > 0:
+                sample_rate = nominal_odr
+            else:
+                sample_rate = 26667.0  # IIS3DWB default fallback
 
         meta = {
             "source_folder": acq_path.name,
             "sensor": sensor_name,
             "datalog2": True,
             "odr_hz": sample_rate,
+            "nominal_odr_hz": nominal_odr if nominal_odr > 0 else sample_rate,
+            "odr_note": (
+                "odr_hz is the measured (actual) sample rate from the hardware. "
+                "nominal_odr_hz is the configured value. Small differences (~0.3%) "
+                "are normal due to crystal oscillator tolerance."
+            ),
         }
         if data_id is None:
             data_id = f"{acq_path.name}_{sensor_name}".replace(" ", "_")

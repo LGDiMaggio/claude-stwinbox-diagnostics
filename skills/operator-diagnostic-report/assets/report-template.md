@@ -83,5 +83,5 @@
 
 ---
 
-*Report generated with STWIN.box + Claude vibration diagnostics system*  
-*Sensor: STEVAL-STWINBX1 | Analysis: vibration-analysis-mcp v0.1.0*
+*Report generated automatically by Claude Edge Predictive Maintenance*  
+*Sensor: STEVAL-STWINBX1 | Firmware: FP-SNS-DATALOG2 | Analysis: vibration-analysis-mcp*
