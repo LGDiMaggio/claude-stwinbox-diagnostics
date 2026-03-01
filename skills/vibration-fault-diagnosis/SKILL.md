@@ -132,6 +132,52 @@ Use the multi-step approach above when more control or explanation is needed.
   acoustic, visual inspection) before major maintenance decisions
 - If RPM is not provided, ask for it or explicitly omit shaft-synchronous conclusions
 
+## ⛔ Mandatory Rules — Honesty About What the Data Shows
+
+### RPM and shaft-frequency analysis
+
+If `diagnose_vibration` was called **without RPM**:
+- The tool returns only basic statistics (RMS, kurtosis, crest factor) + ISO severity + spectral peaks
+- You MUST NOT add shaft-frequency fault diagnoses (unbalance, misalignment, looseness)
+  that the tool did not return
+- You MUST NOT guess RPM from spectral peaks. A dominant peak at, say, 24.5 Hz
+  does NOT mean "the shaft speed is 1470 RPM" — it could be a fan blade pass
+  frequency, an electrical frequency, a structural resonance, or many other things
+- If you observe prominent peaks and want to mention them, say:
+  "Dominant spectral peak at XX Hz — origin unknown without shaft speed information"
+
+### Bearing fault hypotheses
+
+If no bearing data was provided (no designation, no geometry, no fault frequencies):
+- The tool cannot compute BPFO/BPFI/BSF/FTF
+- You MUST NOT hypothesize bearing faults based on spectral peaks alone
+- If kurtosis or crest factor is elevated, you may note impulsive content but
+  must say: "Elevated impulsiveness may indicate bearing degradation, but
+  confirmation requires bearing fault frequency analysis with known bearing geometry"
+
+### Spectral peak interpretation without context
+
+A spectral peak is just a frequency with energy. Without knowing:
+- The shaft speed (RPM)
+- The number of fan/impeller blades
+- The gear tooth count
+- The bearing geometry
+- The electrical supply frequency
+
+…you CANNOT attribute it to a specific fault. State what was measured, not what
+you think it might mean, unless the MCP tool explicitly classified it.
+
+### Distinguish MCP tool output from general knowledge
+
+When providing recommendations or context based on your general engineering
+knowledge (e.g., ISO 1940 balancing grades, typical speed ranges for machine
+types, maintenance intervals) rather than MCP tool output, you **MUST** label it:
+
+> ⚠️ **General engineering knowledge** — not from sensor data analysis.
+
+Never present textbook knowledge as if it were a finding from the MCP analysis
+pipeline. The user must know what came from measured data vs. your training data.
+
 ## Fault Classification Script
 
 See [classify_fault.py](scripts/classify_fault.py) for the rule-based classification logic.

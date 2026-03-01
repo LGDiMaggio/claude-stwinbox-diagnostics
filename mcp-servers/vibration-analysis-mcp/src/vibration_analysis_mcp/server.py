@@ -99,6 +99,53 @@ def _compact_spectrum(freqs: np.ndarray, mags: np.ndarray, top_n: int = 20) -> d
     }
 
 
+def _accel_g_to_velocity_rms_mms(
+    signal_g: np.ndarray,
+    sample_rate: float,
+    f_low: float = 10.0,
+    f_high: float = 1000.0,
+) -> float:
+    """
+    Convert an acceleration signal (in g) to RMS velocity (in mm/s)
+    within the ISO 10816 band (default 10–1000 Hz).
+
+    Method: frequency-domain integration.
+      1. Compute FFT of acceleration in m/s²  (signal_g × 9.80665)
+      2. Band-pass 10–1000 Hz  (zero out bins outside)
+      3. Divide by j·2π·f  to get velocity spectrum  (integration)
+      4. IFFT back → velocity in m/s, then × 1000 → mm/s
+      5. Return RMS of the velocity signal
+
+    This avoids numerical drift problems of time-domain integration.
+    """
+    N = len(signal_g)
+    if N < 2:
+        return 0.0
+
+    # Acceleration in m/s²
+    accel_ms2 = signal_g * 9.80665
+
+    # FFT
+    fft_vals = np.fft.rfft(accel_ms2)
+    freqs = np.fft.rfftfreq(N, d=1.0 / sample_rate)
+
+    # Integration in frequency domain: V(f) = A(f) / (j * 2π * f)
+    # Avoid division by zero at DC
+    vel_fft = np.zeros_like(fft_vals)
+    for i in range(1, len(freqs)):
+        if f_low <= freqs[i] <= f_high:
+            vel_fft[i] = fft_vals[i] / (1j * 2.0 * np.pi * freqs[i])
+        # else: leave as zero (band-pass)
+
+    # Back to time domain
+    velocity_ms = np.fft.irfft(vel_fft, n=N)
+
+    # Convert m/s → mm/s and compute RMS
+    velocity_mms = velocity_ms * 1000.0
+    rms = float(np.sqrt(np.mean(velocity_mms**2)))
+    return rms
+
+
 # ── Signal store tools ────────────────────────────────────────────────────
 
 @mcp.tool()
@@ -639,6 +686,13 @@ def assess_vibration_severity(
 ) -> dict:
     """
     Classify vibration severity per ISO 10816.
+
+    **IMPORTANT — units**: This tool expects RMS velocity in **mm/s**
+    (millimeters per second), NOT acceleration in g. The IIS3DWB accelerometer
+    outputs acceleration. To get velocity, the acceleration signal must be
+    integrated (frequency-domain integration, band-pass 10–1000 Hz).
+    The `diagnose_vibration` tool does this conversion automatically.
+    If calling this tool directly, ensure you have already converted to mm/s.
     
     Machine groups:
         group1 – Large machines (>300 kW) on rigid foundations
@@ -648,6 +702,7 @@ def assess_vibration_severity(
     
     Args:
         rms_velocity_mm_s: Overall RMS velocity in mm/s (10–1000 Hz band).
+            Do NOT pass acceleration in g — results will be meaningless.
         machine_group: ISO 10816 machine group identifier.
     """
     return assess_iso10816(rms_velocity_mm_s, machine_group)
@@ -744,6 +799,9 @@ def diagnose_vibration(
 
     # If RPM is not provided, skip shaft-frequency analysis
     if rpm is None or rpm <= 0:
+        # Convert acceleration (g) → velocity (mm/s) for ISO 10816
+        rms_vel_mms = _accel_g_to_velocity_rms_mms(sig, sr)
+        iso_no_rpm = assess_iso10816(rms_vel_mms, machine_group)
         return {
             "warning": (
                 "RPM not provided — shaft-frequency analysis (1×, 2×, etc.) "
@@ -757,9 +815,10 @@ def diagnose_vibration(
                 "kurtosis": round(ts_kurtosis, 2),
                 "duration_s": round(len(sig) / sr, 4),
                 "sample_rate_hz": sr,
+                "rms_velocity_mm_s": round(rms_vel_mms, 3),
             },
             "fft_summary": _compact_spectrum(freqs, mags, top_n=20),
-            "iso_10816": assess_iso10816(ts_rms, machine_group),
+            "iso_10816": iso_no_rpm,
             "diagnoses": [],
             "shaft_features": None,
             "bearing_analysis": None,
@@ -767,10 +826,13 @@ def diagnose_vibration(
             "report_markdown": (
                 "## Vibration Analysis (RPM unknown)\n\n"
                 f"| Metric | Value |\n|---|---|\n"
-                f"| RMS | {ts_rms:.4f} g |\n"
-                f"| Peak | {ts_peak:.4f} g |\n"
+                f"| RMS (acceleration) | {ts_rms:.4f} g |\n"
+                f"| Peak (acceleration) | {ts_peak:.4f} g |\n"
+                f"| RMS (velocity, 10–1000 Hz) | {rms_vel_mms:.3f} mm/s |\n"
                 f"| Crest Factor | {ts_crest:.1f} |\n"
                 f"| Kurtosis | {ts_kurtosis:.1f} |\n\n"
+                f"**ISO 10816 Severity:** Zone {iso_no_rpm['iso_zone']} — "
+                f"{rms_vel_mms:.3f} mm/s RMS — {iso_no_rpm['description']}\n\n"
                 "**Note:** Shaft speed (RPM) was not provided. "
                 "Fault classification (unbalance, misalignment, looseness) "
                 "requires knowledge of the shaft frequency. "
@@ -838,11 +900,9 @@ def diagnose_vibration(
     # Step 4: Classify
     diagnoses = classify_faults(features, bearing_results)
     
-    # Step 5: ISO 10816 (approximate RMS velocity from acceleration)
-    # Very rough: integrate accel -> velocity via division by 2*pi*f
-    # Here we just report the overall RMS of the signal as-is
-    rms_overall = float(np.sqrt(np.mean(sig**2)))
-    iso = assess_iso10816(rms_overall, machine_group)
+    # Step 5: ISO 10816 — convert acceleration (g) → velocity (mm/s, 10–1000 Hz)
+    rms_vel_mms = _accel_g_to_velocity_rms_mms(sig, sr)
+    iso = assess_iso10816(rms_vel_mms, machine_group)
     
     # Step 6: Report
     report = generate_diagnosis_summary(diagnoses, iso, machine_description)

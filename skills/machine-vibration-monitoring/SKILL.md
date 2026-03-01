@@ -90,6 +90,36 @@ When a user wants to monitor a new machine, follow these steps:
 - The ISM330DHCX is suitable for general unbalance/misalignment detection
 - Temperature from STTS22H can help correlate vibration changes with thermal effects
 
+## Units of Measurement
+
+### Sensor output (IIS3DWB)
+- Raw data: int16 (signed 16-bit)
+- Sensitivity: 0.000122 g/LSB at ±16 g full-scale
+- After SDK decoding: **acceleration in g** (gravity units, 1 g = 9.80665 m/s²)
+
+### ISO 10816 assessment
+- Requires **RMS velocity in mm/s** in the 10–1000 Hz band
+- The `diagnose_vibration` tool converts acceleration (g) → velocity (mm/s)
+  automatically via frequency-domain integration
+- If using `assess_vibration_severity` directly, you **must** provide velocity
+  in mm/s — do NOT pass raw acceleration in g
+
+### Conversion chain
+1. Raw int16 × sensitivity → acceleration in g
+2. g × 9806.65 → acceleration in mm/s²
+3. Frequency-domain integration (÷ j·2π·f) + band-pass 10–1000 Hz → velocity in mm/s
+4. RMS of velocity → ISO 10816 input
+
+## ⛔ Distinguish MCP Tool Output from General Knowledge
+
+When providing information based on your general engineering knowledge
+(e.g., typical speed ranges, recommended monitoring intervals, sensor
+placement best practices) rather than MCP tool output, **MUST** label it:
+
+> ⚠️ **General engineering knowledge** — not from sensor data analysis.
+
+Never present textbook knowledge as if it came from the MCP analysis pipeline.
+
 ## ODR: Nominal vs Measured
 
 When reporting sample rate after `load_signal`, you may see a slightly different

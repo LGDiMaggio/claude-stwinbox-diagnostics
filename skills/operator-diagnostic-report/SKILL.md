@@ -21,6 +21,47 @@ You are generating diagnostic reports for maintenance teams and machine operator
 Reports must be **clear, actionable, and accessible** to people who may not have
 vibration analysis expertise.
 
+## ⛔ Data Integrity Rules — MANDATORY
+
+These rules override everything else. Violating them produces a misleading report.
+
+### NEVER invent metadata the user has not provided
+
+- **Machine name**: Use the value the user stated. If unknown → write "Not specified".
+- **Machine location**: Use the value the user stated. If unknown → write "Not specified".
+- **Operator / analyst name**: Use the value the user stated. If unknown → omit the field.
+- **RPM / shaft speed**: Use the value the user stated **or** the value returned by
+  `diagnose_vibration`. If unknown → write "Unknown — not provided by operator".
+- **Bearing type**: Only include if the user provided a bearing designation or geometry.
+
+Do NOT fill template placeholders (`{machine_location}`, `{machine_name}`, etc.)
+with guessed or hallucinated values. If a placeholder has no data, replace it
+with "Not specified" or remove the row entirely.
+
+### NEVER present hypotheses as confirmed findings
+
+If `diagnose_vibration` was called **without RPM**, the tool cannot identify
+shaft-frequency faults (unbalance, misalignment, looseness). The report must:
+1. State clearly: "Shaft speed was not provided; shaft-frequency analysis was not performed."
+2. Report only the data the tool actually returned (RMS, kurtosis, crest factor, ISO severity, spectral peaks).
+3. NOT add fault diagnoses that the tool did not produce (e.g. do not write
+   "possible unbalance" if the tool never returned an unbalance diagnosis).
+
+If bearing data was not provided, do NOT add bearing fault hypotheses.
+
+### Distinguish MCP tool output from general knowledge
+
+When including information based on your general engineering knowledge
+(e.g. typical RPM ranges, ISO 1940 balancing grades, common maintenance
+procedures) rather than MCP tool output, you **MUST** clearly label it:
+
+> ⚠️ **Note — general engineering knowledge**: This recommendation is based on
+> standard engineering practice, not on data from the MCP analysis tools.
+
+Never present general knowledge as if it were a finding from sensor data analysis.
+
+---
+
 ## Tools Used for Report Data
 
 The report is generated from the output of these analysis tools:
@@ -154,6 +195,64 @@ table.setStyle(TableStyle([
 3. **Use `VALIGN=TOP`** so multi-line cells align properly
 4. Use the page width (letter = 7.5 inch usable) to calculate proportional widths
 5. For the findings table: col widths ≈ [0.3, 2.5, 0.8, 0.8, 2.5] inches
+
+### Section 5 — Detailed Findings Tables (CRITICAL)
+
+The "Detailed Findings" section generates the worst layout problems because each
+finding has long descriptive text. Apply **all** of these rules:
+
+```python
+from reportlab.lib import colors
+
+# 1. Header cells: dark background + white bold text for contrast
+header_style = ParagraphStyle("TableHeader", parent=styles["BodyText"],
+                              textColor=colors.white, fontName="Helvetica-Bold",
+                              fontSize=9)
+body_style = ParagraphStyle("TableBody", parent=styles["BodyText"],
+                            fontSize=8, leading=10)
+
+# 2. EVERY cell must be a Paragraph — no plain strings
+header_row = [
+    Paragraph("#", header_style),
+    Paragraph("Finding", header_style),
+    Paragraph("Severity", header_style),
+    Paragraph("Confidence", header_style),
+    Paragraph("Action Required", header_style),
+]
+data_row = [
+    Paragraph("1", body_style),
+    Paragraph("Impulsive axial vibration detected…", body_style),
+    Paragraph("Monitor", body_style),
+    Paragraph("Medium", body_style),
+    Paragraph("Schedule bearing inspection within 30 days", body_style),
+]
+
+# 3. Explicit column widths (must sum ≤ 7.5 inches)
+col_widths = [0.3*inch, 2.3*inch, 0.7*inch, 0.7*inch, 2.5*inch]
+
+table = Table([header_row, data_row], colWidths=col_widths)
+table.setStyle(TableStyle([
+    # Dark header row
+    ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#2C3E50")),
+    ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+    # Alternating row shading for readability
+    ("BACKGROUND", (0, 1), (-1, -1), colors.HexColor("#F8F9FA")),
+    ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor("#F2F3F4")]),
+    # Grid and alignment
+    ("GRID", (0, 0), (-1, -1), 0.5, colors.grey),
+    ("VALIGN", (0, 0), (-1, -1), "TOP"),
+    ("WORDWRAP", (0, 0), (-1, -1), True),
+    ("TOPPADDING", (0, 0), (-1, -1), 4),
+    ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+]))
+```
+
+**Common mistakes to avoid in Section 5:**
+- ❌ Plain strings in cells → text overflows into adjacent columns
+- ❌ No header background → header indistinguishable from body
+- ❌ Missing `colWidths` → columns auto-size and overflow the page
+- ❌ No grid lines → rows blend together
+- ❌ Font size too large → text wraps excessively or overflows
 
 ### Report Footer
 
