@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Claude Edge Diagnostics — AI-Powered Predictive Maintenance</title>
-  <meta name="description" content="Open-source reference architecture connecting industrial MEMS sensors to LLM-based diagnostic assistants via the Model Context Protocol (MCP).">
+  <title>Claude Edge Predictive Maintenance</title>
+  <meta name="description" content="Open-source reference architecture connecting industrial IoT sensors to LLM-based diagnostic assistants via the Model Context Protocol (MCP).">
   <meta name="author" content="Luigi Gianpio Di Maggio">
-  <meta name="keywords" content="predictive maintenance, vibration analysis, MCP, Claude, STWIN.box, MEMS, LLM, condition monitoring, bearing fault detection">
+  <meta name="keywords" content="predictive maintenance, vibration analysis, MCP, Claude, STWIN.box, IoT, LLM, condition monitoring, bearing fault detection">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Claude Edge Diagnostics">
-  <meta property="og:description" content="Bridging Industrial MEMS Sensors and Large Language Models for Predictive Maintenance">
+  <meta property="og:title" content="Claude Edge Predictive Maintenance">
+  <meta property="og:description" content="Bridging Industrial IoT Sensors and Large Language Models for Predictive Maintenance">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://lgdimaggio.github.io/claude-stwinbox-diagnostics/">
   <meta property="og:image" content="https://lgdimaggio.github.io/claude-stwinbox-diagnostics/images/claude-stwinbox-diagnostics.png">
@@ -61,7 +61,7 @@
     .delay-500 { animation-delay: .5s; }
 
     /* Glass morphism */
-    .glass { background: rgba(255,255,255,.05); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,.08); }
+    .glass { background: rgba(255,255,255,.06); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,.1); }
 
     /* Gradient text */
     .gradient-text { background: linear-gradient(135deg, #36a5fa, #3CB4A4, #facc15); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
@@ -70,7 +70,7 @@
     .grid-bg { background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,.03) 1px, transparent 0); background-size: 40px 40px; }
 
     /* Code block */
-    .code-block { background: rgba(0,0,0,.4); border: 1px solid rgba(255,255,255,.1); border-radius: .75rem; }
+    .code-block { background: rgba(0,0,0,.4); border: 1px solid rgba(255,255,255,.12); border-radius: .75rem; }
 
     /* Intersection Observer reveal */
     .reveal { opacity: 0; transform: translateY(30px); transition: all .7s ease-out; }
@@ -93,7 +93,7 @@
   </style>
 </head>
 
-<body class="bg-brand-dark text-gray-200 font-sans antialiased overflow-x-hidden">
+<body class="bg-brand-dark text-gray-100 font-sans antialiased overflow-x-hidden">
 
   <!-- ============================================ -->
   <!-- NAVBAR -->
@@ -102,13 +102,13 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
       <a href="#" class="flex items-center gap-2 text-white font-bold text-lg">
         <span class="text-2xl">⚙️</span>
-        <span class="hidden sm:inline">Claude Edge Diagnostics</span>
+        <span class="hidden sm:inline">Claude Edge Predictive Maintenance</span>
       </a>
       <div class="flex items-center gap-6 text-sm font-medium">
-        <a href="#features" class="text-gray-400 hover:text-white transition-colors">Features</a>
-        <a href="#architecture" class="text-gray-400 hover:text-white transition-colors">Architecture</a>
-        <a href="#demo" class="text-gray-400 hover:text-white transition-colors">Demo</a>
-        <a href="#quickstart" class="text-gray-400 hover:text-white transition-colors">Quick Start</a>
+        <a href="#features" class="text-gray-300 hover:text-white transition-colors">Features</a>
+        <a href="#architecture" class="text-gray-300 hover:text-white transition-colors">Architecture</a>
+        <a href="#demo" class="text-gray-300 hover:text-white transition-colors">Demo</a>
+        <a href="#quickstart" class="text-gray-300 hover:text-white transition-colors">Quick Start</a>
         <a href="https://github.com/LGDiMaggio/claude-stwinbox-diagnostics" target="_blank" class="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors">
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
           GitHub
@@ -128,85 +128,90 @@
     <div class="relative max-w-5xl mx-auto px-4 text-center">
       <!-- Badges -->
       <div class="flex flex-wrap justify-center gap-3 mb-8 animate-fade-in">
-        <a href="https://doi.org/10.5281/zenodo.18808856" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-brand-600/20 text-brand-300 border border-brand-500/20 hover:bg-brand-600/30 transition-colors">
+        <a href="https://doi.org/10.5281/zenodo.18808856" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium bg-brand-600/20 text-brand-300 border border-brand-500/20 hover:bg-brand-600/30 transition-colors">
           <span>📄</span> DOI: 10.5281/zenodo.18808856
         </a>
-        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-500/20 text-green-300 border border-green-500/20">
+        <span class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-green-500/20 text-green-300 border border-green-500/20">
           MCP 1.0
         </span>
-        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-500/20 text-orange-300 border border-orange-500/20">
+        <span class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-orange-500/20 text-orange-300 border border-orange-500/20">
           Claude Skills
         </span>
-        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-500/20 text-purple-300 border border-purple-500/20">
+        <span class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-purple-500/20 text-purple-300 border border-purple-500/20">
           v0.2.0
         </span>
       </div>
 
       <h1 class="text-5xl sm:text-7xl font-black tracking-tight mb-6 animate-slide-up">
         <span class="gradient-text">Claude Edge</span><br>
-        <span class="text-white">Diagnostics</span>
+        <span class="text-white">Predictive Maintenance</span>
       </h1>
 
-      <p class="text-xl sm:text-2xl text-gray-400 max-w-3xl mx-auto mb-4 animate-slide-up delay-100">
-        Bridging Industrial MEMS Sensors and Large Language Models<br class="hidden sm:block"> for Predictive Maintenance
+      <p class="text-2xl sm:text-3xl text-gray-300 max-w-3xl mx-auto mb-4 animate-slide-up delay-100">
+        Bridging Industrial IoT Sensors and Large Language Models<br class="hidden sm:block"> for Predictive Maintenance
       </p>
 
-      <p class="text-base text-gray-500 max-w-2xl mx-auto mb-10 animate-slide-up delay-200">
-        An open-source reference architecture connecting the STEVAL-STWINBX1 sensor node to Claude via the Model Context Protocol. Ask your machine how it's feeling — in natural language.
+      <p class="text-lg text-gray-400 max-w-2xl mx-auto mb-10 animate-slide-up delay-200">
+        An open-source reference architecture connecting the STEVAL-STWINBX1 sensor node to Claude via the Model Context Protocol. Ask your machine how it's feeling, in natural language.
       </p>
 
       <div class="flex flex-wrap justify-center gap-4 animate-slide-up delay-300">
-        <a href="https://github.com/LGDiMaggio/claude-stwinbox-diagnostics" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-semibold transition-all hover:scale-105 shadow-lg shadow-brand-500/25">
+        <a href="https://github.com/LGDiMaggio/claude-stwinbox-diagnostics" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-semibold text-lg transition-all hover:scale-105 shadow-lg shadow-brand-500/25">
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
           View on GitHub
         </a>
-        <a href="#demo" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 text-white font-semibold border border-white/10 transition-all hover:scale-105">
+        <a href="#demo" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 text-white font-semibold text-lg border border-white/10 transition-all hover:scale-105">
           ▶ Watch Demo
         </a>
       </div>
 
       <!-- Scroll indicator -->
       <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-float">
-        <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+        <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
       </div>
     </div>
   </section>
 
   <!-- ============================================ -->
-  <!-- WHAT IT DOES (one-liner cards) -->
+  <!-- HOW IT WORKS -->
   <!-- ============================================ -->
   <section class="py-24 px-4 relative">
     <div class="max-w-6xl mx-auto">
       <div class="text-center mb-16 reveal">
-        <p class="text-brand-400 font-semibold text-sm uppercase tracking-wider mb-2">How it works</p>
-        <h2 class="text-4xl font-bold text-white">Sensor → AI → Action</h2>
+        <p class="text-brand-400 font-semibold text-base uppercase tracking-wider mb-3">How it works</p>
+        <h2 class="text-4xl sm:text-5xl font-bold text-white">Sensor &rarr; AI &rarr; Action</h2>
+      </div>
+
+      <!-- System overview image -->
+      <div class="reveal mb-16">
+        <img src="images/claude-stwinbox-diagnostics.png" alt="Claude Edge Predictive Maintenance system overview" class="w-full max-w-4xl mx-auto rounded-2xl border border-white/10 shadow-2xl shadow-brand-500/10">
       </div>
 
       <div class="grid md:grid-cols-3 gap-6">
-        <!-- Card 1 -->
+        <!-- Card 1: Acquire -->
         <div class="reveal glass rounded-2xl p-8 hover:border-brand-500/30 transition-all group">
           <div class="w-14 h-14 rounded-xl bg-brand-500/10 flex items-center justify-center text-3xl mb-5 group-hover:scale-110 transition-transform">📡</div>
-          <h3 class="text-xl font-bold text-white mb-3">Acquire</h3>
-          <p class="text-gray-400 leading-relaxed">Connect the STWIN.box via USB. Claude controls the IIS3DWB wideband accelerometer (26.7 kHz) — acquires vibration data with a single chat message.</p>
-          <div class="mt-4 font-mono text-xs text-brand-400 code-block px-3 py-2">
+          <h3 class="text-2xl font-bold text-white mb-3">Acquire</h3>
+          <p class="text-base text-gray-300 leading-relaxed">Connect the STWIN.box via USB. Claude controls the IIS3DWB wideband accelerometer at 26.7 kHz and acquires vibration data with a single chat message.</p>
+          <div class="mt-4 font-mono text-sm text-brand-400 code-block px-4 py-2">
             datalog2_start_acquisition(duration_s=5)
           </div>
         </div>
-        <!-- Card 2 -->
+        <!-- Card 2: Analyze -->
         <div class="reveal delay-200 glass rounded-2xl p-8 hover:border-st-teal/30 transition-all group">
           <div class="w-14 h-14 rounded-xl bg-st-teal/10 flex items-center justify-center text-3xl mb-5 group-hover:scale-110 transition-transform">📊</div>
-          <h3 class="text-xl font-bold text-white mb-3">Analyze</h3>
-          <p class="text-gray-400 leading-relaxed">Full DSP pipeline: FFT, PSD, envelope analysis (Hilbert), bearing fault detection (BPFO/BPFI/BSF/FTF), ISO 10816 severity — all server-side.</p>
-          <div class="mt-4 font-mono text-xs text-st-teal code-block px-3 py-2">
+          <h3 class="text-2xl font-bold text-white mb-3">Analyze</h3>
+          <p class="text-base text-gray-300 leading-relaxed">Full DSP pipeline including FFT, PSD, envelope analysis via Hilbert transform, bearing fault detection (BPFO, BPFI, BSF, FTF) and ISO 10816 severity.</p>
+          <div class="mt-4 font-mono text-sm text-st-teal code-block px-4 py-2">
             diagnose_vibration(rpm=1470, bearing="6205")
           </div>
         </div>
-        <!-- Card 3 -->
+        <!-- Card 3: Report -->
         <div class="reveal delay-400 glass rounded-2xl p-8 hover:border-accent-400/30 transition-all group">
           <div class="w-14 h-14 rounded-xl bg-accent-400/10 flex items-center justify-center text-3xl mb-5 group-hover:scale-110 transition-transform">📋</div>
-          <h3 class="text-xl font-bold text-white mb-3">Report</h3>
-          <p class="text-gray-400 leading-relaxed">Claude generates operator-friendly reports with traffic-light severity, fault evidence, confidence levels, and actionable maintenance recommendations.</p>
-          <div class="mt-4 font-mono text-xs text-accent-400 code-block px-3 py-2">
+          <h3 class="text-2xl font-bold text-white mb-3">Report</h3>
+          <p class="text-base text-gray-300 leading-relaxed">Claude generates operator-friendly reports with traffic-light severity, fault evidence, confidence levels and actionable maintenance recommendations.</p>
+          <div class="mt-4 font-mono text-sm text-accent-400 code-block px-4 py-2">
             🟢 Good &nbsp; 🟡 Monitor &nbsp; 🟠 Alarm &nbsp; 🔴 Danger
           </div>
         </div>
@@ -221,47 +226,47 @@
     <div class="absolute inset-0 bg-gradient-to-b from-transparent via-brand-800/20 to-transparent"></div>
     <div class="relative max-w-6xl mx-auto">
       <div class="text-center mb-16 reveal">
-        <p class="text-st-teal font-semibold text-sm uppercase tracking-wider mb-2">Capabilities</p>
-        <h2 class="text-4xl font-bold text-white">Full Diagnostic Toolkit</h2>
+        <p class="text-st-teal font-semibold text-base uppercase tracking-wider mb-3">What you get</p>
+        <h2 class="text-4xl sm:text-5xl font-bold text-white">A Complete Diagnostic Toolkit</h2>
+        <p class="text-lg text-gray-300 mt-4 max-w-2xl mx-auto">Everything you need to go from raw sensor data to actionable maintenance insights, powered by 36 purpose-built MCP tools.</p>
       </div>
 
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        <!-- Feature items -->
-        <div class="reveal glass rounded-xl p-6 flex gap-4 items-start">
-          <span class="text-2xl shrink-0">🔬</span>
-          <div><h4 class="font-semibold text-white mb-1">FFT & PSD</h4><p class="text-sm text-gray-400">Spectral analysis with Hann/Hamming/Blackman windowing, peak detection</p></div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
+          <span class="text-3xl shrink-0">🔬</span>
+          <div><h4 class="text-lg font-semibold text-white mb-2">Spectral Intelligence</h4><p class="text-base text-gray-300">Instantly identify frequency signatures with FFT and Power Spectral Density, using Hann, Hamming or Blackman windowing and automatic peak detection.</p></div>
         </div>
-        <div class="reveal glass rounded-xl p-6 flex gap-4 items-start">
-          <span class="text-2xl shrink-0">🎯</span>
-          <div><h4 class="font-semibold text-white mb-1">Envelope Analysis</h4><p class="text-sm text-gray-400">Hilbert-transform envelope spectrum for early-stage bearing defects</p></div>
+        <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
+          <span class="text-3xl shrink-0">🎯</span>
+          <div><h4 class="text-lg font-semibold text-white mb-2">Envelope Analysis</h4><p class="text-base text-gray-300">Detect early-stage rolling element defects before they become critical, using Hilbert-transform envelope spectra to reveal hidden fault patterns.</p></div>
         </div>
-        <div class="reveal glass rounded-xl p-6 flex gap-4 items-start">
-          <span class="text-2xl shrink-0">⚙️</span>
-          <div><h4 class="font-semibold text-white mb-1">Bearing Database</h4><p class="text-sm text-gray-400">Built-in bearing catalog + custom geometry + direct frequency input from manufacturer catalogs</p></div>
+        <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
+          <span class="text-3xl shrink-0">⚙️</span>
+          <div><h4 class="text-lg font-semibold text-white mb-2">Bearing Database</h4><p class="text-base text-gray-300">Built-in catalog of common bearing models, plus support for custom geometry and direct frequency input from manufacturer datasheets.</p></div>
         </div>
-        <div class="reveal glass rounded-xl p-6 flex gap-4 items-start">
-          <span class="text-2xl shrink-0">🩺</span>
-          <div><h4 class="font-semibold text-white mb-1">Fault Classification</h4><p class="text-sm text-gray-400">Unbalance, misalignment, looseness, bearing defects — with confidence levels</p></div>
+        <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
+          <span class="text-3xl shrink-0">🩺</span>
+          <div><h4 class="text-lg font-semibold text-white mb-2">Intelligent Fault Classification</h4><p class="text-base text-gray-300">Automatically identify unbalance, misalignment, looseness and bearing defects with confidence levels, so you know exactly what to fix first.</p></div>
         </div>
-        <div class="reveal glass rounded-xl p-6 flex gap-4 items-start">
-          <span class="text-2xl shrink-0">📏</span>
-          <div><h4 class="font-semibold text-white mb-1">ISO 10816</h4><p class="text-sm text-gray-400">Standards-based severity classification (Zone A–D, 4 machine groups)</p></div>
+        <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
+          <span class="text-3xl shrink-0">📏</span>
+          <div><h4 class="text-lg font-semibold text-white mb-2">ISO 10816 Compliance</h4><p class="text-base text-gray-300">Industry-standard vibration severity classification across Zones A through D and 4 machine groups. Speak the same language as your maintenance team.</p></div>
         </div>
-        <div class="reveal glass rounded-xl p-6 flex gap-4 items-start">
-          <span class="text-2xl shrink-0">🧠</span>
-          <div><h4 class="font-semibold text-white mb-1">Claude Skills</h4><p class="text-sm text-gray-400">3 domain-expert skills guide Claude through monitoring, diagnosis, and reporting workflows</p></div>
+        <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
+          <span class="text-3xl shrink-0">🧠</span>
+          <div><h4 class="text-lg font-semibold text-white mb-2">Domain Expert Skills</h4><p class="text-base text-gray-300">Three pre-built Claude Skills encode real-world diagnostic expertise: monitoring, diagnosis and reporting. Claude thinks like an experienced vibration analyst.</p></div>
         </div>
-        <div class="reveal glass rounded-xl p-6 flex gap-4 items-start">
-          <span class="text-2xl shrink-0">💾</span>
-          <div><h4 class="font-semibold text-white mb-1">Server-Side Store</h4><p class="text-sm text-gray-400">378K+ samples stored server-side — AI sees only compact summaries, never raw arrays</p></div>
+        <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
+          <span class="text-3xl shrink-0">💾</span>
+          <div><h4 class="text-lg font-semibold text-white mb-2">Smart Data Handling</h4><p class="text-base text-gray-300">Over 378,000 samples per acquisition are stored server-side. The AI receives only compact summaries, keeping conversations fast and context-efficient.</p></div>
         </div>
-        <div class="reveal glass rounded-xl p-6 flex gap-4 items-start">
-          <span class="text-2xl shrink-0">⏱️</span>
-          <div><h4 class="font-semibold text-white mb-1">Timed Acquisition</h4><p class="text-sm text-gray-400">Server-side timer eliminates orchestration latency — exact duration, every time</p></div>
+        <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
+          <span class="text-3xl shrink-0">⏱️</span>
+          <div><h4 class="text-lg font-semibold text-white mb-2">Precise Acquisition Control</h4><p class="text-base text-gray-300">Server-side timers eliminate orchestration latency. Request exactly the duration you need, from milliseconds to minutes, with guaranteed precision.</p></div>
         </div>
-        <div class="reveal glass rounded-xl p-6 flex gap-4 items-start">
-          <span class="text-2xl shrink-0">🔌</span>
-          <div><h4 class="font-semibold text-white mb-1">36 MCP Tools</h4><p class="text-sm text-gray-400">22 sensor tools + 14 analysis tools — full programmatic control over USB-HID</p></div>
+        <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
+          <span class="text-3xl shrink-0">🔌</span>
+          <div><h4 class="text-lg font-semibold text-white mb-2">36 MCP Tools</h4><p class="text-base text-gray-300">22 sensor control tools and 14 analysis tools give Claude full programmatic control of the hardware through standard USB connectivity.</p></div>
         </div>
       </div>
     </div>
@@ -273,46 +278,17 @@
   <section id="architecture" class="py-24 px-4">
     <div class="max-w-6xl mx-auto">
       <div class="text-center mb-16 reveal">
-        <p class="text-brand-400 font-semibold text-sm uppercase tracking-wider mb-2">System Design</p>
-        <h2 class="text-4xl font-bold text-white">Architecture</h2>
+        <p class="text-brand-400 font-semibold text-base uppercase tracking-wider mb-3">Under the hood</p>
+        <h2 class="text-4xl sm:text-5xl font-bold text-white">Architecture</h2>
       </div>
 
-      <div class="reveal glass rounded-2xl p-8 lg:p-12 overflow-x-auto">
-        <pre class="font-mono text-sm text-gray-300 leading-relaxed"><code>┌───────────────────────────────────────────────────────────┐
-│                   <span class="text-brand-400 font-bold">Claude Desktop</span> (LLM Host)                │
-│                                                           │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐    │
-│  │ <span class="text-st-teal">monitoring</span>   │  │ <span class="text-st-teal">diagnosis</span>    │  │ <span class="text-st-teal">reporting</span>    │    │
-│  │  Skill       │  │  Skill       │  │  Skill       │    │
-│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘    │
-│         └────────┬────────┴────────┬────────┘             │
-│         ┌────────▼─────────────────▼────────┐             │
-│         │      <span class="text-accent-400">MCP Client</span> (Claude Runtime)     │             │
-│         └──────┬───────────────────┬────────┘             │
-└────────────────┼───────────────────┼──────────────────────┘
-      <span class="text-gray-500">STDIO</span>      │                   │  <span class="text-gray-500">STDIO</span>
-  ┌──────────────▼────────┐  ┌──────▼──────────────────┐
-  │  <span class="text-brand-300">stwinbox-sensor-mcp</span>  │  │  <span class="text-brand-300">vibration-analysis-mcp</span> │
-  │  <span class="text-gray-500">22 tools</span>             │  │  <span class="text-gray-500">14 tools + 1 resource</span>  │
-  │                       │  │                         │
-  │  USB-HID / PnPL       │  │  FFT, PSD, STFT         │
-  │  Sensor config        │  │  Envelope (Hilbert)     │
-  │  DATALOG2 control     │  │  Bearing frequencies    │
-  │  Timed acquisition    │  │  Fault classification   │
-  │                       │  │  ISO 10816 severity     │
-  └──────────┬────────────┘  │  Server-side data store │
-             │               └─────────────────────────┘
-             │ <span class="text-gray-500">USB-HID</span>
-  ┌──────────▼────────────┐
-  │  <span class="text-accent-400 font-bold">STEVAL-STWINBX1</span>      │
-  │  FP-SNS-DATALOG2 v3.2 │
-  │                       │
-  │  <span class="text-st-teal">IIS3DWB</span>    26.7 kHz   │  ← Wideband vibration
-  │  <span class="text-st-teal">ISM330DHCX</span> 6.7 kHz    │  ← IMU + ML Core
-  │  <span class="text-st-teal">IMP23ABSU</span>  80 kHz     │  ← Microphone
-  │  <span class="text-st-teal">STTS22H</span>    ±0.5°C     │  ← Temperature
-  │  <span class="text-st-teal">ILPS22QS</span>   up to 4bar │  ← Pressure
-  └───────────────────────┘</code></pre>
+      <div class="reveal grid md:grid-cols-2 gap-6">
+        <div class="glass rounded-2xl p-4 overflow-hidden">
+          <img src="images/claude-stwinbox-diagnostics_2.png" alt="System architecture diagram" class="w-full rounded-xl">
+        </div>
+        <div class="glass rounded-2xl p-4 overflow-hidden">
+          <img src="images/claude-stwinbox-diagnostics_3.png" alt="Data flow and processing pipeline" class="w-full rounded-xl">
+        </div>
       </div>
     </div>
   </section>
@@ -324,80 +300,143 @@
     <div class="absolute inset-0 bg-gradient-to-b from-transparent via-brand-800/20 to-transparent"></div>
     <div class="relative max-w-4xl mx-auto">
       <div class="text-center mb-12 reveal">
-        <p class="text-accent-400 font-semibold text-sm uppercase tracking-wider mb-2">See it in action</p>
-        <h2 class="text-4xl font-bold text-white">Demo</h2>
+        <p class="text-accent-400 font-semibold text-base uppercase tracking-wider mb-3">See it in action</p>
+        <h2 class="text-4xl sm:text-5xl font-bold text-white">Demo</h2>
       </div>
 
       <div class="reveal">
-        <!-- YouTube embed — replace YOUR_VIDEO_ID with actual ID -->
+        <!-- YouTube embed -->
         <div id="video-container" class="relative aspect-video rounded-2xl overflow-hidden glass">
           <!-- Placeholder (shown when no video ID yet) -->
           <div id="video-placeholder" class="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-brand-900/80 to-st-blue/80 video-pulse">
             <div class="w-20 h-20 rounded-full bg-white/10 flex items-center justify-center mb-6 hover:bg-white/20 transition-colors cursor-pointer">
               <svg class="w-10 h-10 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
             </div>
-            <p class="text-gray-400 text-lg font-medium">Demo video coming soon</p>
-            <p class="text-gray-500 text-sm mt-1">Live acquisition from STWIN.box → AI diagnosis in real-time</p>
+            <p class="text-gray-300 text-xl font-medium">Demo video coming soon</p>
+            <p class="text-gray-400 text-base mt-2">Live acquisition from STWIN.box with AI diagnosis in real-time</p>
           </div>
           <!-- Actual iframe (hidden until video ID is set) -->
           <iframe id="video-iframe" class="absolute inset-0 w-full h-full hidden" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
-
-        <p class="text-center text-gray-500 text-sm mt-4">
-          Split-screen: sensor on the machine (left) • Claude chat session (right)
-        </p>
       </div>
     </div>
   </section>
 
   <!-- ============================================ -->
-  <!-- CONVERSATION EXAMPLE -->
+  <!-- CONVERSATION EXAMPLES -->
   <!-- ============================================ -->
   <section class="py-24 px-4">
-    <div class="max-w-3xl mx-auto">
-      <div class="text-center mb-12 reveal">
-        <p class="text-st-teal font-semibold text-sm uppercase tracking-wider mb-2">Natural Language Interface</p>
-        <h2 class="text-4xl font-bold text-white">Talk to Your Machine</h2>
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-16 reveal">
+        <p class="text-st-teal font-semibold text-base uppercase tracking-wider mb-3">Natural Language Interface</p>
+        <h2 class="text-4xl sm:text-5xl font-bold text-white">Talk to Your Machine</h2>
+        <p class="text-lg text-gray-300 mt-4 max-w-2xl mx-auto">No scripting, no dashboards. Just describe what you need and Claude handles the rest.</p>
       </div>
 
-      <div class="reveal space-y-4">
-        <!-- User message -->
-        <div class="flex justify-end">
-          <div class="max-w-sm bg-brand-600 rounded-2xl rounded-br-md px-5 py-3 text-white text-sm">
-            Connect to my STWIN.box and check vibration on the pump
+      <!-- Example cards -->
+      <div class="reveal grid md:grid-cols-2 gap-6">
+
+        <!-- Example 1: Quick Health Check -->
+        <div class="glass rounded-2xl p-6">
+          <div class="flex items-center gap-2 mb-5">
+            <span class="text-xl">💬</span>
+            <h4 class="text-lg font-semibold text-white">Quick Health Check</h4>
           </div>
-        </div>
-        <!-- Claude response -->
-        <div class="flex justify-start">
-          <div class="max-w-md glass rounded-2xl rounded-bl-md px-5 py-4 text-sm space-y-2">
-            <p class="text-gray-300">Connected to STEVAL-STWINBX1 ✓</p>
-            <p class="text-gray-300">Acquiring 5s from IIS3DWB at 26,667 Hz...</p>
-            <p class="text-gray-300">Loaded 378,003 samples (3 axes) ✓</p>
-            <p class="text-gray-300">Running full diagnosis...</p>
-            <div class="mt-3 p-3 rounded-lg bg-green-500/10 border border-green-500/20">
-              <p class="text-green-400 font-semibold">🟢 ISO 10816: Zone A — Good</p>
-              <p class="text-gray-400 text-xs mt-1">RMS: 0.089g • Kurtosis: 3.03 • No bearing faults detected</p>
+          <div class="space-y-3">
+            <div class="flex justify-end">
+              <div class="bg-brand-600 rounded-2xl rounded-br-sm px-4 py-2.5 text-white text-base max-w-xs">
+                Connect to my STWIN.box and check the vibration on the pump
+              </div>
+            </div>
+            <div class="flex justify-start">
+              <div class="bg-white/5 border border-white/10 rounded-2xl rounded-bl-sm px-4 py-3 text-base max-w-sm">
+                <p class="text-gray-200">Connected to STEVAL-STWINBX1 ✓</p>
+                <p class="text-gray-300 mt-1">Acquiring 5 s from IIS3DWB at 26,667 Hz...</p>
+                <p class="text-gray-200 mt-1">Loaded 133,335 samples ✓</p>
+                <div class="mt-3 p-3 rounded-lg bg-green-500/10 border border-green-500/20">
+                  <p class="text-green-400 font-semibold text-base">🟢 ISO 10816: Zone A</p>
+                  <p class="text-gray-300 text-sm mt-1">RMS velocity: 0.71 mm/s · No faults detected</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <!-- User message -->
-        <div class="flex justify-end">
-          <div class="max-w-xs bg-brand-600 rounded-2xl rounded-br-md px-5 py-3 text-white text-sm">
-            Generate a report for maintenance
+
+        <!-- Example 2: Bearing Diagnosis -->
+        <div class="glass rounded-2xl p-6">
+          <div class="flex items-center gap-2 mb-5">
+            <span class="text-xl">🔍</span>
+            <h4 class="text-lg font-semibold text-white">Bearing Diagnosis</h4>
+          </div>
+          <div class="space-y-3">
+            <div class="flex justify-end">
+              <div class="bg-brand-600 rounded-2xl rounded-br-sm px-4 py-2.5 text-white text-base max-w-xs">
+                Run a full bearing diagnosis. The motor runs at 1470 RPM with 6205 bearings.
+              </div>
+            </div>
+            <div class="flex justify-start">
+              <div class="bg-white/5 border border-white/10 rounded-2xl rounded-bl-sm px-4 py-3 text-base max-w-sm">
+                <p class="text-gray-200">Running envelope analysis with Hilbert transform...</p>
+                <p class="text-gray-200 mt-1">Checking BPFO, BPFI, BSF, FTF frequencies...</p>
+                <div class="mt-3 p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
+                  <p class="text-yellow-400 font-semibold text-base">🟡 Outer race defect suspected</p>
+                  <p class="text-gray-300 text-sm mt-1">BPFO peak at 89.4 Hz (expected 89.8 Hz) · Confidence: 72%</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <!-- Claude response -->
-        <div class="flex justify-start">
-          <div class="max-w-md glass rounded-2xl rounded-bl-md px-5 py-4 text-sm">
-            <p class="text-gray-300">📋 Diagnostic report generated with:</p>
-            <ul class="text-gray-400 text-xs mt-2 space-y-1 ml-4 list-disc">
-              <li>Executive summary & severity</li>
-              <li>Measurement details (sensor, ODR, duration)</li>
-              <li>Findings table with confidence levels</li>
-              <li>Recommendations & next steps</li>
-            </ul>
+
+        <!-- Example 3: Maintenance Report -->
+        <div class="glass rounded-2xl p-6">
+          <div class="flex items-center gap-2 mb-5">
+            <span class="text-xl">📋</span>
+            <h4 class="text-lg font-semibold text-white">Maintenance Report</h4>
+          </div>
+          <div class="space-y-3">
+            <div class="flex justify-end">
+              <div class="bg-brand-600 rounded-2xl rounded-br-sm px-4 py-2.5 text-white text-base max-w-xs">
+                Generate a maintenance report for the operations team
+              </div>
+            </div>
+            <div class="flex justify-start">
+              <div class="bg-white/5 border border-white/10 rounded-2xl rounded-bl-sm px-4 py-3 text-base max-w-sm">
+                <p class="text-gray-200">📋 Diagnostic report ready:</p>
+                <ul class="text-gray-300 mt-2 space-y-1.5 ml-4 list-disc text-sm">
+                  <li>Executive summary with severity level</li>
+                  <li>Sensor configuration and measurement details</li>
+                  <li>Findings with evidence and confidence</li>
+                  <li>Recommended actions and timeline</li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
+
+        <!-- Example 4: Signal Exploration -->
+        <div class="glass rounded-2xl p-6">
+          <div class="flex items-center gap-2 mb-5">
+            <span class="text-xl">📊</span>
+            <h4 class="text-lg font-semibold text-white">Signal Exploration</h4>
+          </div>
+          <div class="space-y-3">
+            <div class="flex justify-end">
+              <div class="bg-brand-600 rounded-2xl rounded-br-sm px-4 py-2.5 text-white text-base max-w-xs">
+                Show me the FFT spectrum of the last acquisition, focused on 0 to 1000 Hz
+              </div>
+            </div>
+            <div class="flex justify-start">
+              <div class="bg-white/5 border border-white/10 rounded-2xl rounded-bl-sm px-4 py-3 text-base max-w-sm">
+                <p class="text-gray-200">FFT computed (133,335 points, Hann window)</p>
+                <p class="text-gray-300 mt-1">Dominant peaks identified:</p>
+                <p class="text-gray-300 text-sm mt-2">· 24.5 Hz (1×RPM, 0.042 g)</p>
+                <p class="text-gray-300 text-sm">· 49.0 Hz (2×RPM, 0.018 g)</p>
+                <p class="text-gray-300 text-sm">· 89.4 Hz (BPFO, 0.011 g)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -409,18 +448,18 @@
     <div class="absolute inset-0 bg-gradient-to-b from-transparent via-brand-800/20 to-transparent"></div>
     <div class="relative max-w-4xl mx-auto">
       <div class="text-center mb-12 reveal">
-        <p class="text-brand-400 font-semibold text-sm uppercase tracking-wider mb-2">Get Started</p>
-        <h2 class="text-4xl font-bold text-white">Quick Start</h2>
+        <p class="text-brand-400 font-semibold text-base uppercase tracking-wider mb-3">Get Started</p>
+        <h2 class="text-4xl sm:text-5xl font-bold text-white">Quick Start</h2>
       </div>
 
       <div class="reveal space-y-6">
         <!-- Step 1 -->
         <div class="glass rounded-2xl p-6">
           <div class="flex items-center gap-3 mb-4">
-            <span class="w-8 h-8 rounded-full bg-brand-500/20 text-brand-400 font-bold text-sm flex items-center justify-center">1</span>
-            <h3 class="text-lg font-semibold text-white">Clone & install</h3>
+            <span class="w-10 h-10 rounded-full bg-brand-500/20 text-brand-400 font-bold text-lg flex items-center justify-center">1</span>
+            <h3 class="text-xl font-semibold text-white">Clone and install</h3>
           </div>
-          <div class="code-block p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+          <div class="code-block p-4 font-mono text-sm text-gray-200 overflow-x-auto">
             <pre>git clone https://github.com/LGDiMaggio/claude-stwinbox-diagnostics.git
 cd claude-stwinbox-diagnostics
 
@@ -433,10 +472,10 @@ cd mcp-servers/vibration-analysis-mcp && uv venv && uv pip install -e . && cd ..
         <!-- Step 2 -->
         <div class="glass rounded-2xl p-6">
           <div class="flex items-center gap-3 mb-4">
-            <span class="w-8 h-8 rounded-full bg-brand-500/20 text-brand-400 font-bold text-sm flex items-center justify-center">2</span>
-            <h3 class="text-lg font-semibold text-white">Configure Claude Desktop</h3>
+            <span class="w-10 h-10 rounded-full bg-brand-500/20 text-brand-400 font-bold text-lg flex items-center justify-center">2</span>
+            <h3 class="text-xl font-semibold text-white">Configure Claude Desktop</h3>
           </div>
-          <div class="code-block p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+          <div class="code-block p-4 font-mono text-sm text-gray-200 overflow-x-auto">
             <pre><span class="text-gray-500">// claude_desktop_config.json</span>
 {
   "mcpServers": {
@@ -456,11 +495,11 @@ cd mcp-servers/vibration-analysis-mcp && uv venv && uv pip install -e . && cd ..
         <!-- Step 3 -->
         <div class="glass rounded-2xl p-6">
           <div class="flex items-center gap-3 mb-4">
-            <span class="w-8 h-8 rounded-full bg-brand-500/20 text-brand-400 font-bold text-sm flex items-center justify-center">3</span>
-            <h3 class="text-lg font-semibold text-white">Install Skills & Go</h3>
+            <span class="w-10 h-10 rounded-full bg-brand-500/20 text-brand-400 font-bold text-lg flex items-center justify-center">3</span>
+            <h3 class="text-xl font-semibold text-white">Install Skills and Go</h3>
           </div>
-          <p class="text-gray-400 text-sm">
-            Upload the 3 skill <code class="text-brand-400">.zip</code> files from <code class="text-brand-400">skills-zips/</code> in Claude Desktop → Settings → Capabilities → Skills. Then start chatting!
+          <p class="text-gray-300 text-base">
+            Upload the 3 skill <code class="text-brand-400">.zip</code> files from <code class="text-brand-400">skills-zips/</code> in Claude Desktop settings under Capabilities, then Skills. Restart Claude Desktop and start chatting!
           </p>
         </div>
       </div>
@@ -473,23 +512,24 @@ cd mcp-servers/vibration-analysis-mcp && uv venv && uv pip install -e . && cd ..
   <section class="py-24 px-4">
     <div class="max-w-6xl mx-auto">
       <div class="text-center mb-12 reveal">
-        <p class="text-gray-500 font-semibold text-sm uppercase tracking-wider mb-2">Built with</p>
-        <h2 class="text-4xl font-bold text-white">Technology Stack</h2>
+        <p class="text-gray-400 font-semibold text-base uppercase tracking-wider mb-3">Built with</p>
+        <h2 class="text-4xl sm:text-5xl font-bold text-white">Technology Stack</h2>
       </div>
 
       <div class="reveal flex flex-wrap justify-center gap-3">
-        <span class="px-4 py-2 rounded-full glass text-sm text-gray-300 font-medium">Python 3.10+</span>
-        <span class="px-4 py-2 rounded-full glass text-sm text-gray-300 font-medium">NumPy</span>
-        <span class="px-4 py-2 rounded-full glass text-sm text-gray-300 font-medium">SciPy</span>
-        <span class="px-4 py-2 rounded-full glass text-sm text-gray-300 font-medium">Pandas</span>
-        <span class="px-4 py-2 rounded-full glass text-sm text-gray-300 font-medium">FastMCP</span>
-        <span class="px-4 py-2 rounded-full glass text-sm text-gray-300 font-medium">MCP 1.0</span>
-        <span class="px-4 py-2 rounded-full glass text-sm text-gray-300 font-medium">Claude</span>
-        <span class="px-4 py-2 rounded-full glass text-sm text-gray-300 font-medium">STDATALOG SDK</span>
-        <span class="px-4 py-2 rounded-full glass text-sm text-gray-300 font-medium">USB-HID / PnPL</span>
-        <span class="px-4 py-2 rounded-full glass text-sm text-gray-300 font-medium">STEVAL-STWINBX1</span>
-        <span class="px-4 py-2 rounded-full glass text-sm text-gray-300 font-medium">FP-SNS-DATALOG2</span>
-        <span class="px-4 py-2 rounded-full glass text-sm text-gray-300 font-medium">ISO 10816</span>
+        <span class="px-5 py-2.5 rounded-full glass text-base text-gray-200 font-medium">Python 3.10+</span>
+        <span class="px-5 py-2.5 rounded-full glass text-base text-gray-200 font-medium">NumPy</span>
+        <span class="px-5 py-2.5 rounded-full glass text-base text-gray-200 font-medium">SciPy</span>
+        <span class="px-5 py-2.5 rounded-full glass text-base text-gray-200 font-medium">Pandas</span>
+        <span class="px-5 py-2.5 rounded-full glass text-base text-gray-200 font-medium">FastMCP</span>
+        <span class="px-5 py-2.5 rounded-full glass text-base text-gray-200 font-medium">MCP 1.0</span>
+        <span class="px-5 py-2.5 rounded-full glass text-base text-gray-200 font-medium">Claude</span>
+        <span class="px-5 py-2.5 rounded-full glass text-base text-gray-200 font-medium">STDATALOG SDK</span>
+        <span class="px-5 py-2.5 rounded-full glass text-base text-gray-200 font-medium">USB-HID</span>
+        <span class="px-5 py-2.5 rounded-full glass text-base text-gray-200 font-medium">PnPL</span>
+        <span class="px-5 py-2.5 rounded-full glass text-base text-gray-200 font-medium">STEVAL-STWINBX1</span>
+        <span class="px-5 py-2.5 rounded-full glass text-base text-gray-200 font-medium">FP-SNS-DATALOG2</span>
+        <span class="px-5 py-2.5 rounded-full glass text-base text-gray-200 font-medium">ISO 10816</span>
       </div>
     </div>
   </section>
@@ -497,15 +537,15 @@ cd mcp-servers/vibration-analysis-mcp && uv venv && uv pip install -e . && cd ..
   <!-- ============================================ -->
   <!-- CITATION / FOOTER -->
   <!-- ============================================ -->
-  <footer class="py-16 px-4 border-t border-white/5">
+  <footer class="py-16 px-4 border-t border-white/10">
     <div class="max-w-4xl mx-auto text-center">
-      <h3 class="text-lg font-semibold text-white mb-4">Citation</h3>
-      <div class="code-block p-4 font-mono text-xs text-gray-400 text-left overflow-x-auto mb-8">
+      <h3 class="text-xl font-semibold text-white mb-6">Citation</h3>
+      <div class="code-block p-5 font-mono text-sm text-gray-200 text-left overflow-x-auto mb-8">
         <pre>@software{claude_edge_diagnostics,
   author       = {Di Maggio, Luigi Gianpio},
-  title        = {Claude Edge Diagnostics: Bridging Industrial MEMS
-                  Sensors and Large Language Models for Predictive
-                  Maintenance},
+  title        = {Claude Edge Predictive Maintenance: Bridging
+                  Industrial IoT Sensors and Large Language Models
+                  for Predictive Maintenance},
   year         = {2026},
   url          = {https://github.com/LGDiMaggio/claude-stwinbox-diagnostics},
   doi          = {10.5281/zenodo.18808856},
@@ -514,20 +554,20 @@ cd mcp-servers/vibration-analysis-mcp && uv venv && uv pip install -e . && cd ..
       </div>
 
       <div class="flex flex-wrap justify-center gap-4 mb-8">
-        <a href="https://github.com/LGDiMaggio/claude-stwinbox-diagnostics" class="text-gray-500 hover:text-white transition-colors text-sm">GitHub</a>
-        <span class="text-gray-700">·</span>
-        <a href="https://doi.org/10.5281/zenodo.18808856" class="text-gray-500 hover:text-white transition-colors text-sm">Zenodo</a>
-        <span class="text-gray-700">·</span>
-        <a href="https://github.com/LGDiMaggio/claude-stwinbox-diagnostics/releases" class="text-gray-500 hover:text-white transition-colors text-sm">Releases</a>
-        <span class="text-gray-700">·</span>
-        <a href="https://github.com/LGDiMaggio/claude-stwinbox-diagnostics/blob/main/LICENSE" class="text-gray-500 hover:text-white transition-colors text-sm">Apache 2.0</a>
+        <a href="https://github.com/LGDiMaggio/claude-stwinbox-diagnostics" class="text-gray-400 hover:text-white transition-colors text-base">GitHub</a>
+        <span class="text-gray-600">·</span>
+        <a href="https://doi.org/10.5281/zenodo.18808856" class="text-gray-400 hover:text-white transition-colors text-base">Zenodo</a>
+        <span class="text-gray-600">·</span>
+        <a href="https://github.com/LGDiMaggio/claude-stwinbox-diagnostics/releases" class="text-gray-400 hover:text-white transition-colors text-base">Releases</a>
+        <span class="text-gray-600">·</span>
+        <a href="https://github.com/LGDiMaggio/claude-stwinbox-diagnostics/blob/main/LICENSE" class="text-gray-400 hover:text-white transition-colors text-base">Apache 2.0</a>
       </div>
 
-      <p class="text-gray-600 text-sm">
+      <p class="text-gray-400 text-base">
         Built with ❤️ for condition monitoring professionals<br>
         Connecting the physical world to AI, one vibration at a time.
       </p>
-      <p class="text-gray-700 text-xs mt-4">
+      <p class="text-gray-500 text-sm mt-4">
         © 2026 Luigi Gianpio Di Maggio
       </p>
     </div>
