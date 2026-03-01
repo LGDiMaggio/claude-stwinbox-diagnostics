@@ -4,11 +4,12 @@ MCP Server for communicating with the **STEVAL-STWINBX1** SensorTile Wireless In
 
 ## Features
 
-- Connect/disconnect to STWIN.box via USB serial
+- Connect/disconnect to STWIN.box via USB serial or USB-HID (DATALOG2)
 - Configure onboard sensors (IIS3DWB, ISM330DHCX, IMP23ABSU, etc.)
 - Acquire vibration, temperature, pressure data
-- Stream sensor data with configurable duration
-- Query board info and sensor status
+- Programmatic acquisition control with timed mode (`duration_s`)
+- Query board info, sensor status, and firmware version
+- FP-SNS-DATALOG2 integration via STDATALOG-PYSDK (optional)
 
 ## Installation
 
@@ -33,6 +34,8 @@ Add to `claude_desktop_config.json`:
 
 ## Available Tools
 
+### Serial / General Tools
+
 | Tool | Description |
 |------|-------------|
 | `list_serial_ports` | List available COM ports |
@@ -46,7 +49,21 @@ Add to `claude_desktop_config.json`:
 | `apply_preset` | Apply a named preset (e.g., `wideband_vibration`) |
 | `recommend_sensor_config` | Get recommended settings for a fault type and RPM |
 | `acquire_data` | Acquire N samples from a sensor |
-| `load_data_from_file` | Load vibration data from CSV/JSON/NumPy file |
+| `load_data_from_file` | Load vibration data from .csv or .dat file |
+
+### FP-SNS-DATALOG2 Tools (require STDATALOG-PYSDK)
+
+| Tool | Description |
+|------|-------------|
+| `datalog2_status` | Check SDK installation and board connection status |
+| `datalog2_connect` | Connect via USB-HID / PnPL protocol |
+| `datalog2_disconnect` | Disconnect from the board |
+| `datalog2_get_device_info` | Get firmware version, device identity, acquisition status |
+| `datalog2_list_sensors` | List PnPL sensor components with ODR/FS/enabled state |
+| `datalog2_configure_sensor` | Enable/disable sensors, set ODR and full-scale via PnPL |
+| `datalog2_start_acquisition` | Start high-speed logging to SD card (supports `duration_s` for timed mode) |
+| `datalog2_stop_acquisition` | Stop logging, save config files, list generated files |
+| `datalog2_set_tag` | Set/unset software tags during acquisition |
 
 ## Hardware Requirements
 

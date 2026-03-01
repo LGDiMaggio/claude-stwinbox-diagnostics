@@ -102,8 +102,8 @@ The system reads vibration data from the STWIN.box MEMS sensors (IIS3DWB, ISM330
 
 | Server | Purpose | Key Tools |
 |--------|---------|-----------|
-| [stwinbox-sensor-mcp](mcp-servers/stwinbox-sensor-mcp/) | Hardware communication with STWIN.box via USB-HID (DATALOG2) or USB-Serial | `datalog2_connect`, `datalog2_start_acquisition(duration_s)`, `datalog2_stop_acquisition`, `datalog2_list_sensors`, `datalog2_configure_sensor`, `connect_board`, `acquire_data` |
-| [vibration-analysis-mcp](mcp-servers/vibration-analysis-mcp/) | Signal processing, data loading, and fault detection | `load_signal`, `compute_fft_spectrum`, `compute_envelope_spectrum`, `check_bearing_fault_peak`, `diagnose_vibration`, `assess_vibration_severity` |
+| [stwinbox-sensor-mcp](mcp-servers/stwinbox-sensor-mcp/) | Hardware communication with STWIN.box via USB-HID (DATALOG2) or USB-Serial | `datalog2_connect`, `datalog2_start_acquisition(duration_s)`, `datalog2_stop_acquisition`, `datalog2_list_sensors`, `datalog2_configure_sensor`, `connect_board`, `acquire_data`, `load_data_from_file` |
+| [vibration-analysis-mcp](mcp-servers/vibration-analysis-mcp/) | Signal processing, data loading, and fault detection | `load_signal`, `list_stored_signals`, `compute_fft_spectrum`, `compute_envelope_spectrum`, `check_bearing_fault_peak`, `check_bearing_faults_direct`, `diagnose_vibration`, `assess_vibration_severity` |
 
 ### Claude Skills
 
@@ -241,6 +241,7 @@ Claude: [Uses operator-diagnostic-report skill]
 | **Bearing Inner Race (BPFI)** | Envelope analysis | N × BPFI harmonics |
 | **Bearing Outer Race (BPFO)** | Envelope analysis | N × BPFO harmonics |
 | **Bearing Ball/Roller (BSF)** | Envelope analysis | N × BSF harmonics |
+| **Bearing Cage (FTF)** | Envelope analysis | N × FTF harmonics |
 | **Unbalance** | FFT | 1× RPM dominant |
 | **Misalignment** | FFT | 1×, 2× RPM |
 | **Mechanical Looseness** | FFT | Multiple harmonics of RPM |
