@@ -9,6 +9,7 @@
   <a href="https://docs.anthropic.com"><img src="https://img.shields.io/badge/Claude-Skills-orange.svg" alt="Claude Skills"></a>
   <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.10%2B-3776AB.svg?logo=python&logoColor=white" alt="Python"></a>
   <a href="https://www.st.com/en/evaluation-tools/steval-stwinbx1.html"><img src="https://img.shields.io/badge/ST-STWIN.box-03234B.svg" alt="STWIN.box"></a>
+  <a href="https://lgdimaggio.github.io/claude-stwinbox-diagnostics/"><img src="https://img.shields.io/badge/🌐_Landing_Page-Visit-blueviolet.svg" alt="Landing Page"></a>
 </p>
 
 <p align="center">
