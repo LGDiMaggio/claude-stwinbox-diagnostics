@@ -365,11 +365,13 @@ If you use this project in academic work or industrial applications, please cite
 ```bibtex
 @software{claude_edge_diagnostics,
   author       = {Di Maggio, Luigi Gianpio},
-  title        = {Claude Edge Diagnostics: Bridging Industrial MEMS Sensors and Large Language Models for Predictive Maintenance},
+  title        = {Claude Edge Predictive Maintenance: Bridging
+                  Industrial IoT Sensors and Large Language Models
+                  for Predictive Maintenance},
   year         = {2026},
   url          = {https://github.com/LGDiMaggio/claude-stwinbox-diagnostics},
-  license      = {Apache-2.0},
-  description  = {Open-source reference architecture connecting edge sensor hardware (STEVAL-STWINBX1) to LLM-based diagnostic assistants via the Model Context Protocol (MCP)}
+  doi          = {10.5281/zenodo.18808856},
+  license      = {Apache-2.0}
 }
 ```
 

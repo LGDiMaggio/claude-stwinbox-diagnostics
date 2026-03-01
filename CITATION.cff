@@ -1,7 +1,8 @@
 cff-version: 1.2.0
 title: >-
-  Claude Edge Diagnostics: Bridging Industrial MEMS Sensors
-  and Large Language Models for Predictive Maintenance
+  Claude Edge Predictive Maintenance: Bridging Industrial
+  IoT Sensors and Large Language Models for Predictive
+  Maintenance
 message: >-
   If you use this software, please cite it using the metadata
   from this file.
@@ -32,6 +33,7 @@ keywords:
   - edge-ai
   - industrial-iot
   - MEMS-sensors
+  - IoT-sensors
   - STWIN
   - STM32
   - claude
@@ -41,7 +43,7 @@ keywords:
   - envelope-analysis
   - fft
 license: Apache-2.0
-version: 0.1.0
+version: 0.2.0
 date-released: "2026-02-28"
 doi: 10.5281/zenodo.18808856
 identifiers:
