@@ -175,7 +175,7 @@
           Claude Skills
         </span>
         <span class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-purple-500/20 text-purple-300 border border-purple-500/20">
-          v0.2.0
+          v0.3.0
         </span>
       </div>
 
@@ -571,119 +571,6 @@ cd mcp-servers/vibration-analysis-mcp && uv venv && uv pip install -e . && cd ..
   </section>
 
   <!-- ============================================ -->
-  <!-- FAQ -->
-  <!-- ============================================ -->
-  <section id="faq" class="py-24 px-4">
-    <div class="max-w-4xl mx-auto">
-      <div class="text-center mb-16 reveal">
-        <p class="text-brand-400 font-bold text-lg uppercase tracking-wider mb-3">Frequently Asked Questions</p>
-        <h2 class="text-5xl sm:text-6xl font-bold text-white">FAQ</h2>
-      </div>
-
-      <div class="reveal space-y-4">
-        <!-- FAQ 1 -->
-        <details class="glass rounded-2xl group" open>
-          <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
-            What is LLM-based predictive maintenance?
-            <span class="text-brand-400 group-open:rotate-45 transition-transform text-2xl">+</span>
-          </summary>
-          <div class="px-6 pb-6 text-lg text-white/90 leading-relaxed">
-            LLM-based predictive maintenance uses large language models (like Claude) as the reasoning engine for machine condition monitoring. Instead of dedicated monitoring software, the operator describes what they need in natural language, and the LLM orchestrates sensor data acquisition, signal processing (FFT, envelope analysis), fault detection, and report generation through connected tools. This makes diagnostics conversational, accessible and extensible.
-          </div>
-        </details>
-
-        <!-- FAQ 2 -->
-        <details class="glass rounded-2xl group">
-          <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
-            Can AI agents diagnose bearing faults from vibration data?
-            <span class="text-brand-400 group-open:rotate-45 transition-transform text-2xl">+</span>
-          </summary>
-          <div class="px-6 pb-6 text-lg text-white/90 leading-relaxed">
-            Yes. The Diagnosis Agent performs envelope analysis via Hilbert transform and checks for characteristic bearing fault frequencies: BPFO (outer race), BPFI (inner race), BSF (rolling elements), and FTF (cage). It compares detected peaks against computed theoretical frequencies for any given bearing model and RPM, providing confidence levels for each finding. This is the same approach used by professional vibration analysts.
-          </div>
-        </details>
-
-        <!-- FAQ 3 -->
-        <details class="glass rounded-2xl group">
-          <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
-            Edge sensors and LLM: what runs where?
-            <span class="text-brand-400 group-open:rotate-45 transition-transform text-2xl">+</span>
-          </summary>
-          <div class="px-6 pb-6 text-lg text-white/90 leading-relaxed">
-            The <strong>STEVAL-STWINBX1 edge sensor</strong> handles data acquisition at the physical layer (IIS3DWB accelerometer at 26.7&nbsp;kHz). The <strong>MCP servers</strong> run locally on your machine and handle sensor communication (USB-HID) and signal processing (FFT, PSD, envelope). <strong>Claude</strong> (the LLM) runs in the cloud and acts as the reasoning engine, coordinating the agents through natural language. Raw data never leaves your machine &mdash; only compact summaries reach the LLM.
-          </div>
-        </details>
-
-        <!-- FAQ 4 -->
-        <details class="glass rounded-2xl group">
-          <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
-            How does MCP connect Claude to industrial sensors?
-            <span class="text-brand-400 group-open:rotate-45 transition-transform text-2xl">+</span>
-          </summary>
-          <div class="px-6 pb-6 text-lg text-white/90 leading-relaxed">
-            The <strong>Model Context Protocol (MCP)</strong> is an open standard that allows LLMs to call external tools. This project provides two MCP servers: one for sensor control (22 tools for USB-HID communication with the STWIN.box) and one for vibration analysis (14 tools for FFT, PSD, envelope, bearing fault detection, ISO&nbsp;10816). Claude calls these tools programmatically during the conversation, just like a human analyst would use specialised software.
-          </div>
-        </details>
-
-        <!-- FAQ 5 -->
-        <details class="glass rounded-2xl group">
-          <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
-            What is agentic maintenance?
-            <span class="text-brand-400 group-open:rotate-45 transition-transform text-2xl">+</span>
-          </summary>
-          <div class="px-6 pb-6 text-lg text-white/90 leading-relaxed">
-            Agentic maintenance describes a paradigm where AI agents autonomously handle parts of the maintenance workflow. In this project, three specialised agents (Monitoring, Diagnosis, Reporting) each encapsulate domain expertise as Claude Skills. The agents coordinate through the conversation to deliver a complete diagnostic cycle, from sensor acquisition to actionable maintenance report, without requiring the operator to know DSP or vibration analysis.
-          </div>
-        </details>
-
-        <!-- FAQ 6 -->
-        <details class="glass rounded-2xl group">
-          <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
-            What is an MCP Server and why does this project need two?
-            <span class="text-brand-400 group-open:rotate-45 transition-transform text-2xl">+</span>
-          </summary>
-          <div class="px-6 pb-6 text-lg text-white/90 leading-relaxed">
-            An <strong>MCP (Model Context Protocol) Server</strong> is a lightweight service that exposes tools an LLM can call programmatically during a conversation. Think of it as giving Claude hands: instead of only generating text, Claude can read sensors, run computations, and interact with hardware. This project uses <strong>two MCP servers</strong>: one for sensor communication (USB control, data acquisition from the STWIN.box) and one for vibration analysis (FFT, envelope analysis, bearing fault detection, ISO&nbsp;10816). Separating them keeps each server focused and makes the architecture extensible.
-          </div>
-        </details>
-
-        <!-- FAQ 7 -->
-        <details class="glass rounded-2xl group">
-          <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
-            What are Claude Skills and how do they enable predictive maintenance AI agents?
-            <span class="text-brand-400 group-open:rotate-45 transition-transform text-2xl">+</span>
-          </summary>
-          <div class="px-6 pb-6 text-lg text-white/90 leading-relaxed">
-            A <strong>Claude Skill</strong> is a set of instructions, packaged as a simple folder, that teaches Claude how to handle specific tasks or workflows. If MCP servers are the professional kitchen (access to tools, data, equipment), Skills are the recipes: step-by-step instructions on how to create something valuable. In this project, three Skills turn raw MCP tool access into reliable diagnostic workflows: the <strong>Monitoring Skill</strong> guides sensor acquisition and baseline checks, the <strong>Diagnosis Skill</strong> encodes vibration analysis expertise (fault pattern matching, bearing-specific checks), and the <strong>Reporting Skill</strong> produces operator-friendly maintenance reports. Together, they form the predictive maintenance AI agents that make the system work end to end.
-          </div>
-        </details>
-
-        <!-- FAQ 8 -->
-        <details class="glass rounded-2xl group">
-          <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
-            What faults can the system detect?
-            <span class="text-brand-400 group-open:rotate-45 transition-transform text-2xl">+</span>
-          </summary>
-          <div class="px-6 pb-6 text-lg text-white/90 leading-relaxed">
-            The system can identify: <strong>unbalance</strong> (1&times;RPM dominant), <strong>misalignment</strong> (2&times;RPM and axial components), <strong>mechanical looseness</strong> (sub-harmonics and broadband noise), and <strong>bearing defects</strong> (outer race, inner race, rolling element, cage faults) with characteristic frequency matching. Each finding includes a confidence level and ISO&nbsp;10816 severity classification.
-          </div>
-        </details>
-
-        <!-- FAQ 9 -->
-        <details class="glass rounded-2xl group">
-          <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
-            Is this a replacement for professional vibration analysis?
-            <span class="text-brand-400 group-open:rotate-45 transition-transform text-2xl">+</span>
-          </summary>
-          <div class="px-6 pb-6 text-lg text-white/90 leading-relaxed">
-            <strong>No.</strong> This is a support tool and a proof of concept, not a replacement for qualified vibration analysts. This release (v0.2.0) was developed as an early-stage proof of concept with intensive assistance from Claude and has <strong>not yet been validated extensively on real industrial machinery</strong>. The analysis algorithms implement well-established signal processing techniques (FFT, envelope analysis, ISO&nbsp;10816), but their integration with the STWIN.box hardware and the MCP protocol should be considered <strong>experimental</strong>. Real-world testing, calibration, and refinement will follow in subsequent versions. <strong>Do not use this as the sole basis for critical maintenance decisions without independent verification.</strong>
-          </div>
-        </details>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================ -->
   <!-- TECH STACK -->
   <!-- ============================================ -->
   <section class="py-24 px-4">
@@ -818,7 +705,7 @@ cd mcp-servers/vibration-analysis-mcp && uv venv && uv pip install -e . && cd ..
         </div>
         <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
           <span class="text-3xl shrink-0">⚙️</span>
-          <div><h4 class="text-xl font-bold text-white mb-2">Bearing Knowledge Library</h4><p class="text-lg text-white/90">Use built-in bearing models or enter custom geometry/frequencies.</p></div>
+          <div><h4 class="text-xl font-bold text-white mb-2">Bearing Knowledge Library</h4><p class="text-lg text-white/90">Use built-in bearing models or enter custom geometry or frequencies.</p></div>
         </div>
         <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
           <span class="text-3xl shrink-0">🩺</span>
@@ -868,6 +755,120 @@ cd mcp-servers/vibration-analysis-mcp && uv venv && uv pip install -e . && cd ..
       </div>
     </div>
   </section>
+
+  <!-- ============================================ -->
+  <!-- FAQ -->
+  <!-- ============================================ -->
+  <section id="faq" class="py-24 px-4">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-16 reveal">
+        <p class="text-brand-400 font-bold text-lg uppercase tracking-wider mb-3">Frequently Asked Questions</p>
+        <h2 class="text-5xl sm:text-6xl font-bold text-white">FAQ</h2>
+      </div>
+
+      <div class="reveal space-y-4">
+        <!-- FAQ 1 -->
+        <details class="glass rounded-2xl group" open>
+          <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
+            What is LLM-based predictive maintenance?
+            <span class="text-brand-400 group-open:rotate-45 transition-transform text-2xl">+</span>
+          </summary>
+          <div class="px-6 pb-6 text-lg text-white/90 leading-relaxed">
+            LLM-based predictive maintenance uses large language models (like Claude) as the reasoning engine for machine condition monitoring. Instead of dedicated monitoring software, the operator describes what they need in natural language, and the LLM orchestrates sensor data acquisition, signal processing (FFT, envelope analysis), fault detection, and report generation through connected tools. This makes diagnostics conversational, accessible and extensible.
+          </div>
+        </details>
+
+        <!-- FAQ 2 -->
+        <details class="glass rounded-2xl group">
+          <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
+            Can AI agents diagnose bearing faults from vibration data?
+            <span class="text-brand-400 group-open:rotate-45 transition-transform text-2xl">+</span>
+          </summary>
+          <div class="px-6 pb-6 text-lg text-white/90 leading-relaxed">
+            Yes. The Diagnosis Agent performs envelope analysis via Hilbert transform and checks for characteristic bearing fault frequencies: BPFO (outer race), BPFI (inner race), BSF (rolling elements), and FTF (cage). It compares detected peaks against computed theoretical frequencies for any given bearing model and RPM, providing confidence levels for each finding. This is the same approach used by professional vibration analysts.
+          </div>
+        </details>
+
+        <!-- FAQ 3 -->
+        <details class="glass rounded-2xl group">
+          <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
+            Edge sensors and LLM: what runs where?
+            <span class="text-brand-400 group-open:rotate-45 transition-transform text-2xl">+</span>
+          </summary>
+          <div class="px-6 pb-6 text-lg text-white/90 leading-relaxed">
+            The <strong>STEVAL-STWINBX1 edge sensor</strong> handles data acquisition at the physical layer (IIS3DWB accelerometer at 26.7&nbsp;kHz). The <strong>MCP servers</strong> run locally on your machine and handle sensor communication (USB-HID) and signal processing (FFT, PSD, envelope). <strong>Claude</strong> (the LLM) runs in the cloud and acts as the reasoning engine, coordinating the agents through natural language. Raw data never leaves your machine &mdash; only compact summaries reach the LLM.
+          </div>
+        </details>
+
+        <!-- FAQ 4 -->
+        <details class="glass rounded-2xl group">
+          <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
+            How does MCP connect Claude to industrial sensors?
+            <span class="text-brand-400 group-open:rotate-45 transition-transform text-2xl">+</span>
+          </summary>
+          <div class="px-6 pb-6 text-lg text-white/90 leading-relaxed">
+            The <strong>Model Context Protocol (MCP)</strong> is an open standard that allows LLMs to call external tools. This project provides two MCP servers: one for sensor control (22 tools for USB-HID communication with the STWIN.box) and one for vibration analysis (14 tools for FFT, PSD, envelope, bearing fault detection, ISO&nbsp;10816). Claude calls these tools programmatically during the conversation, just like a human analyst would use specialised software.
+          </div>
+        </details>
+
+        <!-- FAQ 5 -->
+        <details class="glass rounded-2xl group">
+          <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
+            What is agentic maintenance?
+            <span class="text-brand-400 group-open:rotate-45 transition-transform text-2xl">+</span>
+          </summary>
+          <div class="px-6 pb-6 text-lg text-white/90 leading-relaxed">
+            Agentic maintenance describes a paradigm where AI agents autonomously handle parts of the maintenance workflow. In this project, three specialised agents (Monitoring, Diagnosis, Reporting) each encapsulate domain expertise as Claude Skills. The agents coordinate through the conversation to deliver a complete diagnostic cycle, from sensor acquisition to actionable maintenance report, without requiring the operator to know DSP or vibration analysis.
+          </div>
+        </details>
+
+        <!-- FAQ 6 -->
+        <details class="glass rounded-2xl group">
+          <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
+            What is an MCP Server and why does this project need two?
+            <span class="text-brand-400 group-open:rotate-45 transition-transform text-2xl">+</span>
+          </summary>
+          <div class="px-6 pb-6 text-lg text-white/90 leading-relaxed">
+            An <strong>MCP (Model Context Protocol) Server</strong> is a lightweight service that exposes tools an LLM can call programmatically during a conversation. Think of it as giving Claude hands: instead of only generating text, Claude can read sensors, run computations, and interact with hardware. This project uses <strong>two MCP servers</strong>: one for sensor communication (USB control, data acquisition from the STWIN.box) and one for vibration analysis (FFT, envelope analysis, bearing fault detection, ISO&nbsp;10816). Separating them keeps each server focused and makes the architecture extensible.
+          </div>
+        </details>
+
+        <!-- FAQ 7 -->
+        <details class="glass rounded-2xl group">
+          <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
+            What are Claude Skills and how do they enable predictive maintenance AI agents?
+            <span class="text-brand-400 group-open:rotate-45 transition-transform text-2xl">+</span>
+          </summary>
+          <div class="px-6 pb-6 text-lg text-white/90 leading-relaxed">
+            A <strong>Claude Skill</strong> is a set of instructions, packaged as a simple folder, that teaches Claude how to handle specific tasks or workflows. If MCP servers are the professional kitchen (access to tools, data, equipment), Skills are the recipes: step-by-step instructions on how to create something valuable. In this project, three Skills turn raw MCP tool access into reliable diagnostic workflows: the <strong>Monitoring Skill</strong> guides sensor acquisition and baseline checks, the <strong>Diagnosis Skill</strong> encodes vibration analysis expertise (fault pattern matching, bearing-specific checks), and the <strong>Reporting Skill</strong> produces operator-friendly maintenance reports. Together, they form the predictive maintenance AI agents that make the system work end to end.
+          </div>
+        </details>
+
+        <!-- FAQ 8 -->
+        <details class="glass rounded-2xl group">
+          <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
+            What faults can the system detect?
+            <span class="text-brand-400 group-open:rotate-45 transition-transform text-2xl">+</span>
+          </summary>
+          <div class="px-6 pb-6 text-lg text-white/90 leading-relaxed">
+            The system can identify: <strong>unbalance</strong> (1&times;RPM dominant), <strong>misalignment</strong> (2&times;RPM and axial components), <strong>mechanical looseness</strong> (sub-harmonics and broadband noise), and <strong>bearing defects</strong> (outer race, inner race, rolling element, cage faults) with characteristic frequency matching. Each finding includes a confidence level and ISO&nbsp;10816 severity classification.
+          </div>
+        </details>
+
+        <!-- FAQ 9 -->
+        <details class="glass rounded-2xl group">
+          <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
+            Is this a replacement for professional vibration analysis?
+            <span class="text-brand-400 group-open:rotate-45 transition-transform text-2xl">+</span>
+          </summary>
+          <div class="px-6 pb-6 text-lg text-white/90 leading-relaxed">
+            <strong>No.</strong> This is a support tool and a proof of concept, not a replacement for qualified vibration analysts. This release (v0.3.0) was developed as an early-stage proof of concept with intensive assistance from Claude and has <strong>not yet been validated extensively on real industrial machinery</strong>. The analysis algorithms implement well-established signal processing techniques (FFT, envelope analysis, ISO&nbsp;10816), but their integration with the STWIN.box hardware and the MCP protocol should be considered <strong>experimental</strong>. Real-world testing, calibration, and refinement will follow in subsequent versions. <strong>Do not use this as the sole basis for critical maintenance decisions without independent verification.</strong>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
 
   <!-- ============================================ -->
   <!-- CITATION / FOOTER -->
@@ -1027,7 +1028,7 @@ cd mcp-servers/vibration-analysis-mcp && uv venv && uv pip install -e . && cd ..
         "name": "Is this a replacement for professional vibration analysis?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "No. This is a support tool and a proof of concept, not a replacement for qualified vibration analysts. This release (v0.2.0) was developed as an early-stage proof of concept and has not yet been validated extensively on real industrial machinery. The analysis algorithms implement well-established signal processing techniques (FFT, envelope analysis, ISO 10816), but their integration should be considered experimental. Do not use this as the sole basis for critical maintenance decisions without independent verification."
+          "text": "No. This is a support tool and a proof of concept, not a replacement for qualified vibration analysts. This release (v0.3.0) was developed as an early-stage proof of concept and has not yet been validated extensively on real industrial machinery. The analysis algorithms implement well-established signal processing techniques (FFT, envelope analysis, ISO 10816), but their integration should be considered experimental. Do not use this as the sole basis for critical maintenance decisions without independent verification."
         }
       }
     ]
