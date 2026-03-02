@@ -3,17 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LLM Edge Predictive Maintenance</title>
-  <meta name="description" content="Open-source reference architecture connecting industrial IoT sensors to LLM-based diagnostic assistants via the Model Context Protocol (MCP).">
+  <title>LLM Edge Predictive Maintenance — AI Agents for Vibration Diagnostics</title>
+  <meta name="description" content="Open-source predictive maintenance AI agents connecting edge IoT sensors to Claude via the Model Context Protocol (MCP). Agentic maintenance with real-time vibration analysis, bearing fault detection, and ISO 10816 severity — a true maintenance copilot for conversational condition monitoring.">
   <meta name="author" content="Luigi Gianpio Di Maggio">
-  <meta name="keywords" content="predictive maintenance, vibration analysis, MCP, LLM, STWIN.box, IoT, condition monitoring, bearing fault detection">
+  <meta name="keywords" content="predictive maintenance, predictive maintenance LLM, predictive maintenance AI agents, vibration analysis, MCP, LLM, STWIN.box, IoT, condition monitoring, bearing fault detection, agentic maintenance, maintenance copilot, conversational condition monitoring, edge AI diagnostics, vibration fault diagnosis, ISO 10816, envelope analysis, BPFO BPFI bearing defect">
+  <link rel="canonical" href="https://lgdimaggio.github.io/claude-stwinbox-diagnostics/">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="LLM Edge Predictive Maintenance">
-  <meta property="og:description" content="Bridging Industrial IoT Sensors and Large Language Models for Predictive Maintenance">
+  <meta property="og:title" content="LLM Edge Predictive Maintenance — AI Agents for Industrial Vibration Diagnostics">
+  <meta property="og:description" content="Open-source predictive maintenance AI agents connecting edge IoT sensors to Claude via MCP. Agentic maintenance with real vibration analysis, bearing fault detection, and ISO 10816 — your maintenance copilot.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://lgdimaggio.github.io/claude-stwinbox-diagnostics/">
   <meta property="og:image" content="https://lgdimaggio.github.io/claude-stwinbox-diagnostics/images/claude-stwinbox-diagnostics.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="LLM Edge Predictive Maintenance — AI Agents for Vibration Diagnostics">
+  <meta name="twitter:description" content="Open-source reference architecture: predictive maintenance AI agents connecting edge sensors to Claude via MCP. Agentic maintenance, conversational condition monitoring, ISO 10816.">
+  <meta name="twitter:image" content="https://lgdimaggio.github.io/claude-stwinbox-diagnostics/images/claude-stwinbox-diagnostics.png">
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -138,6 +145,7 @@
         <a href="#architecture" class="text-white hover:text-brand-400 transition-colors">Architecture</a>
         <a href="#demo" class="text-white hover:text-brand-400 transition-colors">Demo</a>
         <a href="#quickstart" class="text-white hover:text-brand-400 transition-colors">Quick Start</a>
+        <a href="#faq" class="text-white hover:text-brand-400 transition-colors">FAQ</a>
         <a href="https://github.com/LGDiMaggio/claude-stwinbox-diagnostics" target="_blank" class="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors">
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
           GitHub
@@ -354,6 +362,89 @@
             🟢 Good &nbsp; 🟡 Monitor &nbsp; 🟠 Alarm &nbsp; 🔴 Danger
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- PREDICTIVE MAINTENANCE AI AGENTS -->
+  <!-- ============================================ -->
+  <section class="py-24 px-4 relative">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-brand-800/20 to-transparent"></div>
+    <div class="relative max-w-6xl mx-auto">
+      <div class="text-center mb-16 reveal">
+        <p class="text-accent-400 font-bold text-lg uppercase tracking-wider mb-3">Predictive maintenance AI agents</p>
+        <h2 class="text-5xl sm:text-6xl font-bold text-white">Three Specialised AI Agents,<br class="hidden sm:block">One Diagnostic Workflow</h2>
+        <p class="text-xl text-white/90 mt-4 max-w-3xl mx-auto">This system acts as a <strong class="text-white">maintenance copilot</strong>: three dedicated AI agents handle the full diagnostic lifecycle, from data acquisition to actionable reports. Each agent maps to a Claude Skill with domain expertise, making this an <strong class="text-white">agentic maintenance</strong> platform for <strong class="text-white">conversational condition monitoring</strong>.</p>
+      </div>
+
+      <!-- Agent pipeline -->
+      <div class="reveal grid md:grid-cols-3 gap-6 mb-12">
+        <!-- Agent 1: Monitoring -->
+        <div class="glass rounded-2xl p-8 border-t-4 border-brand-500 hover:border-brand-400 transition-all group">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 rounded-full bg-brand-500/20 text-brand-400 font-bold text-xl flex items-center justify-center group-hover:scale-110 transition-transform">1</div>
+            <div>
+              <h3 class="text-2xl font-bold text-white">Monitoring Agent</h3>
+              <p class="text-sm text-brand-400 font-mono">machine-vibration-monitoring</p>
+            </div>
+          </div>
+          <p class="text-lg text-white/90 leading-relaxed">Connects to the STWIN.box edge sensor, configures the IIS3DWB accelerometer, acquires vibration data and performs baseline comparisons. This is the data-acquisition layer of the predictive maintenance LLM pipeline.</p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="px-2.5 py-1 rounded-md bg-brand-500/10 text-brand-300 text-sm">Sensor control</span>
+            <span class="px-2.5 py-1 rounded-md bg-brand-500/10 text-brand-300 text-sm">USB-HID</span>
+            <span class="px-2.5 py-1 rounded-md bg-brand-500/10 text-brand-300 text-sm">Baseline</span>
+          </div>
+        </div>
+
+        <!-- Arrow (hidden on mobile) -->
+        <div class="hidden md:flex items-center justify-center absolute left-1/3 top-1/2 -translate-y-1/2 z-10 pointer-events-none" style="display:none;"></div>
+
+        <!-- Agent 2: Diagnosis -->
+        <div class="glass rounded-2xl p-8 border-t-4 border-st-teal hover:border-st-teal/80 transition-all group">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 rounded-full bg-st-teal/20 text-st-teal font-bold text-xl flex items-center justify-center group-hover:scale-110 transition-transform">2</div>
+            <div>
+              <h3 class="text-2xl font-bold text-white">Diagnosis Agent</h3>
+              <p class="text-sm text-st-teal font-mono">vibration-fault-diagnosis</p>
+            </div>
+          </div>
+          <p class="text-lg text-white/90 leading-relaxed">Runs the full DSP pipeline: FFT, PSD, envelope analysis (Hilbert transform), bearing fault detection (BPFO/BPFI/BSF/FTF), pattern matching and ISO&nbsp;10816 severity classification. The core intelligence of the AI agent system.</p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="px-2.5 py-1 rounded-md bg-st-teal/10 text-st-teal text-sm">FFT &amp; PSD</span>
+            <span class="px-2.5 py-1 rounded-md bg-st-teal/10 text-st-teal text-sm">Envelope</span>
+            <span class="px-2.5 py-1 rounded-md bg-st-teal/10 text-st-teal text-sm">ISO 10816</span>
+          </div>
+        </div>
+
+        <!-- Agent 3: Reporting -->
+        <div class="glass rounded-2xl p-8 border-t-4 border-accent-400 hover:border-accent-500 transition-all group">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 rounded-full bg-accent-400/20 text-accent-400 font-bold text-xl flex items-center justify-center group-hover:scale-110 transition-transform">3</div>
+            <div>
+              <h3 class="text-2xl font-bold text-white">Reporting Agent</h3>
+              <p class="text-sm text-accent-400 font-mono">operator-diagnostic-report</p>
+            </div>
+          </div>
+          <p class="text-lg text-white/90 leading-relaxed">Generates operator-friendly diagnostic reports with traffic-light severity, fault evidence, confidence levels and recommended maintenance actions. Turns complex signal analysis into clear, actionable guidance for maintenance teams.</p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="px-2.5 py-1 rounded-md bg-accent-400/10 text-accent-400 text-sm">Reports</span>
+            <span class="px-2.5 py-1 rounded-md bg-accent-400/10 text-accent-400 text-sm">Severity</span>
+            <span class="px-2.5 py-1 rounded-md bg-accent-400/10 text-accent-400 text-sm">Actions</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Flow summary -->
+      <div class="reveal glass rounded-2xl p-6 max-w-3xl mx-auto text-center">
+        <p class="text-lg text-white/90">
+          <span class="text-brand-400 font-bold">Monitoring Agent</span>
+          <span class="text-white/50 mx-2">&rarr;</span>
+          <span class="text-st-teal font-bold">Diagnosis Agent</span>
+          <span class="text-white/50 mx-2">&rarr;</span>
+          <span class="text-accent-400 font-bold">Reporting Agent</span>
+        </p>
+        <p class="text-base text-white/70 mt-3">Each predictive maintenance AI agent corresponds to a Claude Skill backed by MCP server tools. The agents orchestrate automatically through natural conversation &mdash; no scripting, no dashboards, just conversational condition monitoring.</p>
       </div>
     </div>
   </section>
@@ -637,6 +728,108 @@ cd mcp-servers/vibration-analysis-mcp && uv venv && uv pip install -e . && cd ..
   </section>
 
   <!-- ============================================ -->
+  <!-- FAQ -->
+  <!-- ============================================ -->
+  <section id="faq" class="py-24 px-4">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-16 reveal">
+        <p class="text-brand-400 font-bold text-lg uppercase tracking-wider mb-3">Frequently Asked Questions</p>
+        <h2 class="text-5xl sm:text-6xl font-bold text-white">FAQ</h2>
+      </div>
+
+      <div class="reveal space-y-4">
+        <!-- FAQ 1 -->
+        <details class="glass rounded-2xl group" open>
+          <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
+            What is LLM-based predictive maintenance?
+            <span class="text-brand-400 group-open:rotate-45 transition-transform text-2xl">+</span>
+          </summary>
+          <div class="px-6 pb-6 text-lg text-white/90 leading-relaxed">
+            LLM-based predictive maintenance uses large language models (like Claude) as the reasoning engine for machine condition monitoring. Instead of dedicated monitoring software, the operator describes what they need in natural language, and the LLM orchestrates sensor data acquisition, signal processing (FFT, envelope analysis), fault detection, and report generation through connected tools. This makes diagnostics conversational, accessible and extensible.
+          </div>
+        </details>
+
+        <!-- FAQ 2 -->
+        <details class="glass rounded-2xl group">
+          <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
+            Can AI agents diagnose bearing faults from vibration data?
+            <span class="text-brand-400 group-open:rotate-45 transition-transform text-2xl">+</span>
+          </summary>
+          <div class="px-6 pb-6 text-lg text-white/90 leading-relaxed">
+            Yes. The Diagnosis Agent performs envelope analysis via Hilbert transform and checks for characteristic bearing fault frequencies: BPFO (outer race), BPFI (inner race), BSF (rolling elements), and FTF (cage). It compares detected peaks against computed theoretical frequencies for any given bearing model and RPM, providing confidence levels for each finding. This is not a guess &mdash; it is the same approach used by professional vibration analysts.
+          </div>
+        </details>
+
+        <!-- FAQ 3 -->
+        <details class="glass rounded-2xl group">
+          <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
+            Edge sensors and LLM: what runs where?
+            <span class="text-brand-400 group-open:rotate-45 transition-transform text-2xl">+</span>
+          </summary>
+          <div class="px-6 pb-6 text-lg text-white/90 leading-relaxed">
+            The <strong>STEVAL-STWINBX1 edge sensor</strong> handles data acquisition at the physical layer (IIS3DWB accelerometer at 26.7&nbsp;kHz). The <strong>MCP servers</strong> run locally on your machine and handle sensor communication (USB-HID) and signal processing (FFT, PSD, envelope). <strong>Claude</strong> (the LLM) runs in the cloud and acts as the reasoning engine, coordinating the agents through natural language. Raw data never leaves your machine &mdash; only compact summaries reach the LLM.
+          </div>
+        </details>
+
+        <!-- FAQ 4 -->
+        <details class="glass rounded-2xl group">
+          <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
+            How does MCP connect Claude to industrial sensors?
+            <span class="text-brand-400 group-open:rotate-45 transition-transform text-2xl">+</span>
+          </summary>
+          <div class="px-6 pb-6 text-lg text-white/90 leading-relaxed">
+            The <strong>Model Context Protocol (MCP)</strong> is an open standard that allows LLMs to call external tools. This project provides two MCP servers: one for sensor control (22 tools for USB-HID communication with the STWIN.box) and one for vibration analysis (14 tools for FFT, PSD, envelope, bearing fault detection, ISO&nbsp;10816). Claude calls these tools programmatically during the conversation, just like a human analyst would use specialised software.
+          </div>
+        </details>
+
+        <!-- FAQ 5 -->
+        <details class="glass rounded-2xl group">
+          <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
+            What is agentic maintenance?
+            <span class="text-brand-400 group-open:rotate-45 transition-transform text-2xl">+</span>
+          </summary>
+          <div class="px-6 pb-6 text-lg text-white/90 leading-relaxed">
+            Agentic maintenance describes a paradigm where AI agents autonomously handle parts of the maintenance workflow. In this project, three specialised agents (Monitoring, Diagnosis, Reporting) each encapsulate domain expertise as Claude Skills. The agents coordinate through the conversation to deliver a complete diagnostic cycle &mdash; from sensor acquisition to actionable maintenance report &mdash; without requiring the operator to know DSP or vibration analysis.
+          </div>
+        </details>
+
+        <!-- FAQ 6 -->
+        <details class="glass rounded-2xl group">
+          <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
+            Do I need the physical STWIN.box sensor to use this project?
+            <span class="text-brand-400 group-open:rotate-45 transition-transform text-2xl">+</span>
+          </summary>
+          <div class="px-6 pb-6 text-lg text-white/90 leading-relaxed">
+            The sensor MCP server is designed for the STEVAL-STWINBX1, but the vibration analysis MCP server works with any vibration data in CSV/DAT format. You can load pre-recorded acquisitions and run the full diagnostic pipeline (FFT, envelope, bearing fault detection, ISO 10816) without the physical hardware.
+          </div>
+        </details>
+
+        <!-- FAQ 7 -->
+        <details class="glass rounded-2xl group">
+          <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
+            What faults can the system detect?
+            <span class="text-brand-400 group-open:rotate-45 transition-transform text-2xl">+</span>
+          </summary>
+          <div class="px-6 pb-6 text-lg text-white/90 leading-relaxed">
+            The system can identify: <strong>unbalance</strong> (1&times;RPM dominant), <strong>misalignment</strong> (2&times;RPM and axial components), <strong>mechanical looseness</strong> (sub-harmonics and broadband noise), and <strong>bearing defects</strong> (outer race, inner race, rolling element, cage faults) with characteristic frequency matching. Each finding includes a confidence level and ISO 10816 severity classification.
+          </div>
+        </details>
+
+        <!-- FAQ 8 -->
+        <details class="glass rounded-2xl group">
+          <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
+            Is this a replacement for professional vibration analysis?
+            <span class="text-brand-400 group-open:rotate-45 transition-transform text-2xl">+</span>
+          </summary>
+          <div class="px-6 pb-6 text-lg text-white/90 leading-relaxed">
+            This project is a <strong>reference architecture</strong> demonstrating how LLM-based AI agents can be applied to predictive maintenance. It uses the same DSP techniques professional analysts use (FFT, envelope, bearing fault frequencies, ISO&nbsp;10816) but packages them into a conversational interface. For critical industrial applications, results should always be validated by qualified maintenance professionals.
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
   <!-- TECH STACK -->
   <!-- ============================================ -->
   <section class="py-24 px-4">
@@ -725,6 +918,100 @@ cd mcp-servers/vibration-analysis-mcp && uv venv && uv pip install -e . && cd ..
     );
     document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
 
+  </script>
+
+  <!-- JSON-LD Structured Data: SoftwareApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "LLM Edge Predictive Maintenance",
+    "description": "Open-source predictive maintenance AI agents connecting industrial edge IoT sensors to Claude via the Model Context Protocol (MCP). Agentic maintenance with real-time vibration analysis, bearing fault detection, and ISO 10816 severity.",
+    "url": "https://lgdimaggio.github.io/claude-stwinbox-diagnostics/",
+    "applicationCategory": "Engineering",
+    "operatingSystem": "Windows, Linux, macOS",
+    "author": {
+      "@type": "Person",
+      "name": "Luigi Gianpio Di Maggio"
+    },
+    "license": "https://www.apache.org/licenses/LICENSE-2.0",
+    "codeRepository": "https://github.com/LGDiMaggio/claude-stwinbox-diagnostics",
+    "programmingLanguage": "Python"
+  }
+  </script>
+
+  <!-- JSON-LD Structured Data: FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is LLM-based predictive maintenance?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "LLM-based predictive maintenance uses large language models (like Claude) as the reasoning engine for machine condition monitoring. Instead of dedicated monitoring software, the operator describes what they need in natural language, and the LLM orchestrates sensor data acquisition, signal processing (FFT, envelope analysis), fault detection, and report generation through connected tools."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can AI agents diagnose bearing faults from vibration data?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. The Diagnosis Agent performs envelope analysis via Hilbert transform and checks for characteristic bearing fault frequencies: BPFO (outer race), BPFI (inner race), BSF (rolling elements), and FTF (cage). It compares detected peaks against computed theoretical frequencies for any given bearing model and RPM, providing confidence levels for each finding."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Edge sensors and LLM: what runs where?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The STEVAL-STWINBX1 edge sensor handles data acquisition at the physical layer. The MCP servers run locally on your machine and handle sensor communication and signal processing. Claude (the LLM) runs in the cloud and acts as the reasoning engine. Raw data never leaves your machine — only compact summaries reach the LLM."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does MCP connect Claude to industrial sensors?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The Model Context Protocol (MCP) is an open standard that allows LLMs to call external tools. This project provides two MCP servers: one for sensor control (22 tools for USB-HID communication with the STWIN.box) and one for vibration analysis (14 tools for FFT, PSD, envelope, bearing fault detection, ISO 10816)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is agentic maintenance?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Agentic maintenance describes a paradigm where AI agents autonomously handle parts of the maintenance workflow. In this project, three specialised agents (Monitoring, Diagnosis, Reporting) each encapsulate domain expertise as Claude Skills and coordinate through conversation to deliver a complete diagnostic cycle."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need the physical STWIN.box sensor to use this project?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The sensor MCP server is designed for the STEVAL-STWINBX1, but the vibration analysis MCP server works with any vibration data in CSV/DAT format. You can load pre-recorded acquisitions and run the full diagnostic pipeline without the physical hardware."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What faults can the system detect?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The system can identify: unbalance (1×RPM dominant), misalignment (2×RPM and axial components), mechanical looseness (sub-harmonics and broadband noise), and bearing defects (outer race, inner race, rolling element, cage faults) with characteristic frequency matching and ISO 10816 severity classification."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is this a replacement for professional vibration analysis?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "This project is a reference architecture demonstrating how LLM-based AI agents can be applied to predictive maintenance. It uses the same DSP techniques professional analysts use but packages them into a conversational interface. For critical industrial applications, results should always be validated by qualified maintenance professionals."
+        }
+      }
+    ]
+  }
   </script>
 
 </body>

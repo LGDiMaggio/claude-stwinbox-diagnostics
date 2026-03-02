@@ -1,6 +1,6 @@
 # LLM Edge Predictive Maintenance
 
-### AI-Powered Predictive Maintenance & Vibration Fault Diagnosis — Bridging Edge Sensors and Large Language Models
+### Predictive Maintenance AI Agents for Edge Vibration Diagnostics — Bridging Industrial IoT Sensors and LLMs via MCP
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
@@ -13,12 +13,12 @@
 </p>
 
 <p align="center">
-  <strong>An open-source reference architecture for connecting industrial MEMS sensors to LLM-based diagnostic assistants using the Model Context Protocol (MCP).</strong>
+  <strong>An open-source reference architecture where three predictive maintenance AI agents connect edge MEMS sensors to Claude via the Model Context Protocol (MCP) — a maintenance copilot for conversational condition monitoring.</strong>
 </p>
 
 ---
 
-> **Why this project?** Industrial predictive maintenance has traditionally required specialized software and deep domain expertise. By combining low-cost edge sensor hardware (STEVAL-STWINBX1) with the reasoning capabilities of large language models (Claude) through a standardised protocol (MCP), we make machine diagnostics **conversational, accessible, and extensible**. Ask your machine how it's feeling — in natural language.
+> **Why this project?** Industrial predictive maintenance has traditionally required specialized software and deep domain expertise. By combining low-cost edge sensor hardware (STEVAL-STWINBX1) with predictive maintenance LLM capabilities (Claude) through a standardised protocol (MCP), we create an **agentic maintenance** system that makes machine diagnostics **conversational, accessible, and extensible**. Three specialised AI agents — Monitoring, Diagnosis, and Reporting — handle the full diagnostic workflow. Ask your machine how it's feeling — in natural language.
 
 <p align="center">
   <img src="docs/images/Gif_Edge.gif" alt="Short demo of edge diagnostic workflow" width="800">
