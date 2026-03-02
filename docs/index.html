@@ -210,7 +210,7 @@
 
       <div class="grid lg:grid-cols-3 gap-6 items-stretch reveal">
         <div class="lg:col-span-2 relative aspect-video rounded-2xl overflow-hidden glass">
-          <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube-nocookie.com/embed/GC0pL18vgUs?rel=0&vq=hd1080" title="Hairdryer vibration diagnostic demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/GC0pL18vgUs?rel=0&modestbranding=1&hd=1&vq=hd1080" title="Hairdryer vibration diagnostic demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
 
         <div class="glass rounded-2xl p-7 flex flex-col justify-between">
@@ -225,11 +225,88 @@
         </div>
       </div>
 
-      <div class="mt-8 reveal glass rounded-2xl p-7 border border-brand-400/25">
-        <p class="text-brand-300 font-bold uppercase tracking-wider mb-3">Why this is different</p>
-        <p class="text-lg text-white/90 leading-relaxed">
-          The added value is not "asking Claude to guess the fault". Claude operates with <span class="text-white font-semibold">real diagnostic tools</span> exposed through MCP servers and dedicated Skills: advanced frequency analysis, typical damage pattern checks, and standards-based assessment (ISO 10816). This makes the workflow <span class="text-white font-semibold">repeatable, evidence-based, and reliable</span> for industrial diagnostics.
-        </p>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- WHY THIS IS DIFFERENT -->
+  <!-- ============================================ -->
+  <section class="py-24 px-4 relative">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-brand-800/20 to-transparent"></div>
+    <div class="relative max-w-6xl mx-auto">
+      <div class="text-center mb-16 reveal">
+        <p class="text-accent-400 font-bold text-lg uppercase tracking-wider mb-3">Why this is different</p>
+        <h2 class="text-5xl sm:text-6xl font-bold text-white">Not Just an LLM Guessing</h2>
+        <p class="text-xl text-white/90 mt-4 max-w-3xl mx-auto">The added value is not &ldquo;asking Claude to guess the fault&rdquo;. Claude operates with <strong class="text-white">real diagnostic tools</strong> exposed through MCP servers and dedicated Skills.</p>
+      </div>
+
+      <div class="reveal grid md:grid-cols-2 gap-10 items-center mb-16">
+        <!-- Left: comparison -->
+        <div class="space-y-6">
+          <div class="glass rounded-2xl p-6 border-l-4 border-red-500/50 opacity-60">
+            <div class="flex items-start gap-4">
+              <span class="text-3xl shrink-0">&#x2718;</span>
+              <div>
+                <h4 class="text-xl font-bold text-white/60 mb-2">Traditional LLM Approach</h4>
+                <p class="text-lg text-white/50 italic">&ldquo;Based on the description you gave me, it <em>might</em> be a bearing fault&hellip;&rdquo;</p>
+                <p class="text-base text-white/40 mt-2">Text-only, no real data, no measurements, no repeatability.</p>
+              </div>
+            </div>
+          </div>
+          <div class="glass rounded-2xl p-6 border-l-4 border-st-teal">
+            <div class="flex items-start gap-4">
+              <span class="text-3xl shrink-0 text-st-teal">&#x2714;</span>
+              <div>
+                <h4 class="text-xl font-bold text-white mb-2">This Project &mdash; Tool-Augmented Diagnostics</h4>
+                <p class="text-lg text-white/90">&ldquo;BPFO peak detected at 89.4&nbsp;Hz (expected 89.8&nbsp;Hz for 6205 bearing at 1470&nbsp;RPM). Confidence: 72%. ISO&nbsp;10816 Zone&nbsp;B.&rdquo;</p>
+                <p class="text-base text-white/70 mt-2">Real sensor data, real DSP pipeline, real standards. Evidence-based and repeatable.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Edge GIF -->
+        <div class="flex flex-col items-center">
+          <div class="glass rounded-2xl p-3 overflow-hidden">
+            <img src="images/Gif_Edge.gif" alt="Edge deployment demo showing real-time diagnostics" class="w-full rounded-xl" loading="lazy">
+          </div>
+          <p class="text-base text-white/60 mt-4 text-center">Real-time edge diagnostics &mdash; from sensor to insight in seconds</p>
+        </div>
+      </div>
+
+      <!-- Key differentiators -->
+      <div class="reveal grid sm:grid-cols-3 gap-6">
+        <div class="glass rounded-xl p-6 text-center">
+          <span class="text-4xl block mb-3">📊</span>
+          <h4 class="text-lg font-bold text-white mb-2">Evidence-Based</h4>
+          <p class="text-base text-white/80">Every diagnosis is backed by measured frequency spectra, computed fault frequencies, and quantified severity &mdash; not guesses.</p>
+        </div>
+        <div class="glass rounded-xl p-6 text-center">
+          <span class="text-4xl block mb-3">🔄</span>
+          <h4 class="text-lg font-bold text-white mb-2">Repeatable</h4>
+          <p class="text-base text-white/80">Same sensor, same tools, same analysis pipeline. Results are consistent and auditable across operators and sessions.</p>
+        </div>
+        <div class="glass rounded-xl p-6 text-center">
+          <span class="text-4xl block mb-3">🏭</span>
+          <h4 class="text-lg font-bold text-white mb-2">Industrial-Grade</h4>
+          <p class="text-base text-white/80">ISO 10816 severity classification, bearing-specific fault detection (BPFO/BPFI/BSF/FTF), and standardised reporting for maintenance teams.</p>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="reveal grid grid-cols-3 gap-4 mt-10 max-w-2xl mx-auto">
+        <div class="glass rounded-xl p-5 text-center">
+          <p class="text-4xl font-bold gradient-text">36</p>
+          <p class="text-sm text-white/70 mt-1">MCP Tools</p>
+        </div>
+        <div class="glass rounded-xl p-5 text-center">
+          <p class="text-4xl font-bold gradient-text">3</p>
+          <p class="text-sm text-white/70 mt-1">Expert Skills</p>
+        </div>
+        <div class="glass rounded-xl p-5 text-center">
+          <p class="text-4xl font-bold gradient-text">ISO</p>
+          <p class="text-sm text-white/70 mt-1">10816 Compliant</p>
+        </div>
       </div>
     </div>
   </section>
