@@ -113,6 +113,16 @@ wall-clock `duration_s` because the actual ODR is slightly lower. For example,
 See [sensor-specs.md](references/sensor-specs.md) for detailed sensor specifications
 and recommended ODR (Output Data Rate) settings for different use cases.
 
+
+## Evidence & Assumptions Protocol
+
+When presenting results, always separate:
+1. **Measured evidence** (tool outputs, frequencies, amplitudes, ISO zone, statistics)
+2. **Inference** (diagnostic interpretation with confidence)
+3. **Assumptions / prior knowledge** (catalog values, typical fault heuristics, missing machine metadata)
+
+If assumptions are used because required inputs are missing, declare this explicitly and ask for the missing data when practical.
+
 ## Example Interaction
 
 **User**: "I want to start monitoring the vibration on our pump"

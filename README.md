@@ -20,6 +20,10 @@
 
 > **Why this project?** Industrial predictive maintenance has traditionally required specialized software and deep domain expertise. By combining low-cost edge sensor hardware (STEVAL-STWINBX1) with the reasoning capabilities of large language models (Claude) through a standardised protocol (MCP), we make machine diagnostics **conversational, accessible, and extensible**. Ask your machine how it's feeling — in natural language.
 
+<p align="center">
+  <img src="docs/images/Gif_Edge.gif" alt="Short usage demo" width="900">
+</p>
+
 ## Key Features
 
 - **Plug & Analyze** — Connect the STWIN.box via USB, ask Claude to check your machine
@@ -112,6 +116,21 @@ The system reads vibration data from the STWIN.box MEMS sensors (IIS3DWB, ISM330
 | [machine-vibration-monitoring](skills/machine-vibration-monitoring/) | MCP Enhancement | Orchestrates sensor acquisition + baseline comparison |
 | [vibration-fault-diagnosis](skills/vibration-fault-diagnosis/) | Workflow Automation | Multi-step fault diagnosis with frequency analysis |
 | [operator-diagnostic-report](skills/operator-diagnostic-report/) | Document & Asset Creation | Generates human-readable diagnostic reports |
+
+
+## Consistency & Governance
+
+To keep diagnostics physically grounded, formally coherent, and evidence-first, follow the project governance checklist in [`docs/consistency-governance.md`](docs/consistency-governance.md).
+
+## Skill ZIP Packaging
+
+To regenerate distributable skill archives without introducing binary deltas in normal PRs:
+
+```bash
+python scripts/build_skill_zips.py
+```
+
+This writes ZIPs to `dist/skills-zips/` by default. Use `--output skills-zips` only for intentional release artifact updates.
 
 ## Quick Start
 

@@ -57,10 +57,11 @@
 ### Acquisition Flow
 1. User asks Claude to monitor a machine
 2. Claude (guided by the **machine-vibration-monitoring** skill):
-   - Calls `connect_board` → `apply_preset` → `acquire_data` on **stwinbox-sensor-mcp**
-   - Receives raw time-domain acceleration data as JSON arrays
-3. Claude then calls `compute_fft_spectrum` on **vibration-analysis-mcp**
-4. Results presented to user with severity assessment
+   - Preferentially calls `datalog2_connect` → `datalog2_start_acquisition(duration_s=...)` on **stwinbox-sensor-mcp**
+   - Loads the generated acquisition folder with `load_signal` on **vibration-analysis-mcp**
+   - Falls back to `connect_board`/`acquire_data` only when DATALOG2 SDK is unavailable
+3. Claude then calls `compute_fft_spectrum` (and optionally `find_spectral_peaks`) on **vibration-analysis-mcp**
+4. Results are presented with explicit units, evidence references, and severity assessment
 
 ### Diagnosis Flow
 1. User asks "What's wrong with my motor?"
@@ -96,14 +97,14 @@ Both servers use **STDIO transport** (standard input/output):
       "command": "uv",
       "args": [
         "--directory", "/path/to/mcp-servers/stwinbox-sensor-mcp",
-        "run", "stwinbox-sensor-mcp"
+        "run", "stwinbox_sensor_mcp"
       ]
     },
     "vibration-analysis": {
       "command": "uv",
       "args": [
         "--directory", "/path/to/mcp-servers/vibration-analysis-mcp",
-        "run", "vibration-analysis-mcp"
+        "run", "vibration_analysis_mcp"
       ]
     }
   }

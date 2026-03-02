@@ -198,6 +198,42 @@
   </section>
 
   <!-- ============================================ -->
+  <!-- DEMO VIDEO -->
+  <!-- ============================================ -->
+  <section id="demo" class="py-24 px-4 relative">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-brand-800/20 to-transparent"></div>
+    <div class="relative max-w-6xl mx-auto">
+      <div class="text-center mb-12 reveal">
+        <p class="text-accent-400 font-bold text-lg uppercase tracking-wider mb-3">See it in action</p>
+        <h2 class="text-5xl sm:text-6xl font-bold text-white">Live Demo</h2>
+      </div>
+
+      <div class="grid lg:grid-cols-3 gap-6 reveal">
+        <div class="lg:col-span-2">
+          <div id="video-container" class="relative aspect-video rounded-2xl overflow-hidden glass">
+            <iframe id="video-iframe" class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/GC0pL18vgUs?rel=0&vq=hd1080&hd=1&playsinline=1" title="Hairdryer vibration diagnostic demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+          <div class="mt-4 text-center">
+            <a href="https://youtu.be/GC0pL18vgUs" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-brand-300 hover:text-brand-200 font-semibold text-base underline underline-offset-4">
+              Watch on YouTube in highest available quality
+              <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </div>
+        <div class="glass rounded-2xl p-7 flex flex-col justify-center">
+          <p class="text-brand-300 font-bold uppercase tracking-wider mb-3">Sample output</p>
+          <h3 class="text-3xl font-bold text-white mb-4">Download the Hairdryer Diagnostic Report</h3>
+          <p class="text-lg text-white/90 leading-relaxed mb-6">See the same evidence based workflow shown in the video, including spectral findings, severity assessment and maintenance recommendations.</p>
+          <a href="examples/hairdryer_vibration_report.pdf" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 text-white font-bold text-lg transition-all hover:scale-105 shadow-xl shadow-brand-500/25 ring-1 ring-brand-400/30">
+            <span>Download Report</span>
+            <span aria-hidden="true">⬇</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
   <!-- HOW IT WORKS -->
   <!-- ============================================ -->
   <section class="py-24 px-4 relative">
@@ -259,39 +295,39 @@
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
           <span class="text-3xl shrink-0">🔬</span>
-          <div><h4 class="text-xl font-bold text-white mb-2">Spectral Intelligence</h4><p class="text-lg text-white/90">Instantly identify frequency signatures with FFT and Power Spectral Density, using Hann, Hamming or Blackman windowing and automatic peak detection.</p></div>
+          <div><h4 class="text-xl font-bold text-white mb-2">Frequency Signature Explorer</h4><p class="text-lg text-white/90">Spot important vibration patterns in seconds with frequency spectrum analysis, clear peak detection and robust windowing options for reliable interpretation.</p></div>
         </div>
         <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
           <span class="text-3xl shrink-0">🎯</span>
-          <div><h4 class="text-xl font-bold text-white mb-2">Envelope Analysis</h4><p class="text-lg text-white/90">Detect early-stage rolling element defects before they become critical, using Hilbert-transform envelope spectra to reveal hidden fault patterns.</p></div>
+          <div><h4 class="text-xl font-bold text-white mb-2">Early Bearing Damage Reveal</h4><p class="text-lg text-white/90">Uncover subtle bearing damage signals long before failure, revealing hidden impact patterns that are hard to see in raw vibration data.</p></div>
         </div>
         <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
           <span class="text-3xl shrink-0">⚙️</span>
-          <div><h4 class="text-xl font-bold text-white mb-2">Bearing Database</h4><p class="text-lg text-white/90">Built-in catalog of common bearing models, plus support for custom geometry and direct frequency input from manufacturer datasheets.</p></div>
+          <div><h4 class="text-xl font-bold text-white mb-2">Bearing Insight Library</h4><p class="text-lg text-white/90">Use a ready to use bearing library, custom geometry input and manufacturer reference frequencies to speed up diagnosis.</p></div>
         </div>
         <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
           <span class="text-3xl shrink-0">🩺</span>
-          <div><h4 class="text-xl font-bold text-white mb-2">Intelligent Fault Classification</h4><p class="text-lg text-white/90">Automatically identify unbalance, misalignment, looseness and bearing defects with confidence levels, so you know exactly what to fix first.</p></div>
+          <div><h4 class="text-xl font-bold text-white mb-2">Clear Fault Prioritization</h4><p class="text-lg text-white/90">Get a clear list of likely issues such as unbalance, misalignment, looseness and bearing damage with confidence guidance for next actions.</p></div>
         </div>
         <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
           <span class="text-3xl shrink-0">📏</span>
-          <div><h4 class="text-xl font-bold text-white mb-2">ISO 10816 Compliance</h4><p class="text-lg text-white/90">Industry-standard vibration severity classification across Zones A through D and 4 machine groups. Speak the same language as your maintenance team.</p></div>
+          <div><h4 class="text-xl font-bold text-white mb-2">Severity Zones Your Team Understands</h4><p class="text-lg text-white/90">Communicate machine condition with recognized severity zones from A to D so maintenance and operations can align quickly.</p></div>
         </div>
         <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
           <span class="text-3xl shrink-0">🧠</span>
-          <div><h4 class="text-xl font-bold text-white mb-2">Domain Expert Skills</h4><p class="text-lg text-white/90">Three pre-built Claude Skills encode real-world diagnostic expertise: monitoring, diagnosis and reporting. Claude thinks like an experienced vibration analyst.</p></div>
+          <div><h4 class="text-xl font-bold text-white mb-2">Practical Guidance for Operators</h4><p class="text-lg text-white/90">Built in Claude workflows guide monitoring, diagnosis and reporting with language that is useful for technicians and operators.</p></div>
         </div>
         <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
           <span class="text-3xl shrink-0">💾</span>
-          <div><h4 class="text-xl font-bold text-white mb-2">Smart Data Handling</h4><p class="text-lg text-white/90">Over 378,000 samples per acquisition are stored server-side. The AI receives only compact summaries, keeping conversations fast and context-efficient.</p></div>
+          <div><h4 class="text-xl font-bold text-white mb-2">Fast Conversations with Large Measurements</h4><p class="text-lg text-white/90">Handle large measurements without slowing down chat by keeping full data on the server and sharing only concise analytical summaries.</p></div>
         </div>
         <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
           <span class="text-3xl shrink-0">⏱️</span>
-          <div><h4 class="text-xl font-bold text-white mb-2">Precise Acquisition Control</h4><p class="text-lg text-white/90">Server-side timers eliminate orchestration latency. Request exactly the duration you need, from milliseconds to minutes, with guaranteed precision.</p></div>
+          <div><h4 class="text-xl font-bold text-white mb-2">Timed Measurements You Can Trust</h4><p class="text-lg text-white/90">Capture exactly the measurement duration you request with server side timing designed for repeatable condition checks.</p></div>
         </div>
         <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
           <span class="text-3xl shrink-0">🔌</span>
-          <div><h4 class="text-xl font-bold text-white mb-2">36 MCP Tools</h4><p class="text-lg text-white/90">22 sensor control tools and 14 analysis tools give Claude full programmatic control of the hardware through standard USB connectivity.</p></div>
+          <div><h4 class="text-xl font-bold text-white mb-2">Complete Monitoring Toolbox</h4><p class="text-lg text-white/90">A complete set of sensor control and analysis tools covers the full journey from acquisition to diagnostic decision making.</p></div>
         </div>
       </div>
     </div>
@@ -313,35 +349,6 @@
         </div>
         <div class="glass rounded-2xl p-4 overflow-hidden">
           <img src="images/claude-stwinbox-diagnostics_3.png" alt="Data flow and processing pipeline" class="w-full rounded-xl">
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================ -->
-  <!-- DEMO VIDEO -->
-  <!-- ============================================ -->
-  <section id="demo" class="py-24 px-4 relative">
-    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-brand-800/20 to-transparent"></div>
-    <div class="relative max-w-4xl mx-auto">
-      <div class="text-center mb-12 reveal">
-        <p class="text-accent-400 font-bold text-lg uppercase tracking-wider mb-3">See it in action</p>
-        <h2 class="text-5xl sm:text-6xl font-bold text-white">Demo</h2>
-      </div>
-
-      <div class="reveal">
-        <!-- YouTube embed -->
-        <div id="video-container" class="relative aspect-video rounded-2xl overflow-hidden glass">
-          <!-- Placeholder (shown when no video ID yet) -->
-          <div id="video-placeholder" class="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-brand-900/80 to-st-blue/80 video-pulse">
-            <div class="w-20 h-20 rounded-full bg-white/10 flex items-center justify-center mb-6 hover:bg-white/20 transition-colors cursor-pointer">
-              <svg class="w-10 h-10 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            </div>
-            <p class="text-white text-xl font-medium">Demo video coming soon</p>
-            <p class="text-white/80 text-lg mt-2">Live acquisition from STWIN.box with AI diagnosis in real-time</p>
-          </div>
-          <!-- Actual iframe (hidden until video ID is set) -->
-          <iframe id="video-iframe" class="absolute inset-0 w-full h-full hidden" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
       </div>
     </div>
@@ -637,18 +644,6 @@ cd mcp-servers/vibration-analysis-mcp && uv venv && uv pip install -e . && cd ..
     );
     document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
 
-    // --------------------------------------------------
-    // YouTube video loader
-    // Replace 'YOUR_VIDEO_ID' with the real YouTube ID
-    // --------------------------------------------------
-    const VIDEO_ID = ''; // ← Put your YouTube video ID here, e.g., 'dQw4w9WgXcQ'
-
-    if (VIDEO_ID) {
-      document.getElementById('video-placeholder').classList.add('hidden');
-      const iframe = document.getElementById('video-iframe');
-      iframe.src = `https://www.youtube-nocookie.com/embed/${VIDEO_ID}?rel=0`;
-      iframe.classList.remove('hidden');
-    }
   </script>
 
 </body>

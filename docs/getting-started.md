@@ -3,7 +3,8 @@
 ## Prerequisites
 
 - **Hardware**: STEVAL-STWINBX1 (STWIN.box) with USB-C cable
-- **Firmware**: FP-AI-MONITOR2 or FP-SNS-DATALOG2 flashed on the board
+- **Firmware**: **FP-SNS-DATALOG2 (recommended)** flashed on the board
+  - FP-AI-MONITOR2 is supported mainly for legacy serial workflows
 - **Software**:
   - Python 3.10+
   - [uv](https://docs.astral.sh/uv/) package manager
@@ -11,9 +12,9 @@
 
 ## Step 1: Flash the Firmware
 
-1. Download [FP-AI-MONITOR2](https://www.st.com/en/embedded-software/fp-ai-monitor2.html) from ST
+1. Download [FP-SNS-DATALOG2](https://www.st.com/en/embedded-software/fp-sns-datalog2.html) from ST
 2. Flash using STM32CubeProgrammer via the ST-LINK connector
-3. Alternatively, use FP-SNS-DATALOG2 for high-speed data logging
+3. If needed, FP-AI-MONITOR2 can still be used for serial-only workflows
 
 ## Step 2: Install MCP Servers
 
@@ -46,14 +47,14 @@ Add the MCP servers:
       "command": "uv",
       "args": [
         "--directory", "C:/path/to/mcp-servers/stwinbox-sensor-mcp",
-        "run", "stwinbox-sensor-mcp"
+        "run", "stwinbox_sensor_mcp"
       ]
     },
     "vibration-analysis": {
       "command": "uv",
       "args": [
         "--directory", "C:/path/to/mcp-servers/vibration-analysis-mcp",
-        "run", "vibration-analysis-mcp"
+        "run", "vibration_analysis_mcp"
       ]
     }
   }
@@ -84,9 +85,9 @@ Replace `C:/path/to/` with the actual path to your clone.
 > "Connect to the STWIN.box and show me the available sensors"
 
 Claude will use the **machine-vibration-monitoring** skill to:
-- Find the COM port
-- Connect to the board
-- List available sensors with their current configuration
+- Connect over USB-HID (`datalog2_connect`) when SDK support is available
+- List active sensors and ODR/FS (`datalog2_list_sensors`)
+- Fall back to serial COM tools only if DATALOG2 support is unavailable
 
 ## Step 6: First Measurement
 
@@ -113,10 +114,11 @@ Claude will:
 - On Windows, check Device Manager for the COM port
 - Install ST USB drivers if needed
 
-### Serial connection timeout
+### Serial connection timeout (legacy fallback path)
 - Ensure the correct firmware is flashed
 - Try baud rate 115200 (default for FP-AI-MONITOR2)
 - Reset the board (press the reset button)
+- Prefer FP-SNS-DATALOG2 + USB-HID when possible for deterministic acquisition timing
 
 ### No vibration data
 - Check sensor configuration (use `list_sensors` and `get_sensor_config`)

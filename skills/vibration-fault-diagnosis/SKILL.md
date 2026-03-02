@@ -49,7 +49,7 @@ Always follow this structured diagnostic workflow:
 ### Step 1 — Gather Context
 Ask or determine:
 - **Machine type** (pump, motor, fan, compressor, etc.)
-- **Shaft speed** in RPM — **ask the operator; NEVER guess or invent a value**
+- **Shaft speed** in RPM — **ask the operator; do not guess values**
 - **Bearing type** if known (designation like 6205, 6306, etc.)
 - **Symptom description** (noise, temperature, vibration increase)
 - **Machine group** for ISO 10816 (group1–group4)
@@ -117,7 +117,7 @@ Present findings with:
 For a fully automated diagnosis, use `diagnose_vibration`:
 - **With RPM**: full shaft-frequency features + bearing analysis + ISO classification
 - **Without RPM**: basic statistics only (RMS, kurtosis, crest factor) + ISO severity
-  — do NOT invent an RPM value; ask the user if it matters
+  — do not invent an RPM value; ask the user if it matters
 
 Use the multi-step approach above when more control or explanation is needed.
 
@@ -130,8 +130,18 @@ Use the multi-step approach above when more control or explanation is needed.
 - Electrical faults (2× line frequency, rotor bar pass) can mimic mechanical faults
 - Always recommend **verification** through complementary methods (temperature,
   acoustic, visual inspection) before major maintenance decisions
-- **NEVER hallucinate RPM** — if the user hasn't provided it, ask or omit it
+- If RPM is not provided, ask for it or explicitly omit shaft-synchronous conclusions
 
 ## Fault Classification Script
 
 See [classify_fault.py](scripts/classify_fault.py) for the rule-based classification logic.
+
+## Evidence & Assumptions Protocol
+
+When presenting results, always separate:
+1. **Measured evidence** (tool outputs, frequencies, amplitudes, ISO zone, statistics)
+2. **Inference** (diagnostic interpretation with confidence)
+3. **Assumptions / prior knowledge** (catalog values, typical fault heuristics, missing machine metadata)
+
+If assumptions are used because required inputs are missing, declare this explicitly and ask for the missing data when practical.
+
