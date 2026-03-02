@@ -1,6 +1,6 @@
 # LLM Edge Predictive Maintenance
 
-### Predictive Maintenance AI Agents for Edge Vibration Diagnostics — Bridging Industrial IoT Sensors and LLMs via MCP
+### Predictive Maintenance AI Agents for Edge Diagnostics: Bridging Industrial IoT Sensors and LLMs via MCP
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
@@ -18,7 +18,9 @@
 
 ---
 
-> **Why this project?** Industrial predictive maintenance has traditionally required specialized software and deep domain expertise. By combining low-cost edge sensor hardware (STEVAL-STWINBX1) with predictive maintenance LLM capabilities (Claude) through a standardised protocol (MCP), we create an **agentic maintenance** system that makes machine diagnostics **conversational, accessible, and extensible**. Three specialised AI agents — Monitoring, Diagnosis, and Reporting — handle the full diagnostic workflow. Ask your machine how it's feeling — in natural language.
+> **Why this project?** Industrial predictive maintenance has traditionally required specialized software and deep domain expertise. By combining low-cost edge sensor hardware (STEVAL-STWINBX1) with predictive maintenance LLM capabilities (Claude) through a standardised protocol (MCP), we create an **agentic maintenance** system that makes machine diagnostics **conversational, accessible, and extensible**. Three specialised AI agents (Monitoring, Diagnosis, and Reporting) handle the full diagnostic workflow. Ask your machine how it's feeling, in natural language.
+>
+> **Early-stage project.** This release (v0.2.0) was developed as a proof of concept with intensive assistance from Claude and has not yet been validated extensively on real industrial machinery. The analysis algorithms implement well-established signal processing techniques (FFT, envelope analysis, ISO 10816), but their integration with the STWIN.box hardware and the MCP protocol should be considered experimental. Do not use this as the sole basis for critical maintenance decisions without independent verification.
 
 <p align="center">
   <img src="docs/images/Gif_Edge.gif" alt="Short demo of edge diagnostic workflow" width="800">
