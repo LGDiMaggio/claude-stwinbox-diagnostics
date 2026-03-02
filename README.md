@@ -20,6 +20,10 @@
 
 > **Why this project?** Industrial predictive maintenance has traditionally required specialized software and deep domain expertise. By combining low-cost edge sensor hardware (STEVAL-STWINBX1) with the reasoning capabilities of large language models (Claude) through a standardised protocol (MCP), we make machine diagnostics **conversational, accessible, and extensible**. Ask your machine how it's feeling — in natural language.
 
+<p align="center">
+  <img src="docs/images/Gif_Edge.gif" alt="Short demo of edge diagnostic workflow" width="800">
+</p>
+
 ## Key Features
 
 - **Plug & Analyze** — Connect the STWIN.box via USB, ask Claude to check your machine
