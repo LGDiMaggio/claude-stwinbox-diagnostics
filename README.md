@@ -16,8 +16,6 @@
   <strong>An open-source reference architecture for connecting industrial MEMS sensors to LLM-based diagnostic assistants using the Model Context Protocol (MCP).</strong>
 </p>
 
-> **Disclaimer** — This is an independent open-source project. It is **not affiliated with, endorsed by, or sponsored by Anthropic (maker of Claude) or STMicroelectronics**. "Claude" and "STWIN.box" are trademarks of their respective owners. All product names are used solely for descriptive and interoperability purposes.
-
 ---
 
 > **Why this project?** Industrial predictive maintenance has traditionally required specialized software and deep domain expertise. By combining low-cost edge sensor hardware (STEVAL-STWINBX1) with the reasoning capabilities of large language models (Claude) through a standardised protocol (MCP), we make machine diagnostics **conversational, accessible, and extensible**. Ask your machine how it's feeling — in natural language.
@@ -336,6 +334,8 @@ claude-stwinbox-diagnostics/
 ## Project Status & Disclaimer
 
 > **⚠️ Early-stage project.** This release (v0.2.0) was developed as a proof-of-concept with intensive assistance from Claude and has **not yet been validated extensively on real industrial machinery**. The analysis algorithms implement well-established signal processing techniques (FFT, envelope analysis, ISO 10816), but their integration with the STWIN.box hardware and the MCP protocol should be considered experimental. Real-world testing, calibration, and refinement will follow in subsequent versions. **Do not use this as the sole basis for critical maintenance decisions without independent verification.**
+
+> **Disclaimer** — This is an independent open-source project. It is **not affiliated with, endorsed by, or sponsored by Anthropic (maker of Claude) or STMicroelectronics**. "Claude" and "STWIN.box" are trademarks of their respective owners. All product names are used solely for descriptive and interoperability purposes.
 
 ## Contributing
 
