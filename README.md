@@ -382,9 +382,9 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 If you use this project in academic work or industrial applications, please cite:
 
 ```bibtex
-@software{claude_edge_diagnostics,
+@software{llm_edge_diagnostics,
   author       = {Di Maggio, Luigi Gianpio},
-  title        = {Claude Edge Predictive Maintenance: Bridging
+  title        = {LLM Edge Predictive Maintenance: Bridging
                   Industrial IoT Sensors and Large Language Models
                   for Predictive Maintenance},
   year         = {2026},
