@@ -1,4 +1,4 @@
-# Claude STWIN.box Diagnostics
+# LLM Edge Predictive Maintenance
 
 ### AI-Powered Predictive Maintenance & Vibration Fault Diagnosis — Bridging Edge Sensors and Large Language Models
 
@@ -15,6 +15,8 @@
 <p align="center">
   <strong>An open-source reference architecture for connecting industrial MEMS sensors to LLM-based diagnostic assistants using the Model Context Protocol (MCP).</strong>
 </p>
+
+> **Disclaimer** — This is an independent open-source project. It is **not affiliated with, endorsed by, or sponsored by Anthropic (maker of Claude) or STMicroelectronics**. "Claude" and "STWIN.box" are trademarks of their respective owners. All product names are used solely for descriptive and interoperability purposes.
 
 ---
 

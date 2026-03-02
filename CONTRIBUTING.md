@@ -1,4 +1,4 @@
-# Contributing to Claude STWIN.box Diagnostics
+# Contributing to LLM Edge Predictive Maintenance
 
 Thank you for your interest in contributing! This project connects industrial edge sensors to LLM-based diagnostics, and contributions from the vibration analysis, embedded systems, and AI communities are all welcome.
 

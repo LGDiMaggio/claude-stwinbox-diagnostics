@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 title: >-
-  Claude Edge Predictive Maintenance: Bridging Industrial
+  LLM Edge Predictive Maintenance: Bridging Industrial
   IoT Sensors and Large Language Models for Predictive
   Maintenance
 message: >-
@@ -23,6 +23,8 @@ abstract: >-
   analysis, bearing fault detection, ISO 10816), plus Claude
   Skills for guided condition monitoring, fault diagnosis,
   and operator-friendly report generation.
+  This is an independent open-source project, not affiliated
+  with or endorsed by Anthropic or STMicroelectronics.
 keywords:
   - predictive-maintenance
   - vibration-analysis
@@ -36,15 +38,14 @@ keywords:
   - IoT-sensors
   - STWIN
   - STM32
-  - claude
   - large-language-models
   - bearing-fault-detection
   - iso-10816
   - envelope-analysis
   - fft
 license: Apache-2.0
-version: 0.2.0
-date-released: "2026-02-28"
+version: 0.3.0
+date-released: "2026-03-02"
 doi: 10.5281/zenodo.18808856
 identifiers:
   - type: doi
