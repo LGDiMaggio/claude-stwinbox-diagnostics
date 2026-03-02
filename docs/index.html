@@ -367,163 +367,6 @@
   </section>
 
   <!-- ============================================ -->
-  <!-- PREDICTIVE MAINTENANCE AI AGENTS -->
-  <!-- ============================================ -->
-  <section class="py-24 px-4 relative">
-    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-brand-800/20 to-transparent"></div>
-    <div class="relative max-w-6xl mx-auto">
-      <div class="text-center mb-16 reveal">
-        <p class="text-accent-400 font-bold text-lg uppercase tracking-wider mb-3">Predictive maintenance AI agents</p>
-        <h2 class="text-5xl sm:text-6xl font-bold text-white">Three Specialised AI Agents,<br class="hidden sm:block">One Diagnostic Workflow</h2>
-        <p class="text-xl text-white/90 mt-4 max-w-3xl mx-auto">This system acts as a <strong class="text-white">maintenance copilot</strong>: three dedicated AI agents handle the full diagnostic lifecycle, from data acquisition to actionable reports. Each agent maps to a Claude Skill with domain expertise, making this an <strong class="text-white">agentic maintenance</strong> platform for <strong class="text-white">conversational condition monitoring</strong>.</p>
-      </div>
-
-      <!-- Agent pipeline -->
-      <div class="reveal grid md:grid-cols-3 gap-6 mb-12">
-        <!-- Agent 1: Monitoring -->
-        <div class="glass rounded-2xl p-8 border-t-4 border-brand-500 hover:border-brand-400 transition-all group">
-          <div class="flex items-center gap-3 mb-4">
-            <div class="w-12 h-12 rounded-full bg-brand-500/20 text-brand-400 font-bold text-xl flex items-center justify-center group-hover:scale-110 transition-transform">1</div>
-            <div>
-              <h3 class="text-2xl font-bold text-white">Monitoring Agent</h3>
-              <p class="text-sm text-brand-400 font-mono">machine-vibration-monitoring</p>
-            </div>
-          </div>
-          <p class="text-lg text-white/90 leading-relaxed">Connects to the STWIN.box edge sensor, configures the IIS3DWB accelerometer, acquires vibration data and performs baseline comparisons. This is the data-acquisition layer of the predictive maintenance LLM pipeline.</p>
-          <div class="mt-4 flex flex-wrap gap-2">
-            <span class="px-2.5 py-1 rounded-md bg-brand-500/10 text-brand-300 text-sm">Sensor control</span>
-            <span class="px-2.5 py-1 rounded-md bg-brand-500/10 text-brand-300 text-sm">USB-HID</span>
-            <span class="px-2.5 py-1 rounded-md bg-brand-500/10 text-brand-300 text-sm">Baseline</span>
-          </div>
-        </div>
-
-        <!-- Arrow (hidden on mobile) -->
-        <div class="hidden md:flex items-center justify-center absolute left-1/3 top-1/2 -translate-y-1/2 z-10 pointer-events-none" style="display:none;"></div>
-
-        <!-- Agent 2: Diagnosis -->
-        <div class="glass rounded-2xl p-8 border-t-4 border-st-teal hover:border-st-teal/80 transition-all group">
-          <div class="flex items-center gap-3 mb-4">
-            <div class="w-12 h-12 rounded-full bg-st-teal/20 text-st-teal font-bold text-xl flex items-center justify-center group-hover:scale-110 transition-transform">2</div>
-            <div>
-              <h3 class="text-2xl font-bold text-white">Diagnosis Agent</h3>
-              <p class="text-sm text-st-teal font-mono">vibration-fault-diagnosis</p>
-            </div>
-          </div>
-          <p class="text-lg text-white/90 leading-relaxed">Runs the full DSP pipeline: FFT, PSD, envelope analysis (Hilbert transform), bearing fault detection (BPFO/BPFI/BSF/FTF), pattern matching and ISO&nbsp;10816 severity classification. The core intelligence of the AI agent system.</p>
-          <div class="mt-4 flex flex-wrap gap-2">
-            <span class="px-2.5 py-1 rounded-md bg-st-teal/10 text-st-teal text-sm">FFT &amp; PSD</span>
-            <span class="px-2.5 py-1 rounded-md bg-st-teal/10 text-st-teal text-sm">Envelope</span>
-            <span class="px-2.5 py-1 rounded-md bg-st-teal/10 text-st-teal text-sm">ISO 10816</span>
-          </div>
-        </div>
-
-        <!-- Agent 3: Reporting -->
-        <div class="glass rounded-2xl p-8 border-t-4 border-accent-400 hover:border-accent-500 transition-all group">
-          <div class="flex items-center gap-3 mb-4">
-            <div class="w-12 h-12 rounded-full bg-accent-400/20 text-accent-400 font-bold text-xl flex items-center justify-center group-hover:scale-110 transition-transform">3</div>
-            <div>
-              <h3 class="text-2xl font-bold text-white">Reporting Agent</h3>
-              <p class="text-sm text-accent-400 font-mono">operator-diagnostic-report</p>
-            </div>
-          </div>
-          <p class="text-lg text-white/90 leading-relaxed">Generates operator-friendly diagnostic reports with traffic-light severity, fault evidence, confidence levels and recommended maintenance actions. Turns complex signal analysis into clear, actionable guidance for maintenance teams.</p>
-          <div class="mt-4 flex flex-wrap gap-2">
-            <span class="px-2.5 py-1 rounded-md bg-accent-400/10 text-accent-400 text-sm">Reports</span>
-            <span class="px-2.5 py-1 rounded-md bg-accent-400/10 text-accent-400 text-sm">Severity</span>
-            <span class="px-2.5 py-1 rounded-md bg-accent-400/10 text-accent-400 text-sm">Actions</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Flow summary -->
-      <div class="reveal glass rounded-2xl p-6 max-w-3xl mx-auto text-center">
-        <p class="text-lg text-white/90">
-          <span class="text-brand-400 font-bold">Monitoring Agent</span>
-          <span class="text-white/50 mx-2">&rarr;</span>
-          <span class="text-st-teal font-bold">Diagnosis Agent</span>
-          <span class="text-white/50 mx-2">&rarr;</span>
-          <span class="text-accent-400 font-bold">Reporting Agent</span>
-        </p>
-        <p class="text-base text-white/70 mt-3">Each predictive maintenance AI agent corresponds to a Claude Skill backed by MCP server tools. The agents orchestrate automatically through natural conversation: no scripting, no dashboards, just conversational condition monitoring.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================ -->
-  <!-- FEATURES -->
-  <!-- ============================================ -->
-  <section id="features" class="py-24 px-4 relative">
-    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-brand-800/20 to-transparent"></div>
-    <div class="relative max-w-6xl mx-auto">
-      <div class="text-center mb-16 reveal">
-        <p class="text-st-teal font-bold text-lg uppercase tracking-wider mb-3">Toolkit highlights</p>
-        <h2 class="text-5xl sm:text-6xl font-bold text-white">Diagnostic Capabilities at a Glance</h2>
-        <p class="text-xl text-white/90 mt-4 max-w-2xl mx-auto">Everything you need to go from raw sensor data to actionable maintenance insights, powered by 36 purpose-built MCP tools.</p>
-      </div>
-
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
-          <span class="text-3xl shrink-0">🔬</span>
-          <div><h4 class="text-xl font-bold text-white mb-2">Frequency Pattern Discovery</h4><p class="text-lg text-white/90">Instantly identify frequency signatures with FFT and Power Spectral Density, using Hann, Hamming or Blackman windowing and automatic peak detection.</p></div>
-        </div>
-        <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
-          <span class="text-3xl shrink-0">🎯</span>
-          <div><h4 class="text-xl font-bold text-white mb-2">Early Defect Detection</h4><p class="text-lg text-white/90">Detect early-stage rolling element defects before they become critical, using Hilbert-transform envelope spectra to reveal hidden fault patterns.</p></div>
-        </div>
-        <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
-          <span class="text-3xl shrink-0">⚙️</span>
-          <div><h4 class="text-xl font-bold text-white mb-2">Bearing Knowledge Library</h4><p class="text-lg text-white/90">Built-in catalog of common bearing models, plus support for custom geometry and direct frequency input from manufacturer datasheets.</p></div>
-        </div>
-        <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
-          <span class="text-3xl shrink-0">🩺</span>
-          <div><h4 class="text-xl font-bold text-white mb-2">Clear Fault Identification</h4><p class="text-lg text-white/90">Automatically identify unbalance, misalignment, looseness and bearing defects with confidence levels, so you know exactly what to fix first.</p></div>
-        </div>
-        <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
-          <span class="text-3xl shrink-0">📏</span>
-          <div><h4 class="text-xl font-bold text-white mb-2">Standards Aligned Severity Ratings</h4><p class="text-lg text-white/90">Industry-standard vibration severity classification across Zones A through D and 4 machine groups. Speak the same language as your maintenance team.</p></div>
-        </div>
-        <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
-          <span class="text-3xl shrink-0">🧠</span>
-          <div><h4 class="text-xl font-bold text-white mb-2">Expert Guided Diagnostic Flows</h4><p class="text-lg text-white/90">Three pre-built Claude Skills encode real-world diagnostic expertise: monitoring, diagnosis and reporting. Claude thinks like an experienced vibration analyst.</p></div>
-        </div>
-        <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
-          <span class="text-3xl shrink-0">💾</span>
-          <div><h4 class="text-xl font-bold text-white mb-2">Efficient Data Management</h4><p class="text-lg text-white/90">Over 378,000 samples per acquisition are stored server-side. The AI receives only compact summaries, keeping conversations fast and context-efficient.</p></div>
-        </div>
-        <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
-          <span class="text-3xl shrink-0">⏱️</span>
-          <div><h4 class="text-xl font-bold text-white mb-2">Reliable Measurement Timing</h4><p class="text-lg text-white/90">Server-side timers eliminate orchestration latency. Request exactly the duration you need, from milliseconds to minutes, with guaranteed precision.</p></div>
-        </div>
-        <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
-          <span class="text-3xl shrink-0">🔌</span>
-          <div><h4 class="text-xl font-bold text-white mb-2">Complete Sensor and Analysis Toolkit</h4><p class="text-lg text-white/90">22 sensor control tools and 14 analysis tools give Claude full programmatic control of the hardware through standard USB connectivity.</p></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================ -->
-  <!-- ARCHITECTURE -->
-  <!-- ============================================ -->
-  <section id="architecture" class="py-24 px-4">
-    <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-16 reveal">
-        <p class="text-brand-400 font-bold text-lg uppercase tracking-wider mb-3">Under the hood</p>
-        <h2 class="text-5xl sm:text-6xl font-bold text-white">Architecture</h2>
-      </div>
-
-      <div class="reveal grid md:grid-cols-2 gap-6">
-        <div class="glass rounded-2xl p-4 overflow-hidden">
-          <img src="images/claude-stwinbox-diagnostics_2.png" alt="System architecture diagram" class="w-full rounded-xl">
-        </div>
-        <div class="glass rounded-2xl p-4 overflow-hidden">
-          <img src="images/claude-stwinbox-diagnostics_3.png" alt="Data flow and processing pipeline" class="w-full rounded-xl">
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================ -->
   <!-- CONVERSATION EXAMPLES -->
   <!-- ============================================ -->
   <section class="py-24 px-4">
@@ -864,6 +707,164 @@ cd mcp-servers/vibration-analysis-mcp && uv venv && uv pip install -e . && cd ..
         <span class="px-5 py-2.5 rounded-full glass text-lg text-white font-medium">STEVAL-STWINBX1</span>
         <span class="px-5 py-2.5 rounded-full glass text-lg text-white font-medium">FP-SNS-DATALOG2</span>
         <span class="px-5 py-2.5 rounded-full glass text-lg text-white font-medium">ISO 10816</span>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================ -->
+  <!-- PREDICTIVE MAINTENANCE AI AGENTS -->
+  <!-- ============================================ -->
+  <section class="py-24 px-4 relative">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-brand-800/20 to-transparent"></div>
+    <div class="relative max-w-6xl mx-auto">
+      <div class="text-center mb-16 reveal">
+        <p class="text-accent-400 font-bold text-lg uppercase tracking-wider mb-3">Predictive maintenance AI agents</p>
+        <h2 class="text-5xl sm:text-6xl font-bold text-white">Three Specialised AI Agents,<br class="hidden sm:block">One Diagnostic Workflow</h2>
+        <p class="text-xl text-white/90 mt-4 max-w-3xl mx-auto">Three focused agents cover acquisition, diagnosis and reporting. Each one maps to a Claude Skill, so the workflow stays modular, reliable and easy to scale.</p>
+      </div>
+
+      <!-- Agent pipeline -->
+      <div class="reveal grid md:grid-cols-3 gap-6 mb-12">
+        <!-- Agent 1: Monitoring -->
+        <div class="glass rounded-2xl p-8 border-t-4 border-brand-500 hover:border-brand-400 transition-all group">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 rounded-full bg-brand-500/20 text-brand-400 font-bold text-xl flex items-center justify-center group-hover:scale-110 transition-transform">1</div>
+            <div>
+              <h3 class="text-2xl font-bold text-white">Monitoring Agent</h3>
+              <p class="text-sm text-brand-400 font-mono">machine-vibration-monitoring</p>
+            </div>
+          </div>
+          <p class="text-lg text-white/90 leading-relaxed">Connects to STWIN.box, configures IIS3DWB, captures data and checks baselines.</p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="px-2.5 py-1 rounded-md bg-brand-500/10 text-brand-300 text-sm">Sensor control</span>
+            <span class="px-2.5 py-1 rounded-md bg-brand-500/10 text-brand-300 text-sm">USB-HID</span>
+            <span class="px-2.5 py-1 rounded-md bg-brand-500/10 text-brand-300 text-sm">Baseline</span>
+          </div>
+        </div>
+
+        <!-- Arrow (hidden on mobile) -->
+        <div class="hidden md:flex items-center justify-center absolute left-1/3 top-1/2 -translate-y-1/2 z-10 pointer-events-none" style="display:none;"></div>
+
+        <!-- Agent 2: Diagnosis -->
+        <div class="glass rounded-2xl p-8 border-t-4 border-st-teal hover:border-st-teal/80 transition-all group">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 rounded-full bg-st-teal/20 text-st-teal font-bold text-xl flex items-center justify-center group-hover:scale-110 transition-transform">2</div>
+            <div>
+              <h3 class="text-2xl font-bold text-white">Diagnosis Agent</h3>
+              <p class="text-sm text-st-teal font-mono">vibration-fault-diagnosis</p>
+            </div>
+          </div>
+          <p class="text-lg text-white/90 leading-relaxed">Runs FFT/PSD, envelope analysis, bearing frequencies (BPFO/BPFI/BSF/FTF) and ISO&nbsp;10816 severity checks.</p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="px-2.5 py-1 rounded-md bg-st-teal/10 text-st-teal text-sm">FFT &amp; PSD</span>
+            <span class="px-2.5 py-1 rounded-md bg-st-teal/10 text-st-teal text-sm">Envelope</span>
+            <span class="px-2.5 py-1 rounded-md bg-st-teal/10 text-st-teal text-sm">ISO 10816</span>
+          </div>
+        </div>
+
+        <!-- Agent 3: Reporting -->
+        <div class="glass rounded-2xl p-8 border-t-4 border-accent-400 hover:border-accent-500 transition-all group">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 rounded-full bg-accent-400/20 text-accent-400 font-bold text-xl flex items-center justify-center group-hover:scale-110 transition-transform">3</div>
+            <div>
+              <h3 class="text-2xl font-bold text-white">Reporting Agent</h3>
+              <p class="text-sm text-accent-400 font-mono">operator-diagnostic-report</p>
+            </div>
+          </div>
+          <p class="text-lg text-white/90 leading-relaxed">Builds operator-ready reports with severity, evidence, confidence and recommended actions.</p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="px-2.5 py-1 rounded-md bg-accent-400/10 text-accent-400 text-sm">Reports</span>
+            <span class="px-2.5 py-1 rounded-md bg-accent-400/10 text-accent-400 text-sm">Severity</span>
+            <span class="px-2.5 py-1 rounded-md bg-accent-400/10 text-accent-400 text-sm">Actions</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Flow summary -->
+      <div class="reveal glass rounded-2xl p-6 max-w-3xl mx-auto text-center">
+        <p class="text-lg text-white/90">
+          <span class="text-brand-400 font-bold">Monitoring Agent</span>
+          <span class="text-white/50 mx-2">&rarr;</span>
+          <span class="text-st-teal font-bold">Diagnosis Agent</span>
+          <span class="text-white/50 mx-2">&rarr;</span>
+          <span class="text-accent-400 font-bold">Reporting Agent</span>
+        </p>
+        <p class="text-base text-white/70 mt-3">Every agent is a Claude Skill backed by MCP tools, orchestrated directly from chat.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- FEATURES -->
+  <!-- ============================================ -->
+  <section id="features" class="py-24 px-4 relative">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-brand-800/20 to-transparent"></div>
+    <div class="relative max-w-6xl mx-auto">
+      <div class="text-center mb-16 reveal">
+        <p class="text-st-teal font-bold text-lg uppercase tracking-wider mb-3">Toolkit highlights</p>
+        <h2 class="text-5xl sm:text-6xl font-bold text-white">Diagnostic Capabilities at a Glance</h2>
+        <p class="text-xl text-white/90 mt-4 max-w-2xl mx-auto">From raw signals to actions with 36 purpose-built MCP tools.</p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
+          <span class="text-3xl shrink-0">🔬</span>
+          <div><h4 class="text-xl font-bold text-white mb-2">Frequency Pattern Discovery</h4><p class="text-lg text-white/90">Identify frequency signatures with FFT/PSD, windowing and peak detection.</p></div>
+        </div>
+        <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
+          <span class="text-3xl shrink-0">🎯</span>
+          <div><h4 class="text-xl font-bold text-white mb-2">Early Defect Detection</h4><p class="text-lg text-white/90">Reveal early bearing defects with Hilbert-envelope spectra.</p></div>
+        </div>
+        <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
+          <span class="text-3xl shrink-0">⚙️</span>
+          <div><h4 class="text-xl font-bold text-white mb-2">Bearing Knowledge Library</h4><p class="text-lg text-white/90">Use built-in bearing models or enter custom geometry/frequencies.</p></div>
+        </div>
+        <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
+          <span class="text-3xl shrink-0">🩺</span>
+          <div><h4 class="text-xl font-bold text-white mb-2">Clear Fault Identification</h4><p class="text-lg text-white/90">Classify unbalance, misalignment, looseness and bearing faults with confidence scores.</p></div>
+        </div>
+        <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
+          <span class="text-3xl shrink-0">📏</span>
+          <div><h4 class="text-xl font-bold text-white mb-2">Standards Aligned Severity Ratings</h4><p class="text-lg text-white/90">Apply ISO 10816 severity zones (A-D) across machine groups.</p></div>
+        </div>
+        <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
+          <span class="text-3xl shrink-0">🧠</span>
+          <div><h4 class="text-xl font-bold text-white mb-2">Expert Guided Diagnostic Flows</h4><p class="text-lg text-white/90">Three Claude Skills encode monitoring, diagnosis and reporting best practices.</p></div>
+        </div>
+        <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
+          <span class="text-3xl shrink-0">💾</span>
+          <div><h4 class="text-xl font-bold text-white mb-2">Efficient Data Management</h4><p class="text-lg text-white/90">Store high-volume samples server-side while sending compact summaries to the AI.</p></div>
+        </div>
+        <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
+          <span class="text-3xl shrink-0">⏱️</span>
+          <div><h4 class="text-xl font-bold text-white mb-2">Reliable Measurement Timing</h4><p class="text-lg text-white/90">Use server-side timing for precise acquisitions from milliseconds to minutes.</p></div>
+        </div>
+        <div class="reveal glass rounded-xl p-7 flex gap-4 items-start">
+          <span class="text-3xl shrink-0">🔌</span>
+          <div><h4 class="text-xl font-bold text-white mb-2">Complete Sensor and Analysis Toolkit</h4><p class="text-lg text-white/90">22 sensor tools + 14 analysis tools provide full USB-based control and diagnostics.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- ARCHITECTURE -->
+  <!-- ============================================ -->
+  <section id="architecture" class="py-24 px-4">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16 reveal">
+        <p class="text-brand-400 font-bold text-lg uppercase tracking-wider mb-3">Under the hood</p>
+        <h2 class="text-5xl sm:text-6xl font-bold text-white">Architecture</h2>
+      </div>
+
+      <div class="reveal grid md:grid-cols-2 gap-6">
+        <div class="glass rounded-2xl p-4 overflow-hidden">
+          <img src="images/claude-stwinbox-diagnostics_2.png" alt="System architecture diagram" class="w-full rounded-xl">
+        </div>
+        <div class="glass rounded-2xl p-4 overflow-hidden">
+          <img src="images/claude-stwinbox-diagnostics_3.png" alt="Data flow and processing pipeline" class="w-full rounded-xl">
+        </div>
       </div>
     </div>
   </section>
