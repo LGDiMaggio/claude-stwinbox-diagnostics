@@ -140,7 +140,10 @@
         <span class="text-2xl">⚙️</span>
         <span class="hidden sm:inline">LLM Edge Predictive Maintenance</span>
       </a>
-      <div class="flex items-center gap-6 text-base font-semibold">
+      <button id="mobile-menu-button" class="md:hidden inline-flex items-center justify-center p-2 rounded-lg text-white hover:bg-white/10 transition-colors" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div class="hidden md:flex items-center gap-6 text-base font-semibold">
         <a href="#demo" class="text-white hover:text-brand-400 transition-colors">Demo</a>
         <a href="#why" class="text-white hover:text-brand-400 transition-colors">Why It Works</a>
         <a href="#quickstart" class="text-white hover:text-brand-400 transition-colors">Quick Start</a>
@@ -151,6 +154,16 @@
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
           GitHub
         </a>
+      </div>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden border-t border-white/10 px-4 py-3">
+      <div class="flex flex-col gap-3 text-base font-semibold">
+        <a href="#demo" class="text-white hover:text-brand-400 transition-colors">Demo</a>
+        <a href="#why" class="text-white hover:text-brand-400 transition-colors">Why It Works</a>
+        <a href="#quickstart" class="text-white hover:text-brand-400 transition-colors">Quick Start</a>
+        <a href="#features" class="text-white hover:text-brand-400 transition-colors">Features</a>
+        <a href="#architecture" class="text-white hover:text-brand-400 transition-colors">Architecture</a>
+        <a href="#faq" class="text-white hover:text-brand-400 transition-colors">FAQ</a>
       </div>
     </div>
   </nav>
@@ -180,11 +193,11 @@
         </span>
       </div>
 
-      <h1 class="hero-title text-6xl sm:text-8xl font-black tracking-tight mb-6 animate-slide-up">
+      <h1 class="hero-title text-5xl sm:text-8xl font-black tracking-tight mb-6 animate-slide-up">
         <span class="gradient-text">LLM Edge<br>Predictive Maintenance</span>
       </h1>
 
-      <p class="text-3xl sm:text-5xl font-semibold text-white max-w-5xl mx-auto mb-5 animate-slide-up delay-100">
+      <p class="text-2xl sm:text-5xl font-semibold text-white max-w-5xl mx-auto mb-5 animate-slide-up delay-100">
         Ask your machine how it's feeling, in natural language.
       </p>
 
@@ -193,7 +206,7 @@
       </p>
 
       <div class="flex flex-wrap justify-center gap-4 animate-slide-up delay-300">
-        <a href="https://github.com/LGDiMaggio/claude-stwinbox-diagnostics" class="inline-flex items-center gap-2 px-10 py-4 rounded-xl bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 text-white font-bold text-lg transition-all hover:scale-105 shadow-xl shadow-brand-500/30 ring-1 ring-brand-400/30">
+        <a href="https://github.com/LGDiMaggio/claude-stwinbox-diagnostics" class="inline-flex items-center gap-2 px-7 sm:px-10 py-3.5 sm:py-4 rounded-xl bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-600 hover:to-brand-700 text-white font-bold text-base sm:text-lg transition-all hover:scale-105 shadow-xl shadow-brand-500/30 ring-1 ring-brand-400/30">
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
           Get Started on GitHub
         </a>
@@ -303,7 +316,7 @@
       </div>
 
       <!-- Stats -->
-      <div class="reveal grid grid-cols-3 gap-4 mt-10 max-w-2xl mx-auto">
+      <div class="reveal grid grid-cols-1 sm:grid-cols-3 gap-4 mt-10 max-w-2xl mx-auto">
         <div class="glass rounded-xl p-5 text-center">
           <p class="text-4xl font-bold gradient-text">36</p>
           <p class="text-sm text-white/70 mt-1">MCP Tools</p>
@@ -928,6 +941,27 @@ cd mcp-servers/vibration-analysis-mcp && uv venv && uv pip install -e . && cd ..
   <!-- SCRIPTS -->
   <!-- ============================================ -->
   <script>
+    // --------------------------------------------------
+    // Mobile menu toggle
+    // --------------------------------------------------
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    if (mobileMenuButton && mobileMenu) {
+      mobileMenuButton.addEventListener('click', () => {
+        const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+        mobileMenuButton.setAttribute('aria-expanded', String(!isExpanded));
+        mobileMenu.classList.toggle('hidden');
+      });
+
+      mobileMenu.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.add('hidden');
+          mobileMenuButton.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
+
     // --------------------------------------------------
     // Intersection Observer for reveal animations
     // --------------------------------------------------
