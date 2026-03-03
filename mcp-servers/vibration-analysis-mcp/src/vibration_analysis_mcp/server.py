@@ -130,12 +130,11 @@ def _accel_g_to_velocity_rms_mms(
     freqs = np.fft.rfftfreq(N, d=1.0 / sample_rate)
 
     # Integration in frequency domain: V(f) = A(f) / (j * 2π * f)
-    # Avoid division by zero at DC
-    vel_fft = np.zeros_like(fft_vals)
-    for i in range(1, len(freqs)):
-        if f_low <= freqs[i] <= f_high:
-            vel_fft[i] = fft_vals[i] / (1j * 2.0 * np.pi * freqs[i])
-        # else: leave as zero (band-pass)
+    # Vectorised band-pass + integration (avoid Python loop over FFT bins)
+    mask = (freqs >= f_low) & (freqs <= f_high)
+    mask[0] = False  # skip DC to avoid division by zero
+    omega = np.where(mask, 1j * 2.0 * np.pi * freqs, 1.0)  # 1.0 placeholder for masked-out bins
+    vel_fft = np.where(mask, fft_vals / omega, 0.0)
 
     # Back to time domain
     velocity_ms = np.fft.irfft(vel_fft, n=N)
@@ -793,7 +792,7 @@ def diagnose_vibration(
     ts_mean = float(np.mean(sig))
     ts_std = float(np.std(sig))
     if ts_std > 0:
-        ts_kurtosis = float(np.mean(((sig - ts_mean) / ts_std) ** 4))
+        ts_kurtosis = float(np.mean(((sig - ts_mean) / ts_std) ** 4) - 3.0)  # excess kurtosis (Fisher)
     else:
         ts_kurtosis = 0.0
 

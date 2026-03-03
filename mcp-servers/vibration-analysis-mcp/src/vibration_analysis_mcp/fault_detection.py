@@ -86,7 +86,7 @@ class ShaftFeatures:
     amp_half_x: float   # 0.5× amplitude (sub-harmonic)
     rms_overall: float  # Broadband RMS
     crest_factor: float # Peak / RMS
-    kurtosis: float     # Signal kurtosis (>3 indicates impulsiveness)
+    kurtosis: float     # Excess kurtosis (Fisher; Gaussian = 0, >1 indicates impulsiveness)
 
 
 def extract_shaft_features(
@@ -134,7 +134,7 @@ def extract_shaft_features(
         mean_ts = np.mean(ts)
         std_ts = np.std(ts)
         if std_ts > 0:
-            kurt = float(np.sum(((ts - mean_ts) / std_ts) ** 4) / n)
+            kurt = float(np.mean(((ts - mean_ts) / std_ts) ** 4) - 3.0)  # excess kurtosis (Fisher)
         else:
             kurt = 0.0
     else:
@@ -255,14 +255,14 @@ def classify_faults(
             ],
         ))
 
-    # --- Impulsiveness (kurtosis > 4 or crest factor > 5) ---
-    if features.kurtosis > 4.0 or features.crest_factor > 5.0:
+    # --- Impulsiveness (excess kurtosis > 1 or crest factor > 5) ---
+    if features.kurtosis > 1.0 or features.crest_factor > 5.0:
         diagnoses.append(FaultDiagnosis(
             fault_type="impulsive_signal",
             confidence="medium",
             description="Impulsive content detected – may indicate bearing defect or gear tooth damage.",
             evidence=[
-                f"Kurtosis = {features.kurtosis:.2f} (healthy ≈ 3.0)",
+                f"Kurtosis = {features.kurtosis:.2f} (healthy ≈ 0.0, excess/Fisher)",
                 f"Crest factor = {features.crest_factor:.2f} (healthy < 4)",
             ],
             recommendations=[
