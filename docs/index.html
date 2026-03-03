@@ -804,6 +804,17 @@ cd mcp-servers/vibration-analysis-mcp && uv venv && uv pip install -e . && cd ..
         <!-- FAQ 4 -->
         <details class="glass rounded-2xl group">
           <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
+            Does this project only work with the device shown in the demo video?
+            <span class="text-brand-400 group-open:rotate-45 transition-transform text-2xl">+</span>
+          </summary>
+          <div class="px-6 pb-6 text-lg text-white/90 leading-relaxed">
+            <strong>No.</strong> The hardware shown in the demo is the <strong>STEVAL-STWINBX1 (STWIN.box)</strong>, and this repository includes a dedicated MCP server to read that device directly. However, the analysis side is designed to be broader: today the vibration-analysis MCP can load <strong>DATALOG2 acquisition folders</strong> (decoded via ST SDK), plus single-file <strong>.dat</strong> and <strong>.csv</strong> inputs. That means vibration data from other sensors can also be analysed, as long as it is provided in one of these supported formats. Additional skills and integrations for other sensors will be added progressively as the project evolves.
+          </div>
+        </details>
+
+        <!-- FAQ 5 -->
+        <details class="glass rounded-2xl group">
+          <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
             How does MCP connect Claude to industrial sensors?
             <span class="text-brand-400 group-open:rotate-45 transition-transform text-2xl">+</span>
           </summary>
@@ -812,7 +823,7 @@ cd mcp-servers/vibration-analysis-mcp && uv venv && uv pip install -e . && cd ..
           </div>
         </details>
 
-        <!-- FAQ 5 -->
+        <!-- FAQ 6 -->
         <details class="glass rounded-2xl group">
           <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
             What is agentic maintenance?
@@ -823,7 +834,7 @@ cd mcp-servers/vibration-analysis-mcp && uv venv && uv pip install -e . && cd ..
           </div>
         </details>
 
-        <!-- FAQ 6 -->
+        <!-- FAQ 7 -->
         <details class="glass rounded-2xl group">
           <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
             What is an MCP Server and why does this project need two?
@@ -834,7 +845,7 @@ cd mcp-servers/vibration-analysis-mcp && uv venv && uv pip install -e . && cd ..
           </div>
         </details>
 
-        <!-- FAQ 7 -->
+        <!-- FAQ 8 -->
         <details class="glass rounded-2xl group">
           <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
             What are Claude Skills and how do they enable predictive maintenance AI agents?
@@ -845,7 +856,7 @@ cd mcp-servers/vibration-analysis-mcp && uv venv && uv pip install -e . && cd ..
           </div>
         </details>
 
-        <!-- FAQ 8 -->
+        <!-- FAQ 9 -->
         <details class="glass rounded-2xl group">
           <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
             What faults can the system detect?
@@ -856,7 +867,7 @@ cd mcp-servers/vibration-analysis-mcp && uv venv && uv pip install -e . && cd ..
           </div>
         </details>
 
-        <!-- FAQ 9 -->
+        <!-- FAQ 10 -->
         <details class="glass rounded-2xl group">
           <summary class="cursor-pointer p-6 flex items-center justify-between text-xl font-bold text-white hover:text-brand-400 transition-colors">
             Is this a replacement for professional vibration analysis?
@@ -990,6 +1001,14 @@ cd mcp-servers/vibration-analysis-mcp && uv venv && uv pip install -e . && cd ..
         "acceptedAnswer": {
           "@type": "Answer",
           "text": "The Model Context Protocol (MCP) is an open standard that allows LLMs to call external tools. This project provides two MCP servers: one for sensor control (22 tools for USB-HID communication with the STWIN.box) and one for vibration analysis (14 tools for FFT, PSD, envelope, bearing fault detection, ISO 10816)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does this project only work with the device shown in the demo video?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. The hardware shown in the demo is the STEVAL-STWINBX1 (STWIN.box), and this repository includes a dedicated MCP server to read that device directly. However, the vibration-analysis MCP also accepts DATALOG2 acquisition folders, plus single-file .dat and .csv inputs. This allows vibration data from other sensors to be analysed too, as long as it is provided in a supported format. Additional skills and integrations for other sensors will be added progressively as the project evolves."
         }
       },
       {
