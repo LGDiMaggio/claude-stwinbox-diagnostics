@@ -1,3 +1,10 @@
+# -----------------------------------------------------------------------
+# The load_from_datalog2_folder() function in this module uses the
+# STDATALOG-PYSDK by STMicroelectronics (BSD-3-Clause).
+#   Copyright (c) 2022 STMicroelectronics.  All rights reserved.
+#   https://github.com/STMicroelectronics/stdatalog-pysdk
+# See the NOTICE file in the project root for the full license text.
+# -----------------------------------------------------------------------
 """
 Server-side data store for vibration signals.
 

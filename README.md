@@ -400,6 +400,17 @@ If you use this project in academic work or industrial applications, please cite
 
 A [CITATION.cff](CITATION.cff) file is included for automatic citation via GitHub and Zenodo.
 
+## Third-Party Components
+
+| Component | Copyright | License |
+|-----------|-----------|---------|
+| [STDATALOG-PYSDK](https://github.com/STMicroelectronics/stdatalog-pysdk) (`stdatalog_core`, `stdatalog_pnpl`) | © 2022 STMicroelectronics | BSD-3-Clause |
+| [FP-SNS-DATALOG2](https://github.com/STMicroelectronics/fp-sns-datalog2) firmware protocol | © STMicroelectronics | Mixed (see repo) |
+
+The vendored `stdatalog-pysdk/` directory contains the full STDATALOG-PYSDK source
+under its original BSD-3-Clause license. See the [NOTICE](NOTICE) file for the
+complete license text and attribution details.
+
 ## License
 
 Licensed under the Apache License, Version 2.0 — see [LICENSE](LICENSE) for details.

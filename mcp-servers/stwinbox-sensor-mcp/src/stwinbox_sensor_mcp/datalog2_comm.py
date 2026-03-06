@@ -1,3 +1,10 @@
+# -----------------------------------------------------------------------
+# This module wraps the STDATALOG-PYSDK by STMicroelectronics, which is
+# licensed under the BSD-3-Clause license.
+#   Copyright (c) 2022 STMicroelectronics.  All rights reserved.
+#   https://github.com/STMicroelectronics/stdatalog-pysdk
+# See the NOTICE file in the project root for the full license text.
+# -----------------------------------------------------------------------
 """
 FP-SNS-DATALOG2 integration via STDATALOG-PYSDK (HSDLink_v2).
 
