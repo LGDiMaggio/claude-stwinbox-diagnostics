@@ -1,6 +1,6 @@
 # Claude STWIN.box Diagnostics
 
-### Open-source AI agents for industrial vibration diagnostics with STEVAL-STWINBX1, Claude and MCP
+### Open-source AI agents for industrial vibration diagnostics with STEVAL-STWINBX1, Claude Skills and MCP
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
@@ -11,6 +11,8 @@
   <a href="https://www.st.com/en/evaluation-tools/steval-stwinbx1.html"><img src="https://img.shields.io/badge/ST-STEVAL--STWINBX1-03234B.svg" alt="STEVAL-STWINBX1"></a>
 </p>
 
+> **Ask your machine how it's feeling, in natural language.**
+>
 > This repository provides a practical reference architecture to connect industrial vibration sensing (STEVAL-STWINBX1) with Claude through MCP, using transparent DSP and standards-based checks (FFT, envelope analysis, ISO 10816/20816-oriented severity guidance).
 
 <p align="center">
