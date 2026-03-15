@@ -1,19 +1,16 @@
 # Claude STWIN.box Diagnostics
 
-### Open-source AI agents for industrial vibration diagnostics with STEVAL-STWINBX1 + Claude + MCP
+### Open-source AI agents for industrial vibration diagnostics with STEVAL-STWINBX1, Claude and MCP
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
   <a href="https://github.com/LGDiMaggio/claude-stwinbox-diagnostics/releases"><img src="https://img.shields.io/github/v/release/LGDiMaggio/claude-stwinbox-diagnostics?display_name=release" alt="Latest release"></a>
   <a href="https://doi.org/10.5281/zenodo.18808856"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.18808856.svg" alt="DOI"></a>
-  <a href="https://github.com/LGDiMaggio/claude-stwinbox-diagnostics/actions"><img src="https://img.shields.io/badge/CI-TODO%3A%20replace%20with%20actual%20CI%20badge-lightgrey" alt="CI status placeholder"></a>
   <a href="https://modelcontextprotocol.io"><img src="https://img.shields.io/badge/MCP-1.0-green.svg" alt="MCP Protocol"></a>
   <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.10%2B-3776AB.svg?logo=python&logoColor=white" alt="Python"></a>
   <a href="https://www.st.com/en/evaluation-tools/steval-stwinbx1.html"><img src="https://img.shields.io/badge/ST-STEVAL--STWINBX1-03234B.svg" alt="STEVAL-STWINBX1"></a>
 </p>
 
-> **Il primo agente AI open-source che porta la diagnostica vibrazionale esperta direttamente nella conversazione. Dall''hardware edge all''analisi basata su standard in linguaggio naturale.**
->
 > This repository provides a practical reference architecture to connect industrial vibration sensing (STEVAL-STWINBX1) with Claude through MCP, using transparent DSP and standards-based checks (FFT, envelope analysis, ISO 10816/20816-oriented severity guidance).
 
 <p align="center">
