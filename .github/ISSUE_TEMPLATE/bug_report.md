@@ -1,34 +1,48 @@
 ---
-name: Bug Report
-about: Report a bug in the MCP servers, analysis modules, or skills
+name: Bug report
+about: Report a reproducible defect in MCP servers, diagnostics logic, or docs
 title: '[BUG] '
 labels: bug
 assignees: ''
 ---
 
-## Description
-A clear description of the bug.
+## Summary
+Describe the bug in 2-3 sentences.
+
+## Affected component
+- [ ] `stwinbox-sensor-mcp`
+- [ ] `vibration-analysis-mcp`
+- [ ] Claude skill(s)
+- [ ] Documentation
+- [ ] Other (specify)
 
 ## Environment
-- **OS**: (e.g., Windows 11, Ubuntu 22.04)
-- **Python version**: (e.g., 3.12.1)
-- **MCP server**: (stwinbox-sensor-mcp / vibration-analysis-mcp)
-- **STWIN.box firmware**: (e.g., FP-AI-MONITOR2 v2.0.0)
-- **Claude client**: (Claude Desktop / Claude.ai / API)
+- OS:
+- Python version:
+- Claude client/runtime:
+- STWIN.box firmware version (if relevant):
+- Acquisition mode (USB-HID / USB-serial / file-based):
 
-## Steps to Reproduce
-1. ...
-2. ...
-3. ...
+## Steps to reproduce
+1.
+2.
+3.
 
-## Expected Behavior
-What you expected to happen.
+## Expected behavior
+What should have happened.
 
-## Actual Behavior
-What actually happened. Include error messages if applicable.
+## Actual behavior
+What happened instead (include full error/trace if possible).
 
-## Sample Data
-If the issue involves signal analysis, provide a minimal sample or describe the signal (sample rate, duration, fault type).
+## Diagnostic context (important for vibration issues)
+- Sensor/axis:
+- Sampling frequency:
+- Signal duration:
+- Machine RPM/load state:
+- Expected fault signature (if known):
 
-## Additional Context
-Any other context about the problem.
+## Data and evidence
+Attach minimal reproducible data, plots, logs, or command output.
+
+## Additional notes
+Any extra context, mitigations tried, or related issues.

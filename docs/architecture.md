@@ -117,3 +117,84 @@ Both servers use **STDIO transport** (standard input/output):
 - MCP servers run locally — no data leaves the machine (except to Claude API)
 - Sensor data can contain proprietary machine signatures — handle accordingly
 - The `acquire_data` tool has configurable duration limits to prevent excessively long acquisitions
+
+## Sensor specifications
+
+| Sensor | Type | Key specs | Typical use case |
+|--------|------|-----------|------------------|
+| **IIS3DWB** | 3-axis vibration | 26.7 kHz ODR, ±16g | Wideband vibration monitoring |
+| **ISM330DHCX** | 6-axis IMU | Up to 6.7 kHz, ML Core | Medium-frequency vibration |
+| **IMP23ABSU** | Analog microphone | Up to 80 kHz | Ultrasound / acoustic emission |
+| **STTS22H** | Temperature | ±0.5°C accuracy | Thermal monitoring |
+| **ILPS22QS** | Pressure | 1.26 / 4 bar | Environmental conditions |
+
+## Supported fault types (reference)
+
+| Fault | Detection method | Frequency indicators |
+|-------|-----------------|---------------------|
+| **Bearing inner race (BPFI)** | Envelope analysis | N × BPFI harmonics |
+| **Bearing outer race (BPFO)** | Envelope analysis | N × BPFO harmonics |
+| **Bearing ball/roller (BSF)** | Envelope analysis | N × BSF harmonics |
+| **Bearing cage (FTF)** | Envelope analysis | N × FTF harmonics |
+| **Unbalance** | FFT | 1× RPM dominant |
+| **Misalignment** | FFT | 1×, 2× RPM |
+| **Mechanical looseness** | FFT | Multiple harmonics of RPM |
+
+## Project structure
+
+```
+claude-stwinbox-diagnostics/
+├── README.md
+├── CHANGELOG.md
+├── LICENSE
+├── CONTRIBUTING.md
+├── CITATION.cff
+├── NOTICE
+├── mcp-servers/
+│   ├── stwinbox-sensor-mcp/          # MCP Server: HW communication
+│   │   ├── pyproject.toml
+│   │   ├── src/
+│   │   │   └── stwinbox_sensor_mcp/
+│   │   │       ├── server.py          # FastMCP server definition
+│   │   │       ├── serial_comm.py     # USB/Serial communication
+│   │   │       ├── datalog2_comm.py   # DATALOG2 USB-HID/PnPL communication
+│   │   │       └── sensor_config.py   # Sensor configuration helpers
+│   │   └── tests/
+│   └── vibration-analysis-mcp/        # MCP Server: DSP & fault detection
+│       ├── pyproject.toml
+│       ├── src/
+│       │   └── vibration_analysis_mcp/
+│       │       ├── server.py          # FastMCP server definition
+│       │       ├── data_store.py      # Signal storage + DATALOG2 folder loading
+│       │       ├── fft_analysis.py    # FFT, PSD, spectrogram
+│       │       ├── envelope.py        # Envelope analysis for bearings
+│       │       ├── fault_detection.py # Fault classification logic
+│       │       └── bearing_freqs.py   # BPFI/BPFO/BSF/FTF calculators
+│       └── tests/
+├── skills/
+│   ├── machine-vibration-monitoring/  # Skill 1: Monitoring workflow
+│   ├── vibration-fault-diagnosis/     # Skill 2: Diagnosis workflow
+│   └── operator-diagnostic-report/    # Skill 3: Report generation
+├── docs/
+│   ├── architecture.md
+│   ├── getting-started.md
+│   ├── consistency-governance.md
+│   ├── roadmap.md
+│   ├── demo-assets.md
+│   └── images/
+├── examples/
+│   ├── README.md
+│   ├── generate_sample_data.py
+│   └── sample_data/
+└── scripts/
+    └── build_skill_zips.py
+```
+
+## Third-party components
+
+| Component | Copyright | License |
+|-----------|-----------|---------|
+| [STDATALOG-PYSDK](https://github.com/STMicroelectronics/stdatalog-pysdk) (`stdatalog_core`, `stdatalog_pnpl`) | © 2022 STMicroelectronics | BSD-3-Clause |
+| [FP-SNS-DATALOG2](https://github.com/STMicroelectronics/fp-sns-datalog2) firmware protocol | © STMicroelectronics | Mixed (see repo) |
+
+The vendored `stdatalog-pysdk/` directory contains the full STDATALOG-PYSDK source under its original BSD-3-Clause license. See the [NOTICE](../NOTICE) file for full attribution.

@@ -1,32 +1,39 @@
 ---
-name: Feature Request
-about: Suggest a new feature for the project
+name: Feature request
+about: Propose an enhancement consistent with project scope
 title: '[FEATURE] '
 labels: enhancement
 assignees: ''
 ---
 
-## Feature Description
-A clear description of the feature you'd like to see.
+## Problem statement
+What concrete limitation are you hitting today?
 
-## Use Case
-Describe the scenario where this feature would be useful.
-- What machine/sensor setup?
-- What fault type or analysis method?
-- What user workflow?
+## Proposed enhancement
+Describe the feature and expected user-facing behavior.
 
-## Proposed Solution
-How you'd like it to work (optional).
+## Use case
+- Target machine/process:
+- Sensor setup:
+- Workflow in Claude/MCP:
 
-## Alternatives Considered
-Any alternative approaches you've thought about.
+## Scope check
+How does this stay aligned with current project positioning (open-source AI agents for industrial vibration diagnostics with STWIN.box + Claude + MCP)?
+
+## Alternatives considered
+What alternatives did you evaluate?
+
+## Validation plan
+How should maintainers verify this enhancement works?
 
 ## Category
-- [ ] New MCP tool (sensor acquisition)
-- [ ] New MCP tool (analysis/DSP)
-- [ ] New bearing data
-- [ ] New fault type / detection rule
-- [ ] New Claude skill
-- [ ] Documentation / examples
-- [ ] Infrastructure / CI
+- [ ] New MCP acquisition capability
+- [ ] New DSP/fault analysis capability
+- [ ] New bearing/fault reference data
+- [ ] Skill/workflow refinement
+- [ ] Documentation/community improvement
+- [ ] Tooling/CI/release process
 - [ ] Other
+
+## Additional context
+Links, references, standards, or datasets relevant to this proposal.
