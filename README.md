@@ -1,6 +1,6 @@
 # LLM Edge Predictive Maintenance
 
-### Predictive maintenance AI agents bridging industrial edge sensors and LLMs via MCP
+### Predictive maintenance AI agents bridging industrial edge sensors and LLMs via MCP and Skills.md
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
@@ -11,9 +11,11 @@
   <a href="https://www.st.com/en/evaluation-tools/steval-stwinbx1.html"><img src="https://img.shields.io/badge/ST-STEVAL--STWINBX1-03234B.svg" alt="STEVAL-STWINBX1"></a>
 </p>
 
-> **Ask your machine how it's feeling, in natural language.**
->
-> Open-source reference architecture that connects industrial MEMS vibration sensors to Claude through MCP. Transparent DSP pipeline, standards-based severity checks (ISO 10816/20816), and conversational fault diagnosis out of the box. Currently validated with STWIN.box; the analysis server works with any vibration data source.
+<p align="center">
+  <em><strong>Ask your machine how it's feeling, in natural language.</strong></em>
+</p>
+
+> Open-source reference architecture that connects industrial MEMS vibration sensors to Claude through MCP. Transparent Digital Signal Processing (DSP) pipeline, standards-based severity checks (ISO 10816/20816), and conversational fault diagnosis out of the box. Currently validated with STWIN.box; the analysis server works with any vibration data source.
 
 <p align="center">
   <img src="docs/images/Gif_Edge.gif" alt="Short demo of edge diagnostic workflow" width="800">
@@ -54,42 +56,42 @@ Then configure your MCP client (Claude Desktop, Claude Code, or compatible runti
 
 ### MCP servers
 
-| Server | Purpose | Key tools |
-|---|---|---|
-| [stwinbox-sensor-mcp](mcp-servers/stwinbox-sensor-mcp/) | Sensor acquisition via STWIN.box USB-HID or USB-Serial | `datalog2_connect`, `datalog2_start_acquisition`, `datalog2_stop_acquisition`, `datalog2_list_sensors`, `datalog2_configure_sensor`, `connect_board`, `acquire_data`, `load_data_from_file` |
+| Server                                                     | Purpose                                                                                                     | Key tools                                                                                                                                                                                                               |
+| ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [stwinbox-sensor-mcp](mcp-servers/stwinbox-sensor-mcp/)       | Sensor acquisition via STWIN.box USB-HID or USB-Serial                                                      | `datalog2_connect`, `datalog2_start_acquisition`, `datalog2_stop_acquisition`, `datalog2_list_sensors`, `datalog2_configure_sensor`, `connect_board`, `acquire_data`, `load_data_from_file`             |
 | [vibration-analysis-mcp](mcp-servers/vibration-analysis-mcp/) | Signal processing and fault detection. Works with any vibration data: CSV, NumPy, WAV, or DATALOG2 folders. | `load_signal`, `list_stored_signals`, `compute_fft_spectrum`, `compute_envelope_spectrum`, `check_bearing_fault_peak`, `check_bearing_faults_direct`, `diagnose_vibration`, `assess_vibration_severity` |
 
 ### Claude Skills
 
-| Skill | Purpose |
-|---|---|
+| Skill                                                             | Purpose                                            |
+| ----------------------------------------------------------------- | -------------------------------------------------- |
 | [machine-vibration-monitoring](skills/machine-vibration-monitoring/) | Sensor acquisition and baseline/threshold workflow |
-| [vibration-fault-diagnosis](skills/vibration-fault-diagnosis/) | Multi-step fault diagnosis with frequency analysis |
-| [operator-diagnostic-report](skills/operator-diagnostic-report/) | Human-readable maintenance report generation |
+| [vibration-fault-diagnosis](skills/vibration-fault-diagnosis/)       | Multi-step fault diagnosis with frequency analysis |
+| [operator-diagnostic-report](skills/operator-diagnostic-report/)     | Human-readable maintenance report generation       |
 
 ## Supported fault types
 
-| Fault | Detection method | Indicators |
-|---|---|---|
-| Bearing inner race (BPFI) | Envelope analysis | Harmonics of BPFI |
-| Bearing outer race (BPFO) | Envelope analysis | Harmonics of BPFO |
-| Bearing rolling element (BSF) | Envelope analysis | Harmonics of BSF |
-| Bearing cage (FTF) | Envelope analysis | Harmonics of FTF |
-| Unbalance | FFT | 1x RPM dominant |
-| Misalignment | FFT | 1x and 2x RPM |
-| Mechanical looseness | FFT | Multiple RPM harmonics |
+| Fault                         | Detection method  | Indicators             |
+| ----------------------------- | ----------------- | ---------------------- |
+| Bearing inner race (BPFI)     | Envelope analysis | Harmonics of BPFI      |
+| Bearing outer race (BPFO)     | Envelope analysis | Harmonics of BPFO      |
+| Bearing rolling element (BSF) | Envelope analysis | Harmonics of BSF       |
+| Bearing cage (FTF)            | Envelope analysis | Harmonics of FTF       |
+| Unbalance                     | FFT               | 1x RPM dominant        |
+| Misalignment                  | FFT               | 1x and 2x RPM          |
+| Mechanical looseness          | FFT               | Multiple RPM harmonics |
 
 ## Hardware reference (STWIN.box)
 
 The reference hardware is the [STEVAL-STWINBX1](https://www.st.com/en/evaluation-tools/steval-stwinbx1.html), but the analysis server accepts data from any source.
 
-| Sensor | Type | Typical use |
-|---|---|---|
-| IIS3DWB | 3-axis accelerometer | Wideband vibration monitoring |
-| ISM330DHCX | 6-axis IMU | Medium-frequency vibration |
-| IMP23ABSU | Analog microphone | Acoustic and ultrasound indicators |
-| STTS22H | Temperature | Thermal context |
-| ILPS22QS | Pressure | Environmental context |
+| Sensor     | Type                 | Typical use                        |
+| ---------- | -------------------- | ---------------------------------- |
+| IIS3DWB    | 3-axis accelerometer | Wideband vibration monitoring      |
+| ISM330DHCX | 6-axis IMU           | Medium-frequency vibration         |
+| IMP23ABSU  | Analog microphone    | Acoustic and ultrasound indicators |
+| STTS22H    | Temperature          | Thermal context                    |
+| ILPS22QS   | Pressure             | Environmental context              |
 
 ## Architecture
 
@@ -105,16 +107,16 @@ See [docs/architecture.md](docs/architecture.md) for diagrams, data flow, and pr
 
 ## Documentation
 
-| Resource | Link |
-|---|---|
-| Getting started | [docs/getting-started.md](docs/getting-started.md) |
-| Architecture | [docs/architecture.md](docs/architecture.md) |
-| Examples | [examples/README.md](examples/README.md) |
-| Contributing | [CONTRIBUTING.md](CONTRIBUTING.md) |
-| Roadmap | [docs/roadmap.md](docs/roadmap.md) |
-| Security policy | [SECURITY.md](SECURITY.md) |
-| Consistency governance | [docs/consistency-governance.md](docs/consistency-governance.md) |
-| Third-party attribution | [NOTICE](NOTICE) |
+| Resource                | Link                                                          |
+| ----------------------- | ------------------------------------------------------------- |
+| Getting started         | [docs/getting-started.md](docs/getting-started.md)               |
+| Architecture            | [docs/architecture.md](docs/architecture.md)                     |
+| Examples                | [examples/README.md](examples/README.md)                         |
+| Contributing            | [CONTRIBUTING.md](CONTRIBUTING.md)                               |
+| Roadmap                 | [docs/roadmap.md](docs/roadmap.md)                               |
+| Security policy         | [SECURITY.md](SECURITY.md)                                       |
+| Consistency governance  | [docs/consistency-governance.md](docs/consistency-governance.md) |
+| Third-party attribution | [NOTICE](NOTICE)                                                 |
 
 ## Citation
 
