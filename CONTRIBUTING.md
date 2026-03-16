@@ -72,7 +72,7 @@ Use the **Feature Request** template and include:
 - Avoid introducing scope creep unrelated to the stated PoC direction.
 - Keep changes reviewable; split very large work into multiple PRs.
 
-## Review process (lightweight)
+## Review process
 
 1. Maintainer triages PR (scope, clarity, reproducibility).
 2. Technical review checks correctness and documentation alignment.
@@ -84,7 +84,7 @@ Typical outcomes:
 - **Request changes** (most common for first PRs)
 - **Close with explanation** if out of scope
 
-## Good first issues (suggested)
+## Good first issues
 
 - Add unit tests for edge cases in FFT/envelope helper functions.
 - Improve error messages in MCP tool responses for invalid inputs.
@@ -93,7 +93,7 @@ Typical outcomes:
 - Add references/citations to vibration standards in skill docs where missing.
 - Improve issue template wording based on real user reports.
 
-## Public roadmap
+## Roadmap
 
 See [docs/roadmap.md](docs/roadmap.md). If you want to work on a roadmap item, comment on an issue first so effort can be coordinated.
 

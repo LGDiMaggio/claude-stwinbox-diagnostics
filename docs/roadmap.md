@@ -1,4 +1,4 @@
-# Roadmap (public, lightweight)
+# Roadmap
 
 This roadmap reflects current priorities for an **experimental PoC**. Items are directional and may be reprioritized based on contributor availability and validation data.
 
