@@ -18,7 +18,7 @@ Describe the feature and expected user-facing behavior.
 - Workflow in Claude/MCP:
 
 ## Scope check
-How does this stay aligned with current project positioning (open-source AI agents for industrial vibration diagnostics with STWIN.box, Claude and MCP)?
+How does this stay aligned with current project scope (open-source AI agents for industrial vibration diagnostics via MCP)?
 
 ## Alternatives considered
 What alternatives did you evaluate?

@@ -1,6 +1,6 @@
-# Contributing to Claude STWIN.box Diagnostics
+# Contributing
 
-Thanks for contributing. This repository is an open-source PoC for industrial vibration diagnostics with Claude, MCP and STWIN.box. We prioritize technical rigor, reproducibility, and transparent limitations over hype.
+Thanks for contributing. This repository provides open-source tools for industrial vibration diagnostics using Claude, MCP and edge MEMS sensors. We prioritize technical rigor, reproducibility, and transparent limitations.
 
 ## Before you start
 

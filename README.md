@@ -1,6 +1,6 @@
-# Claude STWIN.box Diagnostics
+# LLM Edge Predictive Maintenance
 
-### Open-source AI agents for industrial vibration diagnostics with STWIN.box, Claude Skills and MCP
+### Predictive maintenance AI agents bridging industrial edge sensors and LLMs via MCP
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
@@ -13,61 +13,42 @@
 
 > **Ask your machine how it's feeling, in natural language.**
 >
-> This repository provides a practical reference architecture to connect industrial vibration sensing (STWIN.box) with Claude through MCP, using transparent DSP and standards-based checks (FFT, envelope analysis, ISO 10816/20816-oriented severity guidance).
+> Open-source reference architecture that connects industrial MEMS vibration sensors to Claude through MCP. Transparent DSP pipeline, standards-based severity checks (ISO 10816/20816), and conversational fault diagnosis out of the box. Currently validated with STWIN.box; the analysis server works with any vibration data source.
 
 <p align="center">
   <img src="docs/images/Gif_Edge.gif" alt="Short demo of edge diagnostic workflow" width="800">
 </p>
 
 <p align="center">
-  <img src="docs/images/claude-stwinbox-diagnostics.png" alt="Claude STWIN.box Diagnostics — System Overview" width="800">
+  <img src="docs/images/claude-stwinbox-diagnostics.png" alt="System overview" width="800">
 </p>
 
-## Project status (read first)
+## Project status
 
-> **⚠️ PoC / experimental stage.** This project is early-stage and intended as a transparent technical proof-of-concept. Algorithms are based on established vibration-analysis methods, but full industrial validation and long-term field qualification are still in progress. Do **not** use outputs as the sole basis for safety-critical maintenance decisions without independent engineering verification.
+> **Proof of concept.** This project is early-stage. Algorithms are based on established vibration-analysis methods, but full industrial validation is still in progress. Do **not** use outputs as the sole basis for safety-critical maintenance decisions without independent engineering verification.
 
-> **Independence disclaimer.** This is an independent open-source project and is not affiliated with, endorsed by, or sponsored by Anthropic or STMicroelectronics. Product names are used only for interoperability/context.
+> **Independence disclaimer.** This is an independent open-source project, not affiliated with or endorsed by Anthropic or STMicroelectronics. Product names are used for interoperability context only.
 
 ## Why this exists
 
-Industrial predictive maintenance often requires fragmented tools and specialist workflows. This project demonstrates a reproducible way to:
+Industrial predictive maintenance typically requires fragmented tools and deep specialist knowledge. This project provides a reproducible, extensible way to:
 
-- acquire vibration data from STWIN.box sensors,
-- analyze signals through explicit DSP/fault heuristics,
-- expose those capabilities via MCP tools, and
-- orchestrate them through Claude Skills in natural language.
+- acquire vibration data from edge MEMS sensors (currently STWIN.box, extensible to other boards),
+- analyze signals through explicit DSP and fault-detection heuristics,
+- expose those capabilities as MCP tools any LLM client can invoke, and
+- orchestrate end-to-end diagnostic workflows in natural language via Claude Skills.
 
 ## Quick start
 
 ```bash
-# 1) Clone repository
+# Clone
 git clone https://github.com/LGDiMaggio/claude-stwinbox-diagnostics.git && cd claude-stwinbox-diagnostics
 
-# 2) Install both MCP servers (editable)
+# Install both MCP servers
 uv pip install -e mcp-servers/stwinbox-sensor-mcp -e mcp-servers/vibration-analysis-mcp
-
-# 3) Read config + run instructions
-open docs/getting-started.md  # on Linux use: xdg-open docs/getting-started.md
 ```
 
-Then configure your MCP client (Claude Desktop / Claude.ai compatible runtime) as documented in [docs/getting-started.md](docs/getting-started.md).
-
-## Navigation
-
-- 📄 Paper / DOI: [10.5281/zenodo.18808856](https://doi.org/10.5281/zenodo.18808856)
-- 📚 Documentation index: [docs/](docs/) and [docs/getting-started.md](docs/getting-started.md)
-- 🧪 Examples: [examples/README.md](examples/README.md)
-- 🤝 Contributing guide: [CONTRIBUTING.md](CONTRIBUTING.md)
-- 🔐 Security policy: [SECURITY.md](SECURITY.md)
-- 🏷️ Releases: [GitHub Releases](https://github.com/LGDiMaggio/claude-stwinbox-diagnostics/releases)
-- 🗺️ Roadmap: [docs/roadmap.md](docs/roadmap.md)
-
-## Who this is for
-
-- **Developers** building MCP-enabled industrial AI workflows and tool integrations.
-- **Researchers** exploring LLM-assisted diagnostics and human-in-the-loop condition monitoring.
-- **OEMs / system integrators** evaluating conversational maintenance interfaces on edge sensor stacks.
+Then configure your MCP client (Claude Desktop, Claude Code, or compatible runtime) as documented in [docs/getting-started.md](docs/getting-started.md).
 
 ## Components
 
@@ -75,18 +56,18 @@ Then configure your MCP client (Claude Desktop / Claude.ai compatible runtime) a
 
 | Server | Purpose | Key tools |
 |---|---|---|
-| [stwinbox-sensor-mcp](mcp-servers/stwinbox-sensor-mcp/) | Hardware communication with STWIN.box via USB-HID (DATALOG2) or USB-Serial | `datalog2_connect`, `datalog2_start_acquisition`, `datalog2_stop_acquisition`, `datalog2_list_sensors`, `datalog2_configure_sensor`, `connect_board`, `acquire_data`, `load_data_from_file` |
-| [vibration-analysis-mcp](mcp-servers/vibration-analysis-mcp/) | Signal processing, data loading, and fault detection | `load_signal`, `list_stored_signals`, `compute_fft_spectrum`, `compute_envelope_spectrum`, `check_bearing_fault_peak`, `check_bearing_faults_direct`, `diagnose_vibration`, `assess_vibration_severity` |
+| [stwinbox-sensor-mcp](mcp-servers/stwinbox-sensor-mcp/) | Sensor acquisition via STWIN.box USB-HID or USB-Serial | `datalog2_connect`, `datalog2_start_acquisition`, `datalog2_stop_acquisition`, `datalog2_list_sensors`, `datalog2_configure_sensor`, `connect_board`, `acquire_data`, `load_data_from_file` |
+| [vibration-analysis-mcp](mcp-servers/vibration-analysis-mcp/) | Signal processing and fault detection. Works with any vibration data: CSV, NumPy, WAV, or DATALOG2 folders. | `load_signal`, `list_stored_signals`, `compute_fft_spectrum`, `compute_envelope_spectrum`, `check_bearing_fault_peak`, `check_bearing_faults_direct`, `diagnose_vibration`, `assess_vibration_severity` |
 
-### Claude skills
+### Claude Skills
 
 | Skill | Purpose |
 |---|---|
-| [machine-vibration-monitoring](skills/machine-vibration-monitoring/) | Sensor acquisition + baseline/threshold workflow |
-| [vibration-fault-diagnosis](skills/vibration-fault-diagnosis/) | Multi-step fault diagnosis workflow |
+| [machine-vibration-monitoring](skills/machine-vibration-monitoring/) | Sensor acquisition and baseline/threshold workflow |
+| [vibration-fault-diagnosis](skills/vibration-fault-diagnosis/) | Multi-step fault diagnosis with frequency analysis |
 | [operator-diagnostic-report](skills/operator-diagnostic-report/) | Human-readable maintenance report generation |
 
-## Supported diagnostics scope
+## Supported fault types
 
 | Fault | Detection method | Indicators |
 |---|---|---|
@@ -94,41 +75,50 @@ Then configure your MCP client (Claude Desktop / Claude.ai compatible runtime) a
 | Bearing outer race (BPFO) | Envelope analysis | Harmonics of BPFO |
 | Bearing rolling element (BSF) | Envelope analysis | Harmonics of BSF |
 | Bearing cage (FTF) | Envelope analysis | Harmonics of FTF |
-| Unbalance | FFT | 1× RPM dominant |
-| Misalignment | FFT | 1× and 2× RPM |
+| Unbalance | FFT | 1x RPM dominant |
+| Misalignment | FFT | 1x and 2x RPM |
 | Mechanical looseness | FFT | Multiple RPM harmonics |
 
-## STWIN.box sensors currently used
+## Hardware reference (STWIN.box)
+
+The reference hardware is the [STEVAL-STWINBX1](https://www.st.com/en/evaluation-tools/steval-stwinbx1.html), but the analysis server accepts data from any source.
 
 | Sensor | Type | Typical use |
 |---|---|---|
-| IIS3DWB | 3-axis vibration | Wideband vibration monitoring |
+| IIS3DWB | 3-axis accelerometer | Wideband vibration monitoring |
 | ISM330DHCX | 6-axis IMU | Medium-frequency vibration |
-| IMP23ABSU | Analog microphone | Acoustic/ultrasound indicators |
+| IMP23ABSU | Analog microphone | Acoustic and ultrasound indicators |
 | STTS22H | Temperature | Thermal context |
 | ILPS22QS | Pressure | Environmental context |
 
 ## Architecture
 
-- Claude (host runtime) invokes MCP tools exposed by two servers.
-- Skills orchestrate workflows for monitoring, diagnosis, and reporting.
-- Sensor data can come from USB acquisition or file-based workflows.
-- Analysis server executes DSP/fault checks and returns interpretable metrics.
+Two MCP servers expose sensor acquisition and signal analysis as tool calls. Three Claude Skills orchestrate them into monitoring, diagnosis, and reporting workflows. Data can come from live USB acquisition or pre-recorded files in multiple formats.
 
-See [docs/architecture.md](docs/architecture.md) for the complete architecture view, detailed sensor specs, and project structure.
+See [docs/architecture.md](docs/architecture.md) for diagrams, data flow, and project structure.
 
-## Call to action
+## Who this is for
 
-- ⭐ **Star the repository** if this project is useful to your work.
-- 🐛 **Open an issue** for bugs or reproducible diagnostic mismatches.
-- 💬 **Open a discussion** for usage questions, ideas, and datasets.
-- 🤝 **Contribute** via [CONTRIBUTING.md](CONTRIBUTING.md).
-- 📚 **Cite the work** using [CITATION.cff](CITATION.cff) and the DOI.
+- **Developers** building MCP-enabled industrial AI workflows.
+- **Researchers** exploring LLM-assisted diagnostics and human-in-the-loop condition monitoring.
+- **System integrators** evaluating conversational maintenance interfaces on edge sensor stacks.
 
+## Documentation
+
+| Resource | Link |
+|---|---|
+| Getting started | [docs/getting-started.md](docs/getting-started.md) |
+| Architecture | [docs/architecture.md](docs/architecture.md) |
+| Examples | [examples/README.md](examples/README.md) |
+| Contributing | [CONTRIBUTING.md](CONTRIBUTING.md) |
+| Roadmap | [docs/roadmap.md](docs/roadmap.md) |
+| Security policy | [SECURITY.md](SECURITY.md) |
+| Consistency governance | [docs/consistency-governance.md](docs/consistency-governance.md) |
+| Third-party attribution | [NOTICE](NOTICE) |
 
 ## Citation
 
-If you use this project in research or technical reports, cite:
+If you use this project in research or technical reports, please cite:
 
 ```bibtex
 @software{llm_edge_diagnostics,
@@ -140,12 +130,6 @@ If you use this project in research or technical reports, cite:
   license      = {Apache-2.0}
 }
 ```
-
-## Governance & references
-
-- Consistency checklist: [docs/consistency-governance.md](docs/consistency-governance.md)
-- Hardware and standards references are listed in [docs/getting-started.md](docs/getting-started.md) and server READMEs.
-- Third-party license attribution: [NOTICE](NOTICE)
 
 ## License
 

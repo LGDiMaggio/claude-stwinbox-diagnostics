@@ -1,6 +1,6 @@
 # Roadmap
 
-This roadmap reflects current priorities for an **experimental PoC**. Items are directional and may be reprioritized based on contributor availability and validation data.
+This roadmap reflects current priorities. Items are directional and may be reprioritized based on contributor availability and validation results.
 
 ## Near term
 
@@ -16,13 +16,13 @@ This roadmap reflects current priorities for an **experimental PoC**. Items are 
 - Improve ergonomics for DATALOG2 workflows in both MCP servers.
 - Add release hygiene improvements (versioning, changelog discipline, automation).
 
-## Longer term (exploratory)
+## Longer term
 
 - Additional board/sensor compatibility evaluations.
 - Better integration guidance with external observability stacks.
 - Structured benchmark datasets for comparing diagnostic prompts/workflows.
 
-## Out of scope (for now)
+## Out of scope
 
 - Claims of production-ready autonomous diagnostics.
 - Vendor-specific lock-in features not aligned with open MCP workflows.
