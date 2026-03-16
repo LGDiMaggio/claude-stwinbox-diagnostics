@@ -10,7 +10,7 @@
 - [ ] Other (describe)
 
 ## Scope alignment
-Confirm this PR stays within project scope (industrial vibration diagnostics with STWIN.box + Claude + MCP) and does not introduce unsupported claims.
+Confirm this PR stays within project scope (industrial vibration diagnostics with STWIN.box, Claude and MCP) and does not introduce unsupported claims.
 
 ## Validation
 List exact commands/checks used and results.

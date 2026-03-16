@@ -1,6 +1,6 @@
 # Claude STWIN.box Diagnostics
 
-### Open-source AI agents for industrial vibration diagnostics with STEVAL-STWINBX1, Claude Skills and MCP
+### Open-source AI agents for industrial vibration diagnostics with STWIN.box, Claude Skills and MCP
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
@@ -13,7 +13,7 @@
 
 > **Ask your machine how it's feeling, in natural language.**
 >
-> This repository provides a practical reference architecture to connect industrial vibration sensing (STEVAL-STWINBX1) with Claude through MCP, using transparent DSP and standards-based checks (FFT, envelope analysis, ISO 10816/20816-oriented severity guidance).
+> This repository provides a practical reference architecture to connect industrial vibration sensing (STWIN.box) with Claude through MCP, using transparent DSP and standards-based checks (FFT, envelope analysis, ISO 10816/20816-oriented severity guidance).
 
 <p align="center">
   <img src="docs/images/Gif_Edge.gif" alt="Short demo of edge diagnostic workflow" width="800">
@@ -38,7 +38,7 @@ Industrial predictive maintenance often requires fragmented tools and specialist
 - expose those capabilities via MCP tools, and
 - orchestrate them through Claude Skills in natural language.
 
-## Quick start (minimum realistic steps)
+## Quick start
 
 ```bash
 # 1) Clone repository
@@ -62,7 +62,6 @@ Then configure your MCP client (Claude Desktop / Claude.ai compatible runtime) a
 - 🔐 Security policy: [SECURITY.md](SECURITY.md)
 - 🏷️ Releases: [GitHub Releases](https://github.com/LGDiMaggio/claude-stwinbox-diagnostics/releases)
 - 🗺️ Roadmap: [docs/roadmap.md](docs/roadmap.md)
-- 🎬 Demo assets plan: [docs/demo-assets.md](docs/demo-assets.md)
 
 ## Who this is for
 
@@ -126,20 +125,6 @@ See [docs/architecture.md](docs/architecture.md) for the complete architecture v
 - 🤝 **Contribute** via [CONTRIBUTING.md](CONTRIBUTING.md).
 - 📚 **Cite the work** using [CITATION.cff](CITATION.cff) and the DOI.
 
-
-## Recommended GitHub community configuration
-
-If you maintain the repository settings, enable GitHub Discussions with these categories:
-
-- **Q&A**
-- **Ideas**
-- **Show and tell / use cases**
-- **Research & datasets**
-- **Announcements**
-
-Recommended repository topics:
-
-`predictive-maintenance`, `vibration-analysis`, `industrial-ai`, `mcp`, `claude-ai`, `iot`, `edge-ai`, `condition-monitoring`, `fault-diagnosis`, `industry-4-0`, `stm32`, `stwinbox`
 
 ## Citation
 

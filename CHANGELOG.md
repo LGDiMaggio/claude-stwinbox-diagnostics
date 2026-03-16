@@ -18,13 +18,12 @@ and this project aims to follow [Semantic Versioning](https://semver.org/spec/v2
 ## [0.3.0] - 2026-01-01
 
 ### Added
-- Initial public project documentation for STWIN.box + Claude + MCP predictive maintenance workflow.
+- Initial public project documentation for STWIN.box, Claude and MCP predictive maintenance workflow.
 - Two MCP server packages (`stwinbox-sensor-mcp`, `vibration-analysis-mcp`) with documented tooling.
 - Three Claude skills for monitoring, diagnosis, and reporting workflows.
 
 ### Notes
 - Historical per-commit details before changelog adoption are partially reconstructed from repository state.
-- Exact release date and full change breakdown should be updated once canonical release metadata/tags are finalized.
 
 [Unreleased]: https://github.com/LGDiMaggio/claude-stwinbox-diagnostics/compare/v0.3.0...HEAD
 [0.3.0]: https://github.com/LGDiMaggio/claude-stwinbox-diagnostics/releases

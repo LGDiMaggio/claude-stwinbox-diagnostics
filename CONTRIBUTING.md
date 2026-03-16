@@ -1,12 +1,12 @@
 # Contributing to Claude STWIN.box Diagnostics
 
-Thanks for contributing. This repository is an open-source PoC for industrial vibration diagnostics with Claude + MCP + STEVAL-STWINBX1. We prioritize technical rigor, reproducibility, and transparent limitations over hype.
+Thanks for contributing. This repository is an open-source PoC for industrial vibration diagnostics with Claude, MCP and STWIN.box. We prioritize technical rigor, reproducibility, and transparent limitations over hype.
 
 ## Before you start
 
 - Read [README.md](README.md) for scope and current limitations.
 - Read [SECURITY.md](SECURITY.md) for responsible disclosure.
-- Check open [issues](https://github.com/LGDiMaggio/claude-stwinbox-diagnostics/issues) and [discussions](https://github.com/LGDiMaggio/claude-stwinbox-diagnostics/discussions) to avoid duplicate work.
+- Check open [issues](https://github.com/LGDiMaggio/claude-stwinbox-diagnostics/issues) to avoid duplicate work.
 
 ## Local setup
 
