@@ -249,6 +249,41 @@
         </div>
       </div>
 
+      <!-- Unbalance detection video -->
+      <div class="text-center mt-20 mb-12 reveal">
+        <p class="text-st-teal font-bold text-lg uppercase tracking-wider mb-3">MCP + Skills vs plain LLM</p>
+        <h2 class="text-4xl sm:text-5xl font-bold text-white">Unbalance Detection: Tools vs Hallucination</h2>
+        <p class="text-xl text-white/90 mt-4 max-w-3xl mx-auto">Without dedicated MCP tools and Skills the LLM hallucinates diagnostic results. With them, it runs a real DSP pipeline on sensor data and delivers evidence-based answers.</p>
+      </div>
+
+      <div class="grid lg:grid-cols-3 gap-6 items-stretch reveal">
+        <div class="lg:col-span-2 relative aspect-video rounded-2xl overflow-hidden glass">
+          <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/ccV5G37tiGQ?rel=0&modestbranding=1&hd=1&vq=hd1080" title="Unbalance detection: MCP + Skills vs plain LLM hallucination" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+
+        <div class="glass rounded-2xl p-7 flex flex-col justify-between">
+          <div>
+            <p class="text-st-teal font-bold uppercase tracking-wider mb-3">Key takeaway</p>
+            <h3 class="text-3xl font-bold text-white mb-4">Tools Turn Guesses into Evidence</h3>
+            <p class="text-lg text-white/90 leading-relaxed">An LLM without tools can only speculate. With the MCP server and matching Skill, Claude acquires real vibration data, runs spectral analysis, and identifies the unbalance fault with measured frequencies and severity levels.</p>
+          </div>
+          <div class="mt-6 glass rounded-xl p-4">
+            <p class="text-sm text-white/70 mb-1 font-semibold">Without MCP + Skills</p>
+            <p class="text-base text-red-400 italic">&ldquo;It might be unbalance&hellip; maybe check the bearings?&rdquo;</p>
+            <p class="text-sm text-white/70 mb-1 mt-3 font-semibold">With MCP + Skills</p>
+            <p class="text-base text-st-teal">&ldquo;1&times; RPM peak at 24.5&thinsp;Hz confirms unbalance. Severity: ISO&nbsp;10816 Zone&nbsp;B.&rdquo;</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- With vs Without comparison GIF -->
+      <div class="mt-16 reveal">
+        <div class="glass rounded-2xl p-3 max-w-5xl mx-auto overflow-hidden">
+          <img src="images/wash_gif.gif" alt="Side-by-side comparison: diagnostic with MCP + Skills vs without" class="w-full rounded-xl" loading="lazy">
+        </div>
+        <p class="text-base text-white/60 mt-4 text-center">With MCP + Skills the assistant delivers a structured, evidence-based diagnosis. Without them it hallucinates.</p>
+      </div>
+
     </div>
   </section>
 

@@ -22,6 +22,10 @@
 </p>
 
 <p align="center">
+  <img src="docs/images/wash_gif.gif" alt="Comparison: diagnostic with MCP + Skills vs without" width="800">
+</p>
+
+<p align="center">
   <img src="docs/images/claude-stwinbox-diagnostics.png" alt="System overview" width="800">
 </p>
 
