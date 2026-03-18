@@ -1,6 +1,6 @@
-# LLM Edge Predictive Maintenance
+# Condition Monitoring Copilot — LLM Edge Predictive Maintenance
 
-### Predictive maintenance AI agents bridging industrial edge sensors and LLMs via MCP and Skills.md
+### Open-source condition monitoring copilot and predictive maintenance AI agent — bridging industrial edge sensors and LLMs via MCP and Claude Skills.
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
@@ -15,7 +15,7 @@
   <em><strong>Ask your machine how it's feeling, in natural language.</strong></em>
 </p>
 
-> Open-source reference architecture that connects industrial MEMS vibration sensors to Claude through MCP. Transparent Digital Signal Processing (DSP) pipeline, standards-based severity checks (ISO 10816/20816), and conversational fault diagnosis out of the box. Currently validated with STWIN.box; the analysis server works with any vibration data source.
+> Open-source **condition monitoring copilot** and **predictive maintenance AI agent** that connects industrial MEMS vibration sensors to Claude through MCP. Transparent Digital Signal Processing (DSP) pipeline, standards-based severity checks (ISO 10816/20816), and conversational fault diagnosis out of the box. Acts as a **condition monitoring AI agent** and **AI assistant for predictive maintenance** teams. Currently validated with STWIN.box; the analysis server works with any vibration data source.
 
 <p align="center">
   <img src="docs/images/Gif_Edge.gif" alt="Short demo of edge diagnostic workflow" width="800">
