@@ -7,19 +7,19 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://lgdimaggio.github.io/claude-stwinbox-diagnostics/getting-started</loc>
+    <loc>https://lgdimaggio.github.io/claude-stwinbox-diagnostics/getting-started.md</loc>
     <lastmod>2026-03-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://lgdimaggio.github.io/claude-stwinbox-diagnostics/architecture</loc>
+    <loc>https://lgdimaggio.github.io/claude-stwinbox-diagnostics/architecture.md</loc>
     <lastmod>2026-03-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://lgdimaggio.github.io/claude-stwinbox-diagnostics/roadmap</loc>
+    <loc>https://lgdimaggio.github.io/claude-stwinbox-diagnostics/roadmap.md</loc>
     <lastmod>2026-03-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
