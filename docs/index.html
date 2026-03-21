@@ -4,14 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Condition Monitoring Copilot — Predictive Maintenance AI Agent for Industrial Vibration Diagnostics</title>
-  <meta name="description" content="Open-source condition monitoring copilot and predictive maintenance AI agent. Connects industrial edge MEMS sensors to Claude via MCP for conversational vibration analysis, bearing fault detection, and ISO 10816 severity assessment. The AI assistant for predictive maintenance teams — a condition monitoring AI agent that acquires, analyzes, and reports in natural language.">
+  <meta name="description" content="Open-source condition monitoring copilot and predictive maintenance AI agent. LLM vibration analysis via MCP server fault diagnosis — connects industrial edge MEMS sensors to Claude for bearing fault detection, ISO 10816 severity assessment, and conversational diagnostics. A condition monitoring AI assistant that acquires, analyzes, and reports in natural language.">
   <meta name="author" content="Luigi Gianpio Di Maggio">
-  <meta name="keywords" content="condition monitoring copilot, predictive maintenance AI agent, condition monitoring AI agent, AI assistant predictive maintenance, industrial AI agent, vibration AI agent, agentic maintenance, conversational condition monitoring, maintenance copilot, predictive maintenance LLM, MCP predictive maintenance, LLM condition monitoring, vibration analysis AI, bearing fault detection AI, ISO 10816, edge AI diagnostics, STWIN.box, MCP, envelope analysis, BPFO BPFI bearing defect, vibration fault diagnosis">
+  <meta name="keywords" content="condition monitoring copilot, predictive maintenance AI agent, condition monitoring AI agent, condition monitoring AI assistant, AI assistant predictive maintenance, industrial AI agent, vibration AI agent, agentic maintenance, conversational condition monitoring, maintenance copilot, predictive maintenance LLM, MCP predictive maintenance, LLM condition monitoring, LLM vibration analysis, MCP server fault diagnosis, vibration analysis AI, bearing fault detection AI, ISO 10816, edge AI diagnostics, STWIN.box, MCP, envelope analysis, BPFO BPFI bearing defect, vibration fault diagnosis, agente AI manutenzione predittiva, analisi vibrazioni LLM, MCP server diagnosi guasti, monitoraggio condizioni AI, assistente AI manutenzione predittiva, diagnostica vibrazioni conversazionale, manutenzione agentica">
   <link rel="canonical" href="https://lgdimaggio.github.io/claude-stwinbox-diagnostics/">
+  <link rel="alternate" hreflang="en" href="https://lgdimaggio.github.io/claude-stwinbox-diagnostics/">
+  <link rel="alternate" hreflang="it" href="https://lgdimaggio.github.io/claude-stwinbox-diagnostics/">
+  <link rel="alternate" hreflang="x-default" href="https://lgdimaggio.github.io/claude-stwinbox-diagnostics/">
 
   <!-- Open Graph -->
   <meta property="og:title" content="Condition Monitoring Copilot — Predictive Maintenance AI Agent for Industrial Vibration Diagnostics">
-  <meta property="og:description" content="Open-source condition monitoring copilot: a predictive maintenance AI agent connecting industrial MEMS sensors to Claude via MCP. Conversational vibration analysis, bearing fault detection, ISO 10816 severity — agentic maintenance out of the box.">
+  <meta property="og:description" content="Open-source condition monitoring copilot and predictive maintenance AI agent. LLM vibration analysis via MCP server fault diagnosis — bearing fault detection, ISO 10816 severity, conversational diagnostics. Condition monitoring AI assistant out of the box.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://lgdimaggio.github.io/claude-stwinbox-diagnostics/">
   <meta property="og:image" content="https://lgdimaggio.github.io/claude-stwinbox-diagnostics/images/claude-stwinbox-diagnostics.png">
@@ -20,7 +23,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Condition Monitoring Copilot — Predictive Maintenance AI Agent">
-  <meta name="twitter:description" content="Open-source condition monitoring copilot and predictive maintenance AI agent. Connects industrial sensors to Claude via MCP — conversational vibration analysis, bearing fault detection, ISO 10816, agentic maintenance.">
+  <meta name="twitter:description" content="Open-source condition monitoring copilot and predictive maintenance AI agent. LLM vibration analysis via MCP server fault diagnosis — bearing fault detection, ISO 10816 severity, condition monitoring AI assistant.">
   <meta name="twitter:image" content="https://lgdimaggio.github.io/claude-stwinbox-diagnostics/images/claude-stwinbox-diagnostics.png">
   <meta name="twitter:image:alt" content="Condition monitoring copilot: STWIN.box edge sensor + Claude AI for predictive maintenance">
 
@@ -1022,21 +1025,25 @@ cd mcp-servers/vibration-analysis-mcp && uv venv && uv pip install -e . && cd ..
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     "name": "Condition Monitoring Copilot — LLM Edge Predictive Maintenance",
-    "alternateName": ["Predictive Maintenance AI Agent", "Condition Monitoring AI Agent", "LLM Edge Predictive Maintenance"],
-    "description": "Open-source condition monitoring copilot and predictive maintenance AI agent. Connects industrial edge MEMS sensors to Claude via the Model Context Protocol (MCP) for conversational vibration analysis, bearing fault detection, and ISO 10816 severity assessment. Three specialised AI agents (Monitoring, Diagnosis, Reporting) form a complete agentic maintenance workflow.",
+    "alternateName": ["Predictive Maintenance AI Agent", "Condition Monitoring AI Agent", "Condition Monitoring AI Assistant", "LLM Edge Predictive Maintenance", "Agente AI Manutenzione Predittiva", "Copilota Monitoraggio Condizioni"],
+    "description": "Open-source condition monitoring copilot and predictive maintenance AI agent. LLM vibration analysis via MCP server fault diagnosis — connects industrial edge MEMS sensors to Claude for bearing fault detection, ISO 10816 severity assessment, and conversational diagnostics. Three specialised AI agents (Monitoring, Diagnosis, Reporting) form a complete agentic maintenance workflow.",
     "url": "https://lgdimaggio.github.io/claude-stwinbox-diagnostics/",
+    "inLanguage": ["en", "it"],
     "applicationCategory": "Engineering",
-    "applicationSubCategory": "Condition Monitoring, Predictive Maintenance, Industrial AI",
-    "keywords": "condition monitoring copilot, predictive maintenance AI agent, condition monitoring AI agent, AI assistant predictive maintenance, industrial AI agent, agentic maintenance, conversational condition monitoring, vibration analysis AI, bearing fault detection, ISO 10816, MCP predictive maintenance, LLM condition monitoring",
+    "applicationSubCategory": "Condition Monitoring, Predictive Maintenance, Industrial AI, LLM Vibration Analysis, MCP Server Fault Diagnosis",
+    "keywords": "condition monitoring copilot, predictive maintenance AI agent, condition monitoring AI agent, condition monitoring AI assistant, LLM vibration analysis, MCP server fault diagnosis, AI assistant predictive maintenance, industrial AI agent, agentic maintenance, conversational condition monitoring, vibration analysis AI, bearing fault detection, ISO 10816, MCP predictive maintenance, LLM condition monitoring, agente AI manutenzione predittiva, analisi vibrazioni LLM, diagnostica vibrazioni conversazionale",
     "featureList": [
       "Condition monitoring copilot with natural-language interface",
       "Predictive maintenance AI agent workflows (Monitoring, Diagnosis, Reporting)",
+      "LLM vibration analysis with real sensor data via MCP",
+      "MCP server fault diagnosis for industrial vibration",
       "Real-time vibration data acquisition from industrial MEMS sensors",
       "FFT and envelope analysis for bearing fault detection",
       "ISO 10816 / ISO 20816 vibration severity classification",
       "Characteristic frequency matching (BPFO, BPFI, BSF, FTF)",
       "Automated diagnostic report generation",
-      "Model Context Protocol (MCP) integration with Claude"
+      "Model Context Protocol (MCP) integration with Claude",
+      "Condition monitoring AI assistant for maintenance teams"
     ],
     "operatingSystem": "Windows, Linux, macOS",
     "offers": {
